@@ -26,8 +26,8 @@ namespace HenHen.Visual
         {
             BeginDrawing();
             ClearBackground(Raylib_cs.Color.BLACK);
-            DrawText("HHhhhhhhh", 100, 100, 20, Raylib_cs.Color.RAYWHITE);
             screenStack.Render();
+            DrawText("HHhhhhhhh", 100, 100, 20, Raylib_cs.Color.RED);
             EndDrawing();
         }
 
