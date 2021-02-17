@@ -3,10 +3,14 @@ using System.Numerics;
 
 namespace HenHen.Framework.Graphics
 {
-    public interface IContainer<T>
+    public interface IContainer
     {
-        public IEnumerable<T> Children { get; }
         public Vector2 GetChildrenRenderPosition();
         public Vector2 GetChildrenRenderSize();
+    }
+
+    public interface IContainer<T> : IContainer
+    {
+        public IEnumerable<T> Children { get; }
     }
 }
