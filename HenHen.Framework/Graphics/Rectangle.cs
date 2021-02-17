@@ -1,4 +1,6 @@
-﻿namespace HenHen.Framework.Graphics
+﻿using HenHen.Framework.Extensions;
+
+namespace HenHen.Framework.Graphics
 {
     public class Rectangle : Drawable, IHasColor
     {
@@ -9,7 +11,7 @@
             base.OnRender();
             var renderPos = GetRenderPosition();
             var renderSize = GetRenderSize();
-            Raylib_cs.Raylib.DrawRectangle((int)renderPos.X, (int)renderPos.Y, (int)renderSize.X, (int)renderSize.Y, new Raylib_cs.Color();
+            Raylib_cs.Raylib.DrawRectangle((int)renderPos.X, (int)renderPos.Y, (int)renderSize.X, (int)renderSize.Y, Color.ToRaylibColor());
         }
     }
 }
