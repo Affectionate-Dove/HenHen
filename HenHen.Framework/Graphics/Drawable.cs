@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace HenHen.Framework.Graphics
 {
-    public class Drawable
+    public abstract class Drawable
     {
         public Vector2 Position { get; set; }
         public Axes RelativePositionAxes { get; set; }
