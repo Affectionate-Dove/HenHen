@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HenHen.Core\HenHen.Core.csproj" />
+    <PackageReference Include="Raylib-cs" Version="3.5.0" />
   </ItemGroup>
 
 </Project>
