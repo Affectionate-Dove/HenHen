@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HenHen.Framework.Graphics;
 
 namespace HenHen.Framework.Screens
 {
-    class Screen
+    public class Screen : Container, IContainer<Drawable>
     {
     }
 }
