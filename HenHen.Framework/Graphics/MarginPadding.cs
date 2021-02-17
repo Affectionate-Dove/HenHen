@@ -50,5 +50,7 @@ namespace HenHen.Framework.Graphics
         {
             set => Top = Bottom = value;
         }
+
+        public Vector2 Total => new Vector2(TotalHorizontal, TotalVertical);
     }
 }

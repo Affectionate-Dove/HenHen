@@ -9,9 +9,9 @@ namespace HenHen.Framework.Graphics
 
         public MarginPadding Padding;
 
-        public Vector2 GetChildrenRenderPosition() => throw new System.NotImplementedException();
+        public Vector2 GetChildrenRenderPosition() => GetRenderPosition() + Padding.TopLeft;
 
-        public Vector2 GetChildrenRenderSize() => throw new System.NotImplementedException();
+        public Vector2 GetChildrenRenderSize() => GetRenderSize() - Padding.Total;
 
         IEnumerable<Drawable> IContainer<Drawable>.Children => Children;
 
