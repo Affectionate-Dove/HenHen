@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HenHen.Visual", "HenHen.Vis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HenHen.Framework", "HenHen.Framework\HenHen.Framework.csproj", "{9854DCA4-786F-4B8B-940A-638F9A9A048A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HenHen.Framework.Tests", "HenHen.Framework.Tests\HenHen.Framework.Tests.csproj", "{950C4E42-BFD0-4D65-BFA1-35C19D637C00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9854DCA4-786F-4B8B-940A-638F9A9A048A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9854DCA4-786F-4B8B-940A-638F9A9A048A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9854DCA4-786F-4B8B-940A-638F9A9A048A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{950C4E42-BFD0-4D65-BFA1-35C19D637C00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{950C4E42-BFD0-4D65-BFA1-35C19D637C00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{950C4E42-BFD0-4D65-BFA1-35C19D637C00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{950C4E42-BFD0-4D65-BFA1-35C19D637C00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

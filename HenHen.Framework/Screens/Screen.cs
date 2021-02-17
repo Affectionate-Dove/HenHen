@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using HenHen.Framework.Graphics;
+using System;
 
 namespace HenHen.Framework.Screens
 {
-    class Screen
+    public class Screen : Container, IContainer<Drawable>
     {
+        public event Action<Screen> ScreenPushed;
+        public event Action Exited;
+
+        public Screen() => RelativeSizeAxes = Axes.Both;
+
+        public void Push(Screen nextScreen) => ScreenPushed?.Invoke(nextScreen);
+
+        public void Exit() => Exited?.Invoke();
     }
 }
