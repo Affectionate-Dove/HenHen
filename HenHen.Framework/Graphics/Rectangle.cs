@@ -4,7 +4,7 @@ namespace HenHen.Framework.Graphics
 {
     public class Rectangle : Drawable, IHasColor
     {
-        public ColorInfo Color { get; set; }
+        public ColorInfo Color { get; set; } = new ColorInfo(255, 255, 255);
 
         protected override void OnRender()
         {
