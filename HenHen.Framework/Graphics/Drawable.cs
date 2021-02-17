@@ -14,7 +14,7 @@ namespace HenHen.Framework.Graphics
         public Vector2 Anchor { get; set; }
         public Vector2 Origin { get; set; }
 
-        public IContainer<Drawable> Parent;
+        public IContainer Parent;
 
         public Vector2 GetRenderPosition()
         {
