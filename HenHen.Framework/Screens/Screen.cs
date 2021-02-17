@@ -8,6 +8,8 @@ namespace HenHen.Framework.Screens
         public event Action<Screen> ScreenPushed;
         public event Action Exited;
 
+        public Screen() => RelativeSizeAxes = Axes.Both;
+
         public void Push(Screen nextScreen) => ScreenPushed?.Invoke(nextScreen);
 
         public void Exit() => Exited?.Invoke();
