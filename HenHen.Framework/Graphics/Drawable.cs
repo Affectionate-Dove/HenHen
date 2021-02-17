@@ -8,7 +8,7 @@ namespace HenHen.Framework.Graphics
         public Vector2 Position { get; set; }
         public Axes RelativePositionAxes { get; set; }
 
-        public Vector2 Size { get; set; }
+        public Vector2 Size { get; set; } = Vector2.One;
         public Axes RelativeSizeAxes { get; set; }
 
         public Vector2 Anchor { get; set; }
