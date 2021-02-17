@@ -46,6 +46,15 @@ namespace HenHen.Framework.Graphics
             return size;
         }
 
+        public System.Drawing.RectangleF GetRenderRect()
+        {
+            var renderPos = GetRenderPosition();
+            var renderSize = GetRenderSize();
+
+            renderPos -= renderSize * Origin;
+            return new System.Drawing.RectangleF(renderPos.X, renderPos.Y, renderSize.X, renderSize.Y);
+        }
+
         public void Update() => OnUpdate();
 
         protected virtual void OnUpdate()

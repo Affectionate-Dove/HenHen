@@ -9,9 +9,8 @@ namespace HenHen.Framework.Graphics
         protected override void OnRender()
         {
             base.OnRender();
-            var renderPos = GetRenderPosition();
-            var renderSize = GetRenderSize();
-            Raylib_cs.Raylib.DrawRectangle((int)renderPos.X, (int)renderPos.Y, (int)renderSize.X, (int)renderSize.Y, Color.ToRaylibColor());
+            var rectPos = GetRenderRect();
+            Raylib_cs.Raylib.DrawRectangle((int)rectPos.X, (int)rectPos.Y, (int)rectPos.Width, (int)rectPos.Height, Color.ToRaylibColor());
         }
     }
 }

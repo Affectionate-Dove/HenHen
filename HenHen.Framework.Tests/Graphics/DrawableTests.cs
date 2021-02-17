@@ -76,5 +76,15 @@ namespace HenHen.Framework.Tests.Graphics
             var absChildRenPos = absoluteChild.GetRenderPosition();
             Assert.AreEqual(new Vector2(600), absChildRenPos);
         }
+
+        [Test]
+        public void TestOriginPosition()
+        {
+            absoluteChild.Anchor = new Vector2(0.5f);
+            absoluteChild.Origin = new Vector2(0.5f);
+            var absChildRenRect = absoluteChild.GetRenderRect();
+            Assert.AreEqual(new Vector2(800), absoluteChild.GetRenderPosition());
+            Assert.AreEqual(new System.Drawing.RectangleF(700, 700, 200, 200), absChildRenRect);
+        }
     }
 }
