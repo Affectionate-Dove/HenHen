@@ -2,7 +2,7 @@
 
 namespace HenHen.Core.Owners
 {
-    class Owner
+    public class Owner
     {
         public int Id;
         public string Name;
