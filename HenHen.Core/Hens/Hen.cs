@@ -3,11 +3,11 @@
     public class Hen
     {
         public int Health;
-        public HenStatistics HenStatistics;
-        public TypHena Type;
+        public HenStatistics Statistics;
+        public HenType Type;
 
     }
-    public enum TypHena
+    public enum HenType
     {
         PROWADZACY, STUDENT, POMOCNIK
     }

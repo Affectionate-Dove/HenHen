@@ -3,7 +3,7 @@
     public class HenStatistics
     {
         public int Attack;
-        public int Defence;
+        public int Defense;
         public int Speed;
     }
 }
