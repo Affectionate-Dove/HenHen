@@ -1,4 +1,4 @@
-﻿using HenHen.Framework.Graphics;
+﻿using HenHen.Framework.Graphics2d;
 
 namespace HenHen.Framework.Extensions
 {

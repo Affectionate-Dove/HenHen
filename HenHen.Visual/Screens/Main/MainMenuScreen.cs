@@ -1,4 +1,4 @@
-﻿using HenHen.Framework.Graphics;
+﻿using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
 
 namespace HenHen.Visual.Screens.Main
