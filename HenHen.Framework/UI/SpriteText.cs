@@ -1,5 +1,5 @@
 ﻿using HenHen.Framework.Extensions;
-using HenHen.Framework.Graphics;
+using HenHen.Framework.Graphics2d;
 
 namespace HenHen.Framework.UI
 {
