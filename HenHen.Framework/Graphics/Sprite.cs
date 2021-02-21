@@ -2,14 +2,17 @@
 
 namespace HenHen.Framework.Graphics
 {
-    class Sprite : Drawable
+    public class Sprite : Drawable
     {
         public ColorInfo Color { get; set; } = new ColorInfo(255, 255, 255);
         private Raylib_cs.Texture2D texture;
+        private bool isTextureLoaded;
 
         protected void LoadTexture(string path)
         {
+            UnloadTexture(texture);
             texture = Raylib_cs.Raylib.LoadTexture(path);
+            isTextureLoaded = true;
         }
         protected override void OnRender()
         {
@@ -19,7 +22,10 @@ namespace HenHen.Framework.Graphics
 
         protected void UnloadTexture(Raylib_cs.Texture2D texture)
         {
-            Raylib_cs.Raylib.UnloadTexture(texture);
+            if(isTextureLoaded)
+            {
+                Raylib_cs.Raylib.UnloadTexture(texture);
+            }
         }
         ~Sprite()
         {
