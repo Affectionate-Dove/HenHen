@@ -1,4 +1,5 @@
-﻿using HenHen.Framework.Graphics;
+﻿using HenHen.Framework.Graphics2d;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -37,6 +38,8 @@ namespace HenHen.Framework.Screens
 
         public void Pop()
         {
+            if (screens.Count == 0)
+                throw new InvalidOperationException("The screen stack is empty, cannot pop.");
             var prev = CurrentScreen;
             CurrentScreen.Parent = null;
             screens.Remove(CurrentScreen);

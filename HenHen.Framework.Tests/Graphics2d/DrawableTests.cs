@@ -1,8 +1,8 @@
-using HenHen.Framework.Graphics;
+using HenHen.Framework.Graphics2d;
 using NUnit.Framework;
 using System.Numerics;
 
-namespace HenHen.Framework.Tests.Graphics
+namespace HenHen.Framework.Tests.Graphics2d
 {
     public class DrawableTests
     {

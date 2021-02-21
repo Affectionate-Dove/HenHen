@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 
-namespace HenHen.Framework.Graphics
+namespace HenHen.Framework.Graphics2d
 {
     public interface IContainer
     {

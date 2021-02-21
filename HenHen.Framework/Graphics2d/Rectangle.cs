@@ -1,6 +1,6 @@
 ﻿using HenHen.Framework.Extensions;
 
-namespace HenHen.Framework.Graphics
+namespace HenHen.Framework.Graphics2d
 {
     public class Rectangle : Drawable, IHasColor
     {
