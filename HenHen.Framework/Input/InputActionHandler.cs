@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace HenHen.Framework.Input
 {
@@ -15,7 +14,7 @@ namespace HenHen.Framework.Input
         /// Keys that will be monitored for presses,
         /// because they can trigger an action.
         /// </summary>
-        private Dictionary<KeyboardKey, List<TInputAction>> keysToMonitor;
+        private readonly Dictionary<KeyboardKey, List<TInputAction>> keysToMonitor;
 
         /// <summary>
         /// A list of input actions for which
