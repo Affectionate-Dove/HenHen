@@ -45,7 +45,7 @@ namespace HenHen.Framework.Input
         public virtual void Update(float timeDelta)
         {
             LastMousePosition = mousePosition;
-            MousePosition = Raylib_cs.Raylib.GetMousePosition();
+            mousePosition = Raylib_cs.Raylib.GetMousePosition();
             TimeDelta = timeDelta;
         }
     }
