@@ -1,4 +1,5 @@
 ﻿using HenHen.Framework.Extensions;
+using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d
 {
@@ -8,7 +9,11 @@ namespace HenHen.Framework.Graphics2d
         private Raylib_cs.Texture2D texture;
         private bool isTextureLoaded;
 
-        protected void LoadTexture(string path)
+        /// <summary>
+        /// Loads a texture from a file path. Previous texture is automatically unloaded.
+        /// </summary>
+        /// <param name="path"></param>
+        public void SetTexture(string path)
         {
             UnloadTexture(texture);
             texture = Raylib_cs.Raylib.LoadTexture(path);
@@ -16,13 +21,20 @@ namespace HenHen.Framework.Graphics2d
         }
         protected override void OnRender()
         {
+            if (!isTextureLoaded)
+            {
+                return;
+            }
             base.OnRender();
-            Raylib_cs.Raylib.DrawTexture(texture, (int)GetRenderPosition().X, (int)GetRenderPosition().Y, Color.ToRaylibColor());
+            var rect = GetRenderRect();
+            var sourceRec = new Raylib_cs.Rectangle(0, 0, texture.width, texture.height);
+            var destRec = new Raylib_cs.Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+            Raylib_cs.Raylib.DrawTexturePro(texture, sourceRec, destRec, Vector2.Zero, 0, Color.ToRaylibColor());
         }
 
         protected void UnloadTexture(Raylib_cs.Texture2D texture)
         {
-            if(isTextureLoaded)
+            if (isTextureLoaded)
             {
                 Raylib_cs.Raylib.UnloadTexture(texture);
             }
