@@ -19,7 +19,7 @@ namespace HenHen.Framework.Graphics2d
         /// this will be negative.
         /// </summary>
         public float Height => Bottom - Top;
-        public float Area => Width * Height;
+        public float Area => System.Math.Abs(Width * Height);
         public Vector2 Size => new Vector2(Width, Height);
         public Vector2 Center => TopLeft + (Size / 2);
 

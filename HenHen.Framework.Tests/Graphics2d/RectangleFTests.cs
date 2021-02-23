@@ -25,13 +25,13 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             rect = new RectangleF
             {
-                Top = 3,
+                Top = -2,
                 Left = -4,
-                Bottom = -2,
+                Bottom = 3,
                 Right = -6
             };
             Assert.AreEqual(-2, rect.Width);
-            Assert.AreEqual(-5, rect.Height);
+            Assert.AreEqual(5, rect.Height);
             Assert.AreEqual(10, rect.Area);
         }
 
