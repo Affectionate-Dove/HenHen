@@ -9,7 +9,15 @@ namespace HenHen.Framework.Graphics2d
         public float Top { get; set; }
         public float Bottom { get; set; }
 
+        /// <summary>
+        /// If <see cref="Left"/> is greater than <see cref="Right"/>,
+        /// this will be negative.
+        /// </summary>
         public float Width => Right - Left;
+        /// <summary>
+        /// If <see cref="Top"/> is greater than <see cref="Bottom"/>,
+        /// this will be negative.
+        /// </summary>
         public float Height => Bottom - Top;
         public float Area => Width * Height;
         public Vector2 Size => new Vector2(Width, Height);
