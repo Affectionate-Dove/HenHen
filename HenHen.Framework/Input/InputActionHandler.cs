@@ -2,44 +2,54 @@
 
 namespace HenHen.Framework.Input
 {
+    /// <summary>
+    /// Abstracts away inputs from keyboard keys to <see cref="TInputAction"/>s.
+    /// </summary>
+    /// <remarks>
+    /// For example, a <see cref="TInputAction"/> enum
+    /// may have a GoForward action, which is binded to key "W".
+    /// This class manages monitoring the key "W" and translates
+    /// it into the GoForward action, so that even if the key binding changes,
+    /// the action remains the same.
+    /// </remarks>
     public abstract class InputActionHandler<TInputAction>
     {
         /// <summary>
-        /// Keys that have to be pressed together
-        /// to trigger an action.
+        /// For each <see cref="TInputAction"/>, a list of
+        /// keyboard keys that have to be pressed together
+        /// to trigger that <see cref="TInputAction"/>.
         /// </summary>
         private readonly Dictionary<TInputAction, List<KeyboardKey>> actionKeyBindings = new();
 
         /// <summary>
-        /// Keys that will be monitored for presses,
-        /// because they can trigger an action.
+        /// It may be expensive to check all keyboard keys
+        /// for input at every game update, so this list stores
+        /// only the keys that can trigger a <see cref="TInputAction"/>.
+        /// 
         /// </summary>
         private readonly Dictionary<KeyboardKey, List<TInputAction>> keysToMonitor = new();
 
         /// <summary>
-        /// A list of input actions for which
-        /// keybindings were pressed but not yet released.
+        /// A list of <see cref="TInputAction"/>s that were
+        /// pressed but not yet released.
         /// </summary>
         private readonly List<TInputAction> activeInputActions = new();
 
         public virtual InputManager InputManager { get; set; }
 
         /// <summary>
-        /// Keys that have to be pressed together
-        /// to trigger an action.
+        /// For each <see cref="TInputAction"/>, a list of
+        /// keyboard keys that have to be pressed together
+        /// to trigger that <see cref="TInputAction"/>.
         /// </summary>
         public IReadOnlyDictionary<TInputAction, List<KeyboardKey>> ActionKeyBindings => actionKeyBindings;
 
         /// <summary>
-        /// A list of input actions for which
-        /// keybindings were pressed but not yet released.
+        /// A list of <see cref="TInputAction"/>s that were
+        /// pressed but not yet released.
         /// </summary>
         public IReadOnlyList<TInputAction> ActiveInputActions => activeInputActions;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputManager"></param>
         public InputActionHandler(InputManager inputManager)
         {
             SetKeyBindings(CreateDefaultKeybindings());
@@ -98,7 +108,8 @@ namespace HenHen.Framework.Input
         }
 
         /// <summary>
-        /// Whether all keys in an action keybinding are pressed.
+        /// Whether all keys for a <see cref="TInputAction"/>
+        /// keybinding are pressed.
         /// </summary>
         public bool AreActionKeysAllPressed(TInputAction action)
         {
@@ -111,8 +122,8 @@ namespace HenHen.Framework.Input
         }
 
         /// <summary>
-        /// Triggered when all keys in a keybinding
-        /// for a given InputAction were pressed.
+        /// Called when all keys in a keybinding
+        /// for a given <see cref="TInputAction"/> were pressed.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
         public virtual void OnActionPress(TInputAction inputAction)
@@ -121,7 +132,7 @@ namespace HenHen.Framework.Input
 
         /// <summary>
         /// Triggered when at least one key in a keybinding
-        /// for a given InputAction was released.
+        /// for a pressed <see cref="TInputAction"/> was released.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
         public virtual void OnActionRelease(TInputAction inputAction)
