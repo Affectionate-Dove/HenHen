@@ -34,8 +34,5 @@ namespace HenHen.Framework.Graphics2d
                 Right = value.X;
             }
         }
-
-
-
     }
 }

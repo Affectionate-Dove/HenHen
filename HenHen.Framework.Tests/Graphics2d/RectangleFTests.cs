@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using System.Numerics;
 
-
 namespace HenHen.Framework.Tests.Graphics2d
 {
     public class RectangleFTests
