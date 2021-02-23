@@ -16,7 +16,7 @@ namespace HenHen.Framework.Graphics2d
 
         public IContainer Parent;
 
-        public Vector2 GetRenderPosition()
+        public Vector2 GetLocalPosition(bool withAnchor = true)
         {
             var pos = Position;
             if (Parent is null)
@@ -26,13 +26,21 @@ namespace HenHen.Framework.Graphics2d
                 pos.X *= Parent.GetChildrenRenderSize().X;
             if (RelativePositionAxes.HasFlag(Axes.Y))
                 pos.Y *= Parent.GetChildrenRenderSize().Y;
+            if (withAnchor)
+                pos += Anchor * Parent.GetChildrenRenderSize();
 
-            pos += Parent.GetChildrenRenderPosition();
-            pos += Anchor * Parent.GetChildrenRenderSize();
             return pos;
         }
 
-        public Vector2 GetRenderSize()
+        public Vector2 GetRenderPosition()
+        {
+            var pos = GetLocalPosition();
+            if (Parent != null)
+                pos += Parent.GetChildrenRenderPosition();
+            return pos;
+        }
+
+        public virtual Vector2 GetRenderSize()
         {
             var size = Size;
             if (Parent is null)
@@ -44,6 +52,13 @@ namespace HenHen.Framework.Graphics2d
                 size.Y *= Parent.GetChildrenRenderSize().Y;
 
             return size;
+        }
+
+        public System.Drawing.RectangleF GetLocalRect(bool withAnchor = true)
+        {
+            var localPos = GetLocalPosition(withAnchor);
+            var renderSize = GetRenderSize();
+            return new System.Drawing.RectangleF(localPos.X, localPos.Y, renderSize.X, renderSize.Y);
         }
 
         public System.Drawing.RectangleF GetRenderRect()
