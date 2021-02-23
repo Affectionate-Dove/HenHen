@@ -126,8 +126,9 @@ namespace HenHen.Framework.Input
         /// for a given <see cref="TInputAction"/> were pressed.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
-        public virtual void OnActionPress(TInputAction inputAction)
+        protected void OnActionPress(TInputAction inputAction)
         {
+            // TODO: here call an InputPropagator
         }
 
         /// <summary>
@@ -135,8 +136,9 @@ namespace HenHen.Framework.Input
         /// for a pressed <see cref="TInputAction"/> was released.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
-        public virtual void OnActionRelease(TInputAction inputAction)
+        protected void OnActionRelease(TInputAction inputAction)
         {
+            // TODO: here call an InputPropagator
         }
 
         /// <summary>
