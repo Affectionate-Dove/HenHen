@@ -71,7 +71,10 @@ namespace HenHen.Framework.Input
                     foreach (var possibleAction in possibleActions)
                     {
                         if (AreActionKeysAllPressed(possibleAction))
+                        {
+                            activeInputActions.Add(possibleAction);
                             OnActionPress(possibleAction);
+                        }
                     }
                 }
 
@@ -86,7 +89,10 @@ namespace HenHen.Framework.Input
             {
                 activeAction = activeInputActions[i];
                 if (!AreActionKeysAllPressed(activeAction))
+                {
+                    activeInputActions.RemoveAt(i);
                     OnActionRelease(activeAction);
+                }
                 else
                     i++;
             }
