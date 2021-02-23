@@ -21,7 +21,27 @@
             container.RemoveChild(child);
             base.RemoveChild(container);
         }
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+            var maxPos = 0f;
+            foreach (var child in Children)
+            {
+                
+                if (Direction == Direction.Horizontal)
+                {
+                    child.Position = new System.Numerics.Vector2(maxPos, 0);
+                    maxPos += child.GetRenderSize().X;
+                }
+                else
+                {
+                    child.Position = new System.Numerics.Vector2(0,maxPos);
+                    maxPos += child.GetRenderSize().Y;
+                }
+                maxPos += Spacing;
+            }
 
+        }
         private Container FindChildContainer(Drawable child)
         {
             foreach (var drawable in Children)
