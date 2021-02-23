@@ -8,9 +8,13 @@ namespace HenHen.Framework.Graphics2d
         public float Right { get; set; }
         public float Top { get; set; }
         public float Bottom { get; set; }
-        public float Width { get; }
-        public float Height { get; }
-        public float Area { get; }
+
+        public float Width => Right - Left;
+        public float Height => Bottom - Top;
+        public float Area => Width * Height;
+        public Vector2 Size => new Vector2(Width, Height);
+        public Vector2 Center => TopLeft + (Size / 2);
+
         public Vector2 TopLeft
         {
             get => new Vector2(Left, Top);
@@ -20,6 +24,7 @@ namespace HenHen.Framework.Graphics2d
                 Left = value.X;
             }
         }
+
         public Vector2 BottomRight
         {
             get => new Vector2(Right, Bottom);
@@ -29,9 +34,8 @@ namespace HenHen.Framework.Graphics2d
                 Right = value.X;
             }
         }
-        public Vector2 Center
-        {
-            get => new Vector2(Height / 2, Width / 2);
-        }
+
+
+
     }
 }
