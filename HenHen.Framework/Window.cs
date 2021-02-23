@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace HenHen.Visual
+namespace HenHen.Framework
 {
     public class Window
     {
@@ -19,8 +19,8 @@ namespace HenHen.Visual
         }
 
         private Vector2 size;
-        public Vector2 Size 
-        { 
+        public Vector2 Size
+        {
             get => size;
             set
             {

@@ -1,5 +1,7 @@
 ﻿using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
+using HenHen.Framework.UI;
+using System.Numerics;
 
 namespace HenHen.Visual.Screens.Main
 {
@@ -9,9 +11,17 @@ namespace HenHen.Visual.Screens.Main
         {
             AddChild(new Rectangle
             {
-                Size = new System.Numerics.Vector2(160, 90),
-                Origin = new System.Numerics.Vector2(0.5f),
-                Anchor = new System.Numerics.Vector2(0.5f)
+                Size = new Vector2(160, 90),
+                Origin = new Vector2(0.5f),
+                Anchor = new Vector2(0.5f)
+            });
+            AddChild(new SpriteText
+            {
+                Text = "HHhhhhhhh",
+                Position = new Vector2(100),
+                Size = new Vector2(200),
+                FontSize = 20,
+                Color = new ColorInfo(255, 0, 0)
             });
         }
     }
