@@ -14,7 +14,7 @@ namespace HenHen.Framework.Input
         /// Keys that will be monitored for presses,
         /// because they can trigger an action.
         /// </summary>
-        private readonly Dictionary<KeyboardKey, List<TInputAction>> keysToMonitor;
+        private readonly Dictionary<KeyboardKey, List<TInputAction>> keysToMonitor = new();
 
         /// <summary>
         /// A list of input actions for which
