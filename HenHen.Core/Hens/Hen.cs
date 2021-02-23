@@ -6,8 +6,8 @@
         public int Health;
         public HenStatistics Statistics;
         public HenType Type;
-
     }
+
     public enum HenType
     {
         PROWADZACY, STUDENT, POMOCNIK
