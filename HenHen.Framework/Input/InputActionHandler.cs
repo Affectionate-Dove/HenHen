@@ -82,7 +82,7 @@ namespace HenHen.Framework.Input
                 {
                     foreach (var possibleAction in possibleActions)
                     {
-                        if (AreActionKeysAllPressed(possibleAction))
+                        if (AreAllKeysPressedForAction(possibleAction))
                         {
                             activeInputActions.Add(possibleAction);
                             OnActionPress(possibleAction);
@@ -99,7 +99,7 @@ namespace HenHen.Framework.Input
             while (i < activeInputActions.Count)
             {
                 activeAction = activeInputActions[i];
-                if (!AreActionKeysAllPressed(activeAction))
+                if (!AreAllKeysPressedForAction(activeAction))
                 {
                     activeInputActions.RemoveAt(i);
                     OnActionRelease(activeAction);
@@ -113,7 +113,7 @@ namespace HenHen.Framework.Input
         /// Whether all keys for a <see cref="TInputAction"/>
         /// keybinding are pressed.
         /// </summary>
-        public bool AreActionKeysAllPressed(TInputAction action)
+        public bool AreAllKeysPressedForAction(TInputAction action)
         {
             foreach (var key in ActionKeyBindings[action])
             {
