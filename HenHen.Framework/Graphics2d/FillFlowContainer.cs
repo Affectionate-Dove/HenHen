@@ -27,7 +27,6 @@
             var maxPos = 0f;
             foreach (var child in Children)
             {
-                
                 if (Direction == Direction.Horizontal)
                 {
                     child.Position = new System.Numerics.Vector2(maxPos, 0);
@@ -35,12 +34,11 @@
                 }
                 else
                 {
-                    child.Position = new System.Numerics.Vector2(0,maxPos);
+                    child.Position = new System.Numerics.Vector2(0, maxPos);
                     maxPos += child.GetRenderSize().Y;
                 }
                 maxPos += Spacing;
             }
-
         }
         private Container FindChildContainer(Drawable child)
         {
@@ -53,8 +51,6 @@
             return null;
         }
     }
-
-
     public enum Direction
     {
         Horizontal, Vertical
