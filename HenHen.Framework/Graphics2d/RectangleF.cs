@@ -2,7 +2,7 @@
 
 namespace HenHen.Framework.Graphics2d
 {
-    public class RectangleF
+    public struct RectangleF
     {
         public float Left { get; set; }
         public float Right { get; set; }
@@ -80,5 +80,9 @@ namespace HenHen.Framework.Graphics2d
         }
 
         public override int GetHashCode() => TopLeft.GetHashCode() + BottomRight.GetHashCode();
+
+        public static bool operator ==(RectangleF left, RectangleF right) => left.Equals(right);
+
+        public static bool operator !=(RectangleF left, RectangleF right) => !(left == right);
     }
 }
