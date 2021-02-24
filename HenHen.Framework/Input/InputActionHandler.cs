@@ -3,16 +3,19 @@
 namespace HenHen.Framework.Input
 {
     /// <summary>
-    /// Abstracts away inputs from keyboard keys to <see cref="TInputAction"/>s.
+    /// Translates keyboard input into <see cref="TInputAction"/>s.
     /// </summary>
     /// <remarks>
-    /// For example, a <see cref="TInputAction"/> enum
-    /// may have a GoForward action, which is binded to key "W".
-    /// This class manages monitoring the key "W" and translates
-    /// it into the GoForward action, so that even if the key binding changes,
-    /// the action remains the same.
+    /// For example, you want to walk forward in your game,
+    /// so you create a WalkForward value in a <see cref="TInputAction"/>
+    /// enum. You then bind it to key W.
+    /// This class then manages monitoring the key "W" and translates
+    /// it into the WalkForward action.
+    /// If you want to change the keybinding, you only have to change it
+    /// in this class. Everywhere else, the WalkForward action
+    /// is the same as it was before.
     /// </remarks>
-    public abstract class InputActionHandler<TInputAction>
+    public abstract class InputActionHandler<TInputAction> where TInputAction : System.Enum
     {
         /// <summary>
         /// For each <see cref="TInputAction"/>, a list of
@@ -25,7 +28,6 @@ namespace HenHen.Framework.Input
         /// It may be expensive to check all keyboard keys
         /// for input at every game update, so this list stores
         /// only the keys that can trigger a <see cref="TInputAction"/>.
-        /// 
         /// </summary>
         private readonly Dictionary<KeyboardKey, List<TInputAction>> keysToMonitor = new();
 
