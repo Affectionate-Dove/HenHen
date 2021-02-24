@@ -84,7 +84,13 @@ namespace HenHen.Framework.Tests.Graphics2d
             absoluteChild.Origin = new Vector2(0.5f);
             var absChildRenRect = absoluteChild.GetRenderRect();
             Assert.AreEqual(new Vector2(800), absoluteChild.GetRenderPosition());
-            Assert.AreEqual(new System.Drawing.RectangleF(700, 700, 200, 200), absChildRenRect);
+            Assert.AreEqual(new RectangleF
+            {
+                Left = 700,
+                Top = 700,
+                Width = 200,
+                Height = 200
+            }, absChildRenRect);
         }
     }
 }
