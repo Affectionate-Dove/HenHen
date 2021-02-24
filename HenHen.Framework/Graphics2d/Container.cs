@@ -8,7 +8,7 @@ namespace HenHen.Framework.Graphics2d
     {
         public Axes AutoSizeAxes { get; set; }
 
-        protected List<Drawable> Children { get; } = new List<Drawable>();
+        public List<Drawable> Children { get; } = new List<Drawable>();
 
         public MarginPadding Padding;
 
@@ -18,13 +18,13 @@ namespace HenHen.Framework.Graphics2d
 
         IEnumerable<Drawable> IContainer<Drawable>.Children => Children;
 
-        public void AddChild(Drawable child)
+        public virtual void AddChild(Drawable child)
         {
             Children.Add(child);
             child.Parent = this;
         }
 
-        public void RemoveChild(Drawable child)
+        public virtual void RemoveChild(Drawable child)
         {
             if (Children.Remove(child))
                 child.Parent = null;
