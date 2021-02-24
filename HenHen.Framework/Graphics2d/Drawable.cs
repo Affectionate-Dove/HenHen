@@ -54,20 +54,20 @@ namespace HenHen.Framework.Graphics2d
             return size;
         }
 
-        public System.Drawing.RectangleF GetLocalRect(bool withAnchor = true)
+        public RectangleF GetLocalRect(bool withAnchor = true)
         {
             var localPos = GetLocalPosition(withAnchor);
             var renderSize = GetRenderSize();
-            return new System.Drawing.RectangleF(localPos.X, localPos.Y, renderSize.X, renderSize.Y);
+            return new RectangleF { TopLeft = localPos, Size = renderSize };
         }
 
-        public System.Drawing.RectangleF GetRenderRect()
+        public RectangleF GetRenderRect()
         {
             var renderPos = GetRenderPosition();
             var renderSize = GetRenderSize();
 
             renderPos -= renderSize * Origin;
-            return new System.Drawing.RectangleF(renderPos.X, renderPos.Y, renderSize.X, renderSize.Y);
+            return new RectangleF { TopLeft = renderPos, Size = renderSize };
         }
 
         public void Update() => OnUpdate();

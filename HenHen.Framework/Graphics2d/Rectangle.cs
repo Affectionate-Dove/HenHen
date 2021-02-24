@@ -10,7 +10,7 @@ namespace HenHen.Framework.Graphics2d
         {
             base.OnRender();
             var rectPos = GetRenderRect();
-            Raylib_cs.Raylib.DrawRectangle((int)rectPos.X, (int)rectPos.Y, (int)rectPos.Width, (int)rectPos.Height, Color.ToRaylibColor());
+            Raylib_cs.Raylib.DrawRectangle((int)rectPos.Left, (int)rectPos.Top, (int)rectPos.Width, (int)rectPos.Height, Color.ToRaylibColor());
         }
     }
 }
