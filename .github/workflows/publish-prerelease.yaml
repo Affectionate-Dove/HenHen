@@ -1,11 +1,12 @@
 name: Publish prerelease
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+        - "0.*"
 
 jobs:
-  release:
-    name: Prerelease
+  pre-release:
+    name: Pre-release
     strategy:
       matrix:
         kind: ['windows']
@@ -21,19 +22,19 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5
+          dotnet-version: 5.0.x
 
       - name: Build
         shell: bash
         run: |
           tag=$(git describe --tags --abbrev=0)
-          release_name="App-$tag-${{ matrix.target }}"
+          release_name="HenHen-$tag-${{ matrix.target }}"
           # Build everything
-          dotnet publish src/App/App.csproj --framework net5.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish HenHen.Visual/HenHen.Visual.csproj --framework net5.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" -p:PublishSingleFile=true --no-self-contained
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             # Pack to zip for Windows
-            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+            7z a -tzip "${release_name}.zip" "./${release_name}/*" -xr!pdb
           else
           tar czvf "${release_name}.tar.gz" "$release_name"
           fi
@@ -42,6 +43,8 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "App*"
+            prerelease: true
+            files: |
+                'HenHen-*'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
