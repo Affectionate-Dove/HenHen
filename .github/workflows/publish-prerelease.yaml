@@ -2,10 +2,10 @@ name: Publish prerelease
 on:
   push:
     tags:
-        - "0.*"
+        - "0*"
 
 jobs:
-  pre-release:
+  tagged-release:
     name: Pre-release
     strategy:
       matrix:
@@ -43,8 +43,7 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-            prerelease: true
-            files: |
-                'HenHen-*'
+          prerelease: true
+          files: 'HenHen-*'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
