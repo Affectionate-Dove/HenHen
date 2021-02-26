@@ -2,7 +2,7 @@
 
 namespace HenHen.Framework.Input
 {
-    public class InputPropagator<TInputAction>
+    public class InputPropagator<TInputAction> where TInputAction : System.Enum
     {
         private IInputListener<TInputAction> lastListener;
 
@@ -20,9 +20,6 @@ namespace HenHen.Framework.Input
             }
         }
 
-        public void OnActionReleased(TInputAction action)
-        {
-            lastListener.OnActionReleased(action);
-        }
+        public void OnActionReleased(TInputAction action) => lastListener.OnActionReleased(action);
     }
 }
