@@ -25,6 +25,6 @@ namespace HenHen.Framework.Input
             }
         }
 
-        public void OnActionReleased(TInputAction action) => lastListener.OnActionReleased(action);
+        public void OnActionReleased(TInputAction action) => lastListener?.OnActionReleased(action);
     }
 }
