@@ -39,6 +39,8 @@ namespace HenHen.Framework.Input
 
         public virtual InputManager InputManager { get; set; }
 
+        public virtual InputPropagator<TInputAction> InputPropagator { get; } = new();
+
         /// <summary>
         /// For each <see cref="TInputAction"/>, a list of
         /// keyboard keys that have to be pressed together
@@ -128,20 +130,14 @@ namespace HenHen.Framework.Input
         /// for a given <see cref="TInputAction"/> were pressed.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
-        protected void OnActionPress(TInputAction inputAction)
-        {
-            // TODO: here call an InputPropagator
-        }
+        protected void OnActionPress(TInputAction inputAction) => InputPropagator.OnActionPressed(inputAction);
 
         /// <summary>
         /// Triggered when at least one key in a keybinding
         /// for a pressed <see cref="TInputAction"/> was released.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
-        protected void OnActionRelease(TInputAction inputAction)
-        {
-            // TODO: here call an InputPropagator
-        }
+        protected void OnActionRelease(TInputAction inputAction) => InputPropagator.OnActionReleased(inputAction);
 
         /// <summary>
         /// Generates contents of <see cref="keysToMonitor"/>
