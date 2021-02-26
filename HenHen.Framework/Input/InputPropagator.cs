@@ -15,7 +15,7 @@ namespace HenHen.Framework.Input
 
         public void OnActionPressed(TInputAction action)
         {
-            for (int i = Listeners.Count - 1; i >= 0; i--)
+            for (var i = Listeners.Count - 1; i >= 0; i--)
             {
                 if (Listeners[i].OnActionPressed(action))
                 {
@@ -23,6 +23,7 @@ namespace HenHen.Framework.Input
                     break;
                 }
             }
+            lastListener = null;
         }
 
         public void OnActionReleased(TInputAction action) => lastListener?.OnActionReleased(action);
