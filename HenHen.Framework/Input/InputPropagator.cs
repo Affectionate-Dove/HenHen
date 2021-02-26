@@ -2,6 +2,11 @@
 
 namespace HenHen.Framework.Input
 {
+    /// <summary>
+    /// Input propagator propagates <see cref="TInputAction"/>s
+    /// to <see cref="IInputListener"/>s in the
+    /// <see cref="Listeners"/> list.
+    /// </summary>
     public class InputPropagator<TInputAction>
     {
         private IInputListener<TInputAction> lastListener;
