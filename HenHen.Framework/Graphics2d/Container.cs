@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HenHen.Framework.Graphics2d.Layouts;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -12,11 +13,13 @@ namespace HenHen.Framework.Graphics2d
 
         public MarginPadding Padding;
 
-        public Vector2 GetChildrenRenderPosition() => GetRenderPosition() + Padding.TopLeft;
+        protected Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition + Padding.TopLeft;
 
-        public Vector2 GetChildrenRenderSize() => GetRenderSize() - Padding.Total;
+        protected Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize - Padding.Total;
 
         IEnumerable<Drawable> IContainer<Drawable>.Children => Children;
+
+        public ContainerLayoutInfo ContainerLayoutInfo { get; protected set; }
 
         public virtual void AddChild(Drawable child)
         {
@@ -30,12 +33,29 @@ namespace HenHen.Framework.Graphics2d
                 child.Parent = null;
         }
 
-        protected override void OnUpdate()
+        protected override void PreUpdate()
         {
+            base.PreUpdate();
+            UpdateContainerLayoutInfo();
             foreach (var child in Children)
                 child.Update();
-            base.OnUpdate();
+            UpdateContainerLayoutInfo();
         }
+
+        protected override void PostUpdate()
+        {
+            base.PostUpdate();
+            UpdateContainerLayoutInfo();
+            foreach (var child in Children)
+                child.Update();
+            UpdateContainerLayoutInfo();
+        }
+
+        private void UpdateContainerLayoutInfo() => ContainerLayoutInfo = new ContainerLayoutInfo
+        {
+            ChildrenRenderPosition = ComputeChildrenRenderPosition(),
+            ChildrenRenderSize = ComputeChildrenRenderSize()
+        };
 
         protected override void OnRender()
         {
@@ -44,9 +64,9 @@ namespace HenHen.Framework.Graphics2d
             base.OnRender();
         }
 
-        public override Vector2 GetRenderSize()
+        protected override Vector2 ComputeRenderSize()
         {
-            var renSize = base.GetRenderSize();
+            var renSize = base.ComputeRenderSize();
             if (AutoSizeAxes == Axes.None)
                 return renSize;
 
@@ -54,7 +74,7 @@ namespace HenHen.Framework.Graphics2d
             var maxY = 0f;
             foreach (var child in Children)
             {
-                var childLocalRect = child.GetLocalRect(false);
+                var childLocalRect = child.LayoutInfo.LocalRect;
                 if (AutoSizeAxes.HasFlag(Axes.X) && !child.RelativeSizeAxes.HasFlag(Axes.X))
                     maxX = Math.Max(maxX, childLocalRect.Right * (1 - child.Anchor.X));
                 if (AutoSizeAxes.HasFlag(Axes.Y) && !child.RelativeSizeAxes.HasFlag(Axes.Y))

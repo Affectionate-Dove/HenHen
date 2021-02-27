@@ -2,13 +2,32 @@
 {
     public class FillFlowContainer : Container
     {
+        private Direction direction;
+
         public float Spacing { get; set; }
-        public Direction Direction { get; set; }
+
+        public Direction Direction
+        {
+            get => direction;
+            set
+            {
+                direction = value;
+                foreach (var child in Children)
+                {
+                    var container = child as Container;
+                    container.AutoSizeAxes = AxisFromDirection();
+                    container.RelativeSizeAxes = AxisPerpendicularToDirection();
+                }
+            }
+        }
 
         public override void AddChild(Drawable child)
         {
-            Container container = new Container();
-            container.AutoSizeAxes = Axes.Both;
+            var container = new Container
+            {
+                AutoSizeAxes = AxisFromDirection(),
+                RelativeSizeAxes = AxisPerpendicularToDirection()
+            };
             container.AddChild(child);
             base.AddChild(container);
         }
@@ -21,25 +40,27 @@
             container.RemoveChild(child);
             base.RemoveChild(container);
         }
-        protected override void OnUpdate()
+
+        protected override void PreUpdate()
         {
-            base.OnUpdate();
+            base.PreUpdate();
             var maxPos = 0f;
             foreach (var child in Children)
             {
                 if (Direction == Direction.Horizontal)
                 {
                     child.Position = new System.Numerics.Vector2(maxPos, 0);
-                    maxPos += child.GetRenderSize().X;
+                    maxPos += child.LayoutInfo.RenderSize.X;
                 }
                 else
                 {
                     child.Position = new System.Numerics.Vector2(0, maxPos);
-                    maxPos += child.GetRenderSize().Y;
+                    maxPos += child.LayoutInfo.RenderSize.Y;
                 }
                 maxPos += Spacing;
             }
         }
+
         private Container FindChildContainer(Drawable child)
         {
             foreach (var drawable in Children)
@@ -50,7 +71,22 @@
             }
             return null;
         }
+
+        private Axes AxisFromDirection() => Direction switch
+        {
+            Direction.Horizontal => Axes.X,
+            Direction.Vertical => Axes.Y,
+            _ => throw new System.NotImplementedException()
+        };
+
+        private Axes AxisPerpendicularToDirection() => Direction switch
+        {
+            Direction.Horizontal => Axes.Y,
+            Direction.Vertical => Axes.X,
+            _ => throw new System.NotImplementedException()
+        };
     }
+
     public enum Direction
     {
         Horizontal, Vertical

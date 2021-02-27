@@ -20,9 +20,9 @@ namespace HenHen.Framework.UI
         protected override void OnRender()
         {
             base.OnRender();
-            var r = GetRenderRect();
+            var r = LayoutInfo.RenderRect;
             var size = Raylib_cs.Raylib.MeasureTextEx(Font, Text, FontSize, Spacing);
-            var containingSize = GetRenderSize();
+            var containingSize = LayoutInfo.RenderSize;
 
             if (AlignMiddle && size.X <= containingSize.X)
             {

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Numerics;
+﻿using HenHen.Framework.Graphics2d.Layouts;
+using System.Collections.Generic;
 
 namespace HenHen.Framework.Graphics2d
 {
     public interface IContainer
     {
-        public Vector2 GetChildrenRenderPosition();
-        public Vector2 GetChildrenRenderSize();
+        ContainerLayoutInfo ContainerLayoutInfo { get; }
     }
 
     public interface IContainer<T> : IContainer

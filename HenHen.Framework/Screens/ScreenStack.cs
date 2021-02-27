@@ -1,4 +1,5 @@
 ﻿using HenHen.Framework.Graphics2d;
+using HenHen.Framework.Graphics2d.Layouts;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -13,12 +14,19 @@ namespace HenHen.Framework.Screens
 
         public IEnumerable<Screen> Children => screens;
 
-        public Vector2 GetChildrenRenderPosition() => GetRenderPosition();
-        public Vector2 GetChildrenRenderSize() => GetRenderSize();
+        public ContainerLayoutInfo ContainerLayoutInfo { get; private set; }
 
-        protected override void OnUpdate()
+        private Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition;
+        private Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize;
+
+        protected override void PostUpdate()
         {
-            base.OnUpdate();
+            ContainerLayoutInfo = new ContainerLayoutInfo
+            {
+                ChildrenRenderPosition = ComputeChildrenRenderPosition(),
+                ChildrenRenderSize = ComputeChildrenRenderSize()
+            };
+            base.PostUpdate();
             CurrentScreen?.Update();
         }
 
