@@ -26,7 +26,7 @@ namespace HenHen.Framework.Graphics2d
                 return;
             }
             base.OnRender();
-            var rect = GetRenderRect();
+            var rect = LayoutInfo.RenderRect;
             var sourceRec = new Raylib_cs.Rectangle(0, 0, texture.width, texture.height);
             var destRec = new Raylib_cs.Rectangle(rect.Left, rect.Top, rect.Width, rect.Height);
             Raylib_cs.Raylib.DrawTexturePro(texture, sourceRec, destRec, Vector2.Zero, 0, Color.ToRaylibColor());
