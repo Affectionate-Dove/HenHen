@@ -50,7 +50,6 @@ namespace HenHen.Framework.Tests.Input
 
             inputActionHandler.Propagator.Listeners.Remove(listener);
             SimulateFewSteps();
-
         }
 
         [Test]
