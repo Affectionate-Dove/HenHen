@@ -16,63 +16,67 @@ namespace HenHen.Framework.Graphics2d
 
         public IContainer Parent;
 
-        public Vector2 GetLocalPosition(bool withAnchor = true)
+        public DrawableLayoutInfo LayoutInfo { get; private set; }
+
+        private Vector2 ComputeLocalPosition()
         {
             var pos = Position;
             if (Parent is null)
                 return pos;
 
             if (RelativePositionAxes.HasFlag(Axes.X))
-                pos.X *= Parent.GetChildrenRenderSize().X;
+                pos.X *= Parent.ContainerLayoutInfo.ChildrenRenderSize.X;
             if (RelativePositionAxes.HasFlag(Axes.Y))
-                pos.Y *= Parent.GetChildrenRenderSize().Y;
-            if (withAnchor)
-                pos += Anchor * Parent.GetChildrenRenderSize();
+                pos.Y *= Parent.ContainerLayoutInfo.ChildrenRenderSize.Y;
+            pos += Anchor * Parent.ContainerLayoutInfo.ChildrenRenderSize;
 
             return pos;
         }
 
-        public Vector2 GetRenderPosition()
+        private Vector2 ComputeRenderPosition(Vector2 localPosition)
         {
-            var pos = GetLocalPosition();
+            var pos = localPosition;
             if (Parent != null)
-                pos += Parent.GetChildrenRenderPosition();
+                pos += Parent.ContainerLayoutInfo.ChildrenRenderPosition;
             return pos;
         }
 
-        public virtual Vector2 GetRenderSize()
+        protected virtual Vector2 ComputeRenderSize()
         {
             var size = Size;
             if (Parent is null)
                 return size;
 
             if (RelativeSizeAxes.HasFlag(Axes.X))
-                size.X *= Parent.GetChildrenRenderSize().X;
+                size.X *= Parent.ContainerLayoutInfo.ChildrenRenderSize.X;
             if (RelativeSizeAxes.HasFlag(Axes.Y))
-                size.Y *= Parent.GetChildrenRenderSize().Y;
+                size.Y *= Parent.ContainerLayoutInfo.ChildrenRenderSize.Y;
 
             return size;
         }
 
-        public RectangleF GetLocalRect(bool withAnchor = true)
+        public void Update()
         {
-            var localPos = GetLocalPosition(withAnchor);
-            var renderSize = GetRenderSize();
-            return new RectangleF { TopLeft = localPos, Size = renderSize };
+            PreUpdate();
+            UpdateLayout();
+            PostUpdate();
         }
 
-        public RectangleF GetRenderRect()
-        {
-            var renderPos = GetRenderPosition();
-            var renderSize = GetRenderSize();
+        protected virtual void PreUpdate() { }
 
-            renderPos -= renderSize * Origin;
-            return new RectangleF { TopLeft = renderPos, Size = renderSize };
+        private void UpdateLayout()
+        {
+            var localPos = ComputeLocalPosition();
+            LayoutInfo = new DrawableLayoutInfo
+            {
+                Origin = Origin,
+                LocalPosition = localPos,
+                RenderPosition = ComputeRenderPosition(localPos),
+                RenderSize = ComputeRenderSize()
+            };
         }
 
-        public void Update() => OnUpdate();
-
-        protected virtual void OnUpdate()
+        protected virtual void PostUpdate()
         {
         }
 

@@ -9,7 +9,7 @@ namespace HenHen.Framework.Graphics2d
         protected override void OnRender()
         {
             base.OnRender();
-            var rectPos = GetRenderRect();
+            var rectPos = LayoutInfo.RenderRect;
             Raylib_cs.Raylib.DrawRectangle((int)rectPos.Left, (int)rectPos.Top, (int)rectPos.Width, (int)rectPos.Height, Color.ToRaylibColor());
         }
     }
