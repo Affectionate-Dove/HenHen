@@ -4,6 +4,7 @@ namespace HenHen.Framework.Input
 {
     /// <summary>
     /// Translates keyboard input into <see cref="TInputAction"/>s.
+    /// Use <see cref="Propagator"/> to propagate them to listeners.
     /// </summary>
     /// <remarks>
     /// For example, you want to walk forward in your game,
@@ -37,9 +38,9 @@ namespace HenHen.Framework.Input
         /// </summary>
         private readonly List<TInputAction> activeInputActions = new();
 
-        public virtual InputManager InputManager { get; set; }
+        public InputManager InputManager { get; set; }
 
-        public virtual InputPropagator<TInputAction> InputPropagator { get; } = new();
+        public InputPropagator<TInputAction> Propagator { get; }
 
         /// <summary>
         /// For each <see cref="TInputAction"/>, a list of
@@ -58,17 +59,26 @@ namespace HenHen.Framework.Input
         {
             SetKeyBindings(CreateDefaultKeybindings());
             InputManager = inputManager;
+            Propagator = CreatePropagator();
         }
 
+        /// <remarks>
+        /// Automatically releases all active actions,
+        /// triggering <see cref="OnActionRelease"/>
+        /// for each of them.
+        /// </remarks>
         public void SetKeyBindings(IReadOnlyDictionary<TInputAction, List<KeyboardKey>> keyBindings)
         {
+            ReleaseAllActions();
             actionKeyBindings.Clear();
             foreach (var keyValue in keyBindings)
                 actionKeyBindings.Add(keyValue.Key, keyValue.Value);
             SetKeysToMonitor();
         }
 
-        public abstract Dictionary<TInputAction, List<KeyboardKey>> CreateDefaultKeybindings();
+        protected abstract Dictionary<TInputAction, List<KeyboardKey>> CreateDefaultKeybindings();
+
+        protected virtual InputPropagator<TInputAction> CreatePropagator() => new InputPropagator<TInputAction>();
 
         public void Update()
         {
@@ -84,6 +94,10 @@ namespace HenHen.Framework.Input
                 {
                     foreach (var possibleAction in possibleActions)
                     {
+                        // if an action is already active, don't want to trigger it again
+                        if (activeInputActions.Contains(possibleAction))
+                            continue;
+
                         if (AreAllKeysPressedForAction(possibleAction))
                         {
                             activeInputActions.Add(possibleAction);
@@ -111,6 +125,13 @@ namespace HenHen.Framework.Input
             }
         }
 
+        private void ReleaseAllActions()
+        {
+            foreach (var activeAction in activeInputActions)
+                OnActionRelease(activeAction);
+            activeInputActions.Clear();
+        }
+
         /// <summary>
         /// Whether all keys for a <see cref="TInputAction"/>
         /// keybinding are pressed.
@@ -130,14 +151,14 @@ namespace HenHen.Framework.Input
         /// for a given <see cref="TInputAction"/> were pressed.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
-        protected void OnActionPress(TInputAction inputAction) => InputPropagator.OnActionPressed(inputAction);
+        protected void OnActionPress(TInputAction inputAction) => Propagator.OnActionPressed(inputAction);
 
         /// <summary>
         /// Triggered when at least one key in a keybinding
         /// for a pressed <see cref="TInputAction"/> was released.
         /// </summary>
         /// <param name="inputAction">The action that was triggered.</param>
-        protected void OnActionRelease(TInputAction inputAction) => InputPropagator.OnActionReleased(inputAction);
+        protected void OnActionRelease(TInputAction inputAction) => Propagator.OnActionReleased(inputAction);
 
         /// <summary>
         /// Generates contents of <see cref="keysToMonitor"/>

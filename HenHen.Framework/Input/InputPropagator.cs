@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HenHen.Framework.Input
 {
@@ -7,11 +8,21 @@ namespace HenHen.Framework.Input
     /// to <see cref="IInputListener"/>s in the
     /// <see cref="Listeners"/> list.
     /// </summary>
-    public class InputPropagator<TInputAction> where TInputAction : System.Enum
+    public class InputPropagator<TInputAction> where TInputAction : Enum
     {
-        private IInputListener<TInputAction> lastListener;
+        private readonly Dictionary<TInputAction, IInputListener<TInputAction>> triggeredListeners = new();
 
+        /// <remarks>
+        /// Use <see cref="ReleaseActiveActions(IInputListener{TInputAction})"/>
+        /// when removing a listener to release all its active actions.
+        /// </remarks>
         public List<IInputListener<TInputAction>> Listeners { get; } = new();
+
+        public InputPropagator()
+        {
+            foreach (TInputAction enumValue in Enum.GetValues(typeof(TInputAction)))
+                triggeredListeners.Add(enumValue, null);
+        }
 
         public void OnActionPressed(TInputAction action)
         {
@@ -19,13 +30,37 @@ namespace HenHen.Framework.Input
             {
                 if (Listeners[i].OnActionPressed(action))
                 {
-                    lastListener = Listeners[i];
-                    break;
+                    triggeredListeners[action] = Listeners[i];
+                    return;
                 }
             }
-            lastListener = null;
+            triggeredListeners[action] = null;
         }
 
-        public void OnActionReleased(TInputAction action) => lastListener?.OnActionReleased(action);
+        public void OnActionReleased(TInputAction action)
+        {
+            var listenerToNotify = triggeredListeners[action];
+            if (listenerToNotify is null)
+                return;
+
+            // trigger that listener only if it's still registered
+            if (Listeners.Contains(listenerToNotify))
+                listenerToNotify.OnActionReleased(action);
+
+            triggeredListeners[action] = null;
+        }
+
+        public void ReleaseActiveActions(IInputListener<TInputAction> listener)
+        {
+            foreach (var action in triggeredListeners.Keys)
+            {
+                var triggeredListener = triggeredListeners[action];
+                if (triggeredListener == listener)
+                {
+                    listener.OnActionReleased(action);
+                    triggeredListeners[action] = null;
+                }
+            }
+        }
     }
 }
