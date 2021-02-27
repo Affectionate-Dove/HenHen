@@ -1,6 +1,5 @@
 ﻿using HenHen.Framework.Input;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace HenHen.Framework.Tests.Input
 {
@@ -17,7 +16,7 @@ namespace HenHen.Framework.Tests.Input
         }
 
         [Test]
-        public void Test()
+        public void BasicTest()
         {
             var listener = new TestInputListener();
             inputActionHandler.Propagator.Listeners.Add(listener);
@@ -134,24 +133,6 @@ namespace HenHen.Framework.Tests.Input
                 inputActionHandler.Update();
                 inputManager.Update(1);
             }
-        }
-
-        private class TestInputListener : IInputListener<TestAction>
-        {
-            public bool ReceivedPress { get; private set; }
-            public bool ReceivedRelease { get; private set; }
-
-            public readonly HashSet<TestAction> HandledActions = new();
-
-            public bool OnActionPressed(TestAction action)
-            {
-                ReceivedPress = true;
-                return HandledActions.Contains(action);
-            }
-
-            public void OnActionReleased(TestAction action) => ReceivedRelease = true;
-
-            public void ResetFlags() => ReceivedPress = ReceivedRelease = false;
         }
     }
 }
