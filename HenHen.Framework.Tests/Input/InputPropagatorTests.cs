@@ -53,7 +53,7 @@ namespace HenHen.Framework.Tests.Input
         }
 
         [Test]
-        public void TestHierarchy()
+        public void HierarchyTest()
         {
             var backgroundListener = new TestInputListener();
             var foregroundListener = new TestInputListener();
@@ -92,6 +92,38 @@ namespace HenHen.Framework.Tests.Input
 
             inputActionHandler.Propagator.Listeners.Remove(backgroundListener);
             inputActionHandler.Propagator.Listeners.Remove(foregroundListener);
+            SimulateFewSteps();
+        }
+
+        [Test]
+        public void NoDoubledActionsTest()
+        {
+            var listener = new TestInputListener();
+            listener.HandledActions.Add(TestAction.Action1);
+            inputActionHandler.Propagator.Listeners.Add(listener);
+
+            SimulateFewSteps();
+
+            inputManager.SimulateKeyPress(KeyboardKey.KEY_A);
+            SimulateFewSteps();
+
+            Assert.IsTrue(listener.ReceivedPress);
+            Assert.IsFalse(listener.ReceivedRelease);
+            listener.ResetFlags();
+
+            inputManager.SimulateKeyPress(KeyboardKey.KEY_A);
+            SimulateFewSteps();
+
+            Assert.IsFalse(listener.ReceivedPress);
+            Assert.IsFalse(listener.ReceivedRelease);
+
+            inputManager.SimulateKeyRelease(KeyboardKey.KEY_A);
+            SimulateFewSteps();
+
+            Assert.IsFalse(listener.ReceivedPress);
+            Assert.IsTrue(listener.ReceivedRelease);
+
+            inputActionHandler.Propagator.Listeners.Remove(listener);
             SimulateFewSteps();
         }
 
