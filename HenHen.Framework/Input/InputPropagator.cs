@@ -37,7 +37,18 @@ namespace HenHen.Framework.Input
             triggeredListeners[action] = null;
         }
 
-        public void OnActionReleased(TInputAction action) => triggeredListeners[action]?.OnActionReleased(action);
+        public void OnActionReleased(TInputAction action)
+        {
+            var listenerToNotify = triggeredListeners[action];
+            if (listenerToNotify is null)
+                return;
+
+            // trigger that listener only if it's still registered
+            if (Listeners.Contains(listenerToNotify))
+                listenerToNotify.OnActionReleased(action);
+
+            triggeredListeners[action] = null;
+        }
 
         public void ReleaseActiveActions(IInputListener<TInputAction> listener)
         {
