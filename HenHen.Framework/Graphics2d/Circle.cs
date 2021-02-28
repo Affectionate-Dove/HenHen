@@ -2,9 +2,10 @@
 
 namespace HenHen.Framework.Graphics2d
 {
-    public class Circle
+    public struct Circle
     {
-        Vector2 CenterPosition;
-        float Radius;
+        public Vector2 CenterPosition;
+        public float Radius;
     }
+    
 }
