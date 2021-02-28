@@ -12,7 +12,7 @@ namespace HenHen.Framework.Graphics2d
             get => 2 * Radius;
             set => Radius = value/2;
         }
-        public float Circumference => 2 * System.Math.PI * Radius;
-        public float Area => System.Math.PI * (Radius * Radius);
+        public float Circumference => 2 * (float)System.Math.PI * Radius;
+        public float Area => (float)System.Math.PI * (Radius * Radius);
     }
 }
