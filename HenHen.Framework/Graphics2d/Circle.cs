@@ -7,5 +7,4 @@ namespace HenHen.Framework.Graphics2d
         public Vector2 CenterPosition;
         public float Radius;
     }
-    
 }
