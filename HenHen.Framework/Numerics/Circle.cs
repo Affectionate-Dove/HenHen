@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace HenHen.Framework.Graphics2d
+namespace HenHen.Framework.Numerics
 {
     public struct Circle
     {
