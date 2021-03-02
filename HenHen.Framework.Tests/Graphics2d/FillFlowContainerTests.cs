@@ -1,4 +1,5 @@
 ﻿using HenHen.Framework.Graphics2d;
+using HenHen.Framework.Numerics;
 using NUnit.Framework;
 using System.Numerics;
 
