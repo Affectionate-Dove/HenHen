@@ -16,13 +16,13 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             container = new Container
             {
-                Position = new Vector2(100),
+                Offset = new Vector2(100),
                 Padding = new MarginPadding { Horizontal = 50, Vertical = 50 }
             };
             container.AddChild(child1 = new Rectangle { Size = new Vector2(230) });
             container.AddChild(child2 = new Rectangle
             {
-                Position = new Vector2(100),
+                Offset = new Vector2(100),
                 Size = new Vector2(50, 300)
             });
         }
