@@ -16,13 +16,10 @@ namespace HenHen.Framework.Graphics3d
             set => Radius = value / 2;
         }
 
-        public Circle ToTopDownCircle()
-        {
-            return new Circle
+        public Circle ToTopDownCircle() => new Circle
             {
                 CenterPosition = new Vector2(CenterPosition.X, CenterPosition.Z),
                 Radius = Radius
             };
-        }
     }
 }

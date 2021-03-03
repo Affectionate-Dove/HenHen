@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace HenHen.Framework.Tests.Graphics3d
 {
-    internal class SphereTests
+    public class SphereTests
     {
         private Sphere sphere;
 
