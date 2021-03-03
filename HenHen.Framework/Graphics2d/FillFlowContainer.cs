@@ -49,12 +49,12 @@
             {
                 if (Direction == Direction.Horizontal)
                 {
-                    child.Position = new System.Numerics.Vector2(maxPos, 0);
+                    child.Offset = new System.Numerics.Vector2(maxPos, 0);
                     maxPos += child.LayoutInfo.RenderSize.X;
                 }
                 else
                 {
-                    child.Position = new System.Numerics.Vector2(0, maxPos);
+                    child.Offset = new System.Numerics.Vector2(0, maxPos);
                     maxPos += child.LayoutInfo.RenderSize.Y;
                 }
                 maxPos += Spacing;

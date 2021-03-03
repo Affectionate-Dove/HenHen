@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using HenHen.Framework.Numerics;
+using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d
 {

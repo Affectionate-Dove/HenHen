@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace HenHen.Framework.Graphics3d
+namespace HenHen.Framework.Numerics
 {
     public struct Triangle3
     {

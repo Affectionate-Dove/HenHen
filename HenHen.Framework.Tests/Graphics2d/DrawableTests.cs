@@ -1,4 +1,5 @@
 using HenHen.Framework.Graphics2d;
+using HenHen.Framework.Numerics;
 using NUnit.Framework;
 using System.Numerics;
 
@@ -16,17 +17,17 @@ namespace HenHen.Framework.Tests.Graphics2d
             container = new Container
             {
                 Size = new Vector2(1000),
-                Position = new Vector2(100)
+                Offset = new Vector2(100)
             };
             container.AddChild(absoluteChild = new Rectangle
             {
-                Position = new Vector2(200),
+                Offset = new Vector2(200),
                 Size = new Vector2(200)
             });
             container.AddChild(relativeChild = new Rectangle
             {
                 RelativePositionAxes = Axes.Both,
-                Position = new Vector2(0.9f),
+                Offset = new Vector2(0.9f),
                 RelativeSizeAxes = Axes.Both,
                 Size = new Vector2(0.2f)
             });

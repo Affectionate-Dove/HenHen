@@ -5,7 +5,7 @@ namespace HenHen.Framework.Graphics2d
 {
     public abstract class Drawable
     {
-        public Vector2 Position { get; set; }
+        public Vector2 Offset { get; set; }
         public Axes RelativePositionAxes { get; set; }
 
         public Vector2 Size { get; set; } = Vector2.One;
@@ -20,7 +20,7 @@ namespace HenHen.Framework.Graphics2d
 
         private Vector2 ComputeLocalPosition()
         {
-            var pos = Position;
+            var pos = Offset;
             if (Parent is null)
                 return pos;
 

@@ -1,7 +1,7 @@
-﻿using HenHen.Framework.Graphics2d;
+﻿using HenHen.Framework.Numerics;
 using NUnit.Framework;
 
-namespace HenHen.Framework.Tests.Graphics2d
+namespace HenHen.Framework.Tests.Numerics
 {
     public class CircleTests
     {

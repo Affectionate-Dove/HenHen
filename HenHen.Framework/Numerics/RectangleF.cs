@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace HenHen.Framework.Graphics2d
+namespace HenHen.Framework.Numerics
 {
     public struct RectangleF
     {
@@ -71,18 +71,5 @@ namespace HenHen.Framework.Graphics2d
         }
 
         public override string ToString() => $"Left={Left},Top={Top},Right={Right},Bottom={Bottom}";
-
-        public override bool Equals(object obj)
-        {
-            if (obj is RectangleF r)
-                return r.Left == Left && r.Top == Top && r.Right == Right && r.Bottom == Bottom;
-            return false;
-        }
-
-        public override int GetHashCode() => TopLeft.GetHashCode() + BottomRight.GetHashCode();
-
-        public static bool operator ==(RectangleF left, RectangleF right) => left.Equals(right);
-
-        public static bool operator !=(RectangleF left, RectangleF right) => !(left == right);
     }
 }
