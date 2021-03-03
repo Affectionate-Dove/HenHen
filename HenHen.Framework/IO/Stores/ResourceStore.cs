@@ -6,12 +6,12 @@ namespace HenHen.Framework.IO.Stores
     {
         private readonly List<string> loadedAssetsNames = new();
 
-        public abstract void Load();
+        public abstract void Load(string assetName);
 
         public void Unload(string assetName)
         {
             if (IsLoaded(assetName))
-                UnloadInternal();
+                UnloadInternal(assetName);
             else
                 throw new System.Exception();
         }
@@ -23,13 +23,13 @@ namespace HenHen.Framework.IO.Stores
         public T Get(string assetName)
         {
             if (IsLoaded(assetName))
-                return GetInternal();
+                return GetInternal(assetName);
             else
                 throw new System.Exception();
         }
 
-        protected abstract void UnloadInternal();
+        protected abstract void UnloadInternal(string assetName);
 
-        protected abstract T GetInternal();
+        protected abstract T GetInternal(string assetName);
     }
 }
