@@ -6,12 +6,22 @@ namespace HenHen.Framework.IO.Stores
     {
         private readonly List<string> loadedAssetsNames = new();
 
-        public abstract void Load(string assetName);
+        public void Load(string assetName)
+        {
+            if (IsLoaded(assetName))
+                throw new System.Exception();
+
+            loadedAssetsNames.Add(assetName);
+            LoadInternal(assetName);
+        }
 
         public void Unload(string assetName)
         {
             if (IsLoaded(assetName))
+            {
                 UnloadInternal(assetName);
+                loadedAssetsNames.Remove(assetName);
+            }
             else
                 throw new System.Exception();
         }
@@ -27,6 +37,8 @@ namespace HenHen.Framework.IO.Stores
             else
                 throw new System.Exception();
         }
+
+        protected abstract void LoadInternal(string assetName);
 
         protected abstract void UnloadInternal(string assetName);
 
