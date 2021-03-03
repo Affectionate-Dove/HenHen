@@ -12,10 +12,6 @@ namespace HenHen.Framework.Tests.Graphics2d
         private Rectangle child1;
         private Rectangle child2;
 
-        public static void H() {
-            Console.Write("h");
-        } 
-
         [SetUp]
         public void SetUp()
         {
