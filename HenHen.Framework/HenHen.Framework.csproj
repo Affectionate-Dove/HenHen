@@ -9,8 +9,4 @@
     <PackageReference Include="Raylib-cs" Version="3.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Graphics3d\" />
-  </ItemGroup>
-
 </Project>
