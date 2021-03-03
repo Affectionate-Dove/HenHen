@@ -4,11 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
-
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-
-    <AnalysisLevel>latest</AnalysisLevel>
-
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
 
