@@ -259,3 +259,6 @@ dotnet_naming_style.caps_underscore.required_prefix =
 dotnet_naming_style.caps_underscore.required_suffix = 
 dotnet_naming_style.caps_underscore.word_separator = _
 dotnet_naming_style.caps_underscore.capitalization = all_upper
+
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = warning

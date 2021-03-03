@@ -1,7 +1,6 @@
 ﻿using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Numerics;
 using NUnit.Framework;
-using System;
 using System.Numerics;
 
 namespace HenHen.Framework.Tests.Graphics2d
