@@ -1,7 +1,6 @@
-﻿using HenHen.Framework.Graphics2d;
-using System.Numerics;
+﻿using System.Numerics;
 
-namespace HenHen.Framework.Graphics3d
+namespace HenHen.Framework.Numerics
 {
     public struct Sphere
     {

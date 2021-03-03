@@ -16,4 +16,8 @@
     <ProjectReference Include="..\HenHen.Framework\HenHen.Framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Graphics3d\" />
+  </ItemGroup>
+
 </Project>

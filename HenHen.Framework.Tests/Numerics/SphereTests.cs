@@ -1,8 +1,7 @@
-﻿using HenHen.Framework.Graphics2d;
-using HenHen.Framework.Graphics3d;
+﻿using HenHen.Framework.Numerics;
 using NUnit.Framework;
 
-namespace HenHen.Framework.Tests.Graphics3d
+namespace HenHen.Framework.Tests.Numerics
 {
     public class SphereTests
     {
