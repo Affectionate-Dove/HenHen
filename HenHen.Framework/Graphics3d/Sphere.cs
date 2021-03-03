@@ -17,9 +17,9 @@ namespace HenHen.Framework.Graphics3d
         }
 
         public Circle ToTopDownCircle() => new Circle
-            {
-                CenterPosition = new Vector2(CenterPosition.X, CenterPosition.Z),
-                Radius = Radius
-            };
+        {
+            CenterPosition = new Vector2(CenterPosition.X, CenterPosition.Z),
+            Radius = Radius
+        };
     }
 }
