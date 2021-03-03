@@ -7,7 +7,7 @@
 
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
-    <AnalysisLevel>none</AnalysisLevel>
+    <AnalysisLevel>latest</AnalysisLevel>
 
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
