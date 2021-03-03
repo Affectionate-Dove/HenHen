@@ -8,8 +8,8 @@ namespace HenHen.Framework.Graphics3d
 
         public void Render()
         {
-            foreach (var Spatial in Spatials)
-                Spatial.Render();
+            foreach (var spatial in Spatials)
+                spatial.Render();
         }
     }
 }
