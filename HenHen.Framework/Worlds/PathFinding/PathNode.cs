@@ -4,21 +4,23 @@ using System.Numerics;
 namespace HenHen.Framework.Worlds.PathFinding
 {
     /// <summary>
-    /// Represents a point in 2D space that
+    /// Represents a point in 3D space that
     /// can be connected to other points.
     /// </summary>
-    public record PathPoint(Vector2 Position)
+    public class PathNode // : Node
     {
-        private readonly HashSet<PathPoint> connections = new(4);
+        private readonly HashSet<PathNode> connections = new(4);
+
+        public Vector3 Position { get; set; }
 
         /// <remarks>Direct connections.</remarks>
-        public IReadOnlySet<PathPoint> Connections => connections;
+        public IReadOnlySet<PathNode> Connections => connections;
 
         /// <summary>
         /// Creates a 2-way connection between this
-        /// <see cref="PathPoint"/> and the <paramref name="other"/>.
+        /// <see cref="PathNode"/> and the <paramref name="other"/>.
         /// </summary>
-        public void ConnectSymmetrically(PathPoint other)
+        public void ConnectSymmetrically(PathNode other)
         {
             connections.Add(other);
             other.connections.Add(this);
@@ -26,16 +28,16 @@ namespace HenHen.Framework.Worlds.PathFinding
 
         /// <summary>
         /// Creates a 1-way connection from this
-        /// <see cref="PathPoint"/> to the <paramref name="other"/>.
+        /// <see cref="PathNode"/> to the <paramref name="other"/>.
         /// </summary>
         /// <param name="forceAsymmetry">
         /// If true, if <paramref name="other"/> is connected to
-        /// this <see cref="PathPoint"/>, it will be disconnected
+        /// this <see cref="PathNode"/>, it will be disconnected
         /// to force a 1-way connection.
         /// If false, it's possible to have a 2-way connection
         /// between these points after this function.
         /// </param>
-        public void ConnectAsymmetrically(PathPoint other, bool forceAsymmetry = true)
+        public void ConnectAsymmetrically(PathNode other, bool forceAsymmetry = true)
         {
             connections.Add(other);
             if (!forceAsymmetry)
@@ -44,10 +46,10 @@ namespace HenHen.Framework.Worlds.PathFinding
 
         /// <summary>
         /// Removes a connection from this
-        /// <see cref="PathPoint"/> to the
+        /// <see cref="PathNode"/> to the
         /// <paramref name="other"/>, and vice versa.
         /// </summary>
-        public void DisconnectSymmetrically(PathPoint other)
+        public void DisconnectSymmetrically(PathNode other)
         {
             connections.Remove(other);
             other.connections.Remove(other);
@@ -55,11 +57,11 @@ namespace HenHen.Framework.Worlds.PathFinding
 
         /// <summary>
         /// Removes a connection from this
-        /// <see cref="PathPoint"/> to the
+        /// <see cref="PathNode"/> to the
         /// <paramref name="other"/>, but leaves a
         /// connection from the <paramref name="other"/>
-        /// to this <see cref="PathPoint"/>, if it exists.
+        /// to this <see cref="PathNode"/>, if it exists.
         /// </summary>
-        public void DisconnectAsymmetrically(PathPoint other) => connections.Remove(other);
+        public void DisconnectAsymmetrically(PathNode other) => connections.Remove(other);
     }
 }

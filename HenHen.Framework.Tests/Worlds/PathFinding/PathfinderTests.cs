@@ -10,9 +10,9 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
     {
         public static IEnumerable<PathFindingTestCase> EnumerateTestCases()
         {
-            var pointA = new PathPoint(new Vector2(-1, 0));
-            var pointB = new PathPoint(new Vector2(1, 0));
-            var pointC = new PathPoint(new Vector2(-2, 4));
+            var pointA = new PathNode { Position = new Vector3(-1, 0, 0) };
+            var pointB = new PathNode { Position = new Vector3(1, 0, 0) };
+            var pointC = new PathNode { Position = new Vector3(-2, 0, 4) };
             pointA.ConnectSymmetrically(pointB);
             pointB.ConnectSymmetrically(pointC);
 
@@ -46,9 +46,9 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
 
         private static PathFindingTestCase ImpossiblePathTestCase()
         {
-            var a = new PathPoint(new Vector2());
-            var b = new PathPoint(new Vector2(1));
-            var c = new PathPoint(new Vector2(4));
+            var a = new PathNode();
+            var b = new PathNode();
+            var c = new PathNode();
 
             a.ConnectSymmetrically(b);
             b.ConnectSymmetrically(c);
@@ -56,7 +56,7 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
             return new PathFindingTestCase(new PathRequest(a, c), PathfindingState.Failed, null);
         }
 
-        private static float PathLength(IReadOnlyList<PathPoint> pathPoints)
+        private static float PathLength(IReadOnlyList<PathNode> pathPoints)
         {
             var length = 0f;
             for (var i = 0; i < pathPoints.Count - 1; i++)

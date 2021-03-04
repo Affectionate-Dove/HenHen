@@ -9,7 +9,7 @@ namespace HenHen.Framework.Worlds.PathFinding
     /// </summary>
     public class Pathfinder
     {
-        private readonly List<PathPoint> result = new();
+        private readonly List<PathNode> result = new();
 
         public PathfindingState State { get; protected set; } = PathfindingState.NotStarted;
 
@@ -20,7 +20,7 @@ namespace HenHen.Framework.Worlds.PathFinding
         /// <see cref="PathRequest.End"/> point
         /// of the <see cref="Request"/> property.
         /// </summary>
-        public IReadOnlyList<PathPoint> Result => (State == PathfindingState.Successful) ? result : null;
+        public IReadOnlyList<PathNode> Result => (State == PathfindingState.Successful) ? result : null;
 
         public PathRequest Request { get; }
 
