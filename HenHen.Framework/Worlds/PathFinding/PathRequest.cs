@@ -1,4 +1,8 @@
 ﻿namespace HenHen.Framework.Worlds.PathFinding
 {
-    public record PathRequest(PathPoint A, PathPoint B);
+    /// <summary>
+    /// Represents a request for a path to be found
+    /// between two points.
+    /// </summary>
+    public record PathRequest(PathPoint Start, PathPoint End);
 }
