@@ -118,15 +118,6 @@ csharp_using_directive_placement = outside_namespace:suggestion
 
 #### C# Formatting Rules ####
 
-# New line preferences
-csharp_new_line_before_catch = true
-csharp_new_line_before_else = true
-csharp_new_line_before_finally = true
-csharp_new_line_before_members_in_anonymous_types = true
-csharp_new_line_before_members_in_object_initializers = true
-csharp_new_line_before_open_brace = all
-csharp_new_line_between_query_expression_clauses = true
-
 # Indentation preferences
 csharp_indent_block_contents = true
 csharp_indent_braces = false
@@ -135,130 +126,9 @@ csharp_indent_case_contents_when_block = false
 csharp_indent_labels = one_less_than_current
 csharp_indent_switch_labels = true
 
-# Space preferences
-csharp_space_after_cast = false
-csharp_space_after_colon_in_inheritance_clause = true
-csharp_space_after_comma = true
-csharp_space_after_dot = false
-csharp_space_after_keywords_in_control_flow_statements = true
-csharp_space_after_semicolon_in_for_statement = true
-csharp_space_around_binary_operators = before_and_after
-csharp_space_around_declaration_statements = false
-csharp_space_before_colon_in_inheritance_clause = true
-csharp_space_before_comma = false
-csharp_space_before_dot = false
-csharp_space_before_open_square_brackets = false
-csharp_space_before_semicolon_in_for_statement = false
-csharp_space_between_empty_square_brackets = false
-csharp_space_between_method_call_empty_parameter_list_parentheses = false
-csharp_space_between_method_call_name_and_opening_parenthesis = false
-csharp_space_between_method_call_parameter_list_parentheses = false
-csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
-csharp_space_between_method_declaration_name_and_open_parenthesis = false
-csharp_space_between_method_declaration_parameter_list_parentheses = false
-csharp_space_between_parentheses = false
-csharp_space_between_square_brackets = false
-
 # Wrapping preferences
-csharp_preserve_single_line_blocks = false
+csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = false
-
-#### Naming styles ####
-
-# Naming rules
-
-dotnet_naming_rule.interfejs_should_be_rozpoczyna_się_znakiem_i.severity = suggestion
-dotnet_naming_rule.interfejs_should_be_rozpoczyna_się_znakiem_i.symbols = interfejs
-dotnet_naming_rule.interfejs_should_be_rozpoczyna_się_znakiem_i.style = rozpoczyna_się_znakiem_i
-
-dotnet_naming_rule.prot_or_public_const_should_be_caps_underscore.severity = suggestion
-dotnet_naming_rule.prot_or_public_const_should_be_caps_underscore.symbols = prot_or_public_const
-dotnet_naming_rule.prot_or_public_const_should_be_caps_underscore.style = caps_underscore
-
-dotnet_naming_rule.prywatne_lub_wewn_const_should_be_underscore_lower_case.severity = suggestion
-dotnet_naming_rule.prywatne_lub_wewn_const_should_be_underscore_lower_case.symbols = prywatne_lub_wewn_const
-dotnet_naming_rule.prywatne_lub_wewn_const_should_be_underscore_lower_case.style = underscore_lower_case
-
-dotnet_naming_rule.prywatne_lub_wewnętrzne_pole_statyczne_should_be_underscore_lower_case.severity = suggestion
-dotnet_naming_rule.prywatne_lub_wewnętrzne_pole_statyczne_should_be_underscore_lower_case.symbols = prywatne_lub_wewnętrzne_pole_statyczne
-dotnet_naming_rule.prywatne_lub_wewnętrzne_pole_statyczne_should_be_underscore_lower_case.style = underscore_lower_case
-
-dotnet_naming_rule.elementy_czł_pryw_should_be_camelcase.severity = suggestion
-dotnet_naming_rule.elementy_czł_pryw_should_be_camelcase.symbols = elementy_czł_pryw
-dotnet_naming_rule.elementy_czł_pryw_should_be_camelcase.style = camelcase
-
-dotnet_naming_rule.typy_nieprywatne_should_be_pascalcase.severity = suggestion
-dotnet_naming_rule.typy_nieprywatne_should_be_pascalcase.symbols = typy_nieprywatne
-dotnet_naming_rule.typy_nieprywatne_should_be_pascalcase.style = pascalcase
-
-dotnet_naming_rule.elementy_członkowskie_inne_niż_pole_should_be_pascalcase.severity = suggestion
-dotnet_naming_rule.elementy_członkowskie_inne_niż_pole_should_be_pascalcase.symbols = elementy_członkowskie_inne_niż_pole
-dotnet_naming_rule.elementy_członkowskie_inne_niż_pole_should_be_pascalcase.style = pascalcase
-
-dotnet_naming_rule.metoda_prywatna_should_be_pascalcase.severity = suggestion
-dotnet_naming_rule.metoda_prywatna_should_be_pascalcase.symbols = metoda_prywatna
-dotnet_naming_rule.metoda_prywatna_should_be_pascalcase.style = pascalcase
-
-# Symbol specifications
-
-dotnet_naming_symbols.interfejs.applicable_kinds = interface
-dotnet_naming_symbols.interfejs.applicable_accessibilities = public, internal, private, protected, protected_internal
-dotnet_naming_symbols.interfejs.required_modifiers = 
-
-dotnet_naming_symbols.metoda_prywatna.applicable_kinds = method
-dotnet_naming_symbols.metoda_prywatna.applicable_accessibilities = private
-dotnet_naming_symbols.metoda_prywatna.required_modifiers = 
-
-dotnet_naming_symbols.prywatne_lub_wewnętrzne_pole_statyczne.applicable_kinds = field
-dotnet_naming_symbols.prywatne_lub_wewnętrzne_pole_statyczne.applicable_accessibilities = internal, private
-dotnet_naming_symbols.prywatne_lub_wewnętrzne_pole_statyczne.required_modifiers = static
-
-dotnet_naming_symbols.typy_nieprywatne.applicable_kinds = class, struct, interface, enum
-dotnet_naming_symbols.typy_nieprywatne.applicable_accessibilities = public, internal, protected, protected_internal
-dotnet_naming_symbols.typy_nieprywatne.required_modifiers = 
-
-dotnet_naming_symbols.elementy_członkowskie_inne_niż_pole.applicable_kinds = property, event, method
-dotnet_naming_symbols.elementy_członkowskie_inne_niż_pole.applicable_accessibilities = public, internal, protected, protected_internal
-dotnet_naming_symbols.elementy_członkowskie_inne_niż_pole.required_modifiers = 
-
-dotnet_naming_symbols.elementy_czł_pryw.applicable_kinds = property, field, event
-dotnet_naming_symbols.elementy_czł_pryw.applicable_accessibilities = private
-dotnet_naming_symbols.elementy_czł_pryw.required_modifiers = 
-
-dotnet_naming_symbols.prywatne_lub_wewn_const.applicable_kinds = property, field
-dotnet_naming_symbols.prywatne_lub_wewn_const.applicable_accessibilities = internal, private, local
-dotnet_naming_symbols.prywatne_lub_wewn_const.required_modifiers = const
-
-dotnet_naming_symbols.prot_or_public_const.applicable_kinds = property, field
-dotnet_naming_symbols.prot_or_public_const.applicable_accessibilities = public, internal, protected, protected_internal
-dotnet_naming_symbols.prot_or_public_const.required_modifiers = const
-
-# Naming styles
-
-dotnet_naming_style.pascalcase.required_prefix = 
-dotnet_naming_style.pascalcase.required_suffix = 
-dotnet_naming_style.pascalcase.word_separator = 
-dotnet_naming_style.pascalcase.capitalization = pascal_case
-
-dotnet_naming_style.rozpoczyna_się_znakiem_i.required_prefix = I
-dotnet_naming_style.rozpoczyna_się_znakiem_i.required_suffix = 
-dotnet_naming_style.rozpoczyna_się_znakiem_i.word_separator = 
-dotnet_naming_style.rozpoczyna_się_znakiem_i.capitalization = pascal_case
-
-dotnet_naming_style.camelcase.required_prefix = 
-dotnet_naming_style.camelcase.required_suffix = 
-dotnet_naming_style.camelcase.word_separator = 
-dotnet_naming_style.camelcase.capitalization = camel_case
-
-dotnet_naming_style.underscore_lower_case.required_prefix = 
-dotnet_naming_style.underscore_lower_case.required_suffix = 
-dotnet_naming_style.underscore_lower_case.word_separator = _
-dotnet_naming_style.underscore_lower_case.capitalization = all_lower
-
-dotnet_naming_style.caps_underscore.required_prefix = 
-dotnet_naming_style.caps_underscore.required_suffix = 
-dotnet_naming_style.caps_underscore.word_separator = _
-dotnet_naming_style.caps_underscore.capitalization = all_upper
 
 # IDE0005: Using directive is unnecessary.
 dotnet_diagnostic.IDE0005.severity = warning
