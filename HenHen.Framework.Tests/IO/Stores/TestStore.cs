@@ -4,7 +4,7 @@ namespace HenHen.Framework.Tests.IO.Stores
 {
     public class TestStore : ResourceStore<string>
     {
-        protected override string GetInternal(string assetName) => throw new System.NotImplementedException();
+        protected override string GetInternal(string assetName) => assetName;
 
         protected override void LoadInternal(string assetName)
         {
