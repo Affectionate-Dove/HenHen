@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Extensions;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Review License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Extensions;
 using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Numerics;
 
