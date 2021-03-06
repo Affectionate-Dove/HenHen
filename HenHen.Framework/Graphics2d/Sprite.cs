@@ -13,11 +13,7 @@ namespace HenHen.Framework.Graphics2d
 
         public ColorInfo Color { get; set; } = new ColorInfo(255, 255, 255);
 
-        /// <summary>
-        /// Loads a texture from a file path. Previous texture is automatically unloaded.
-        /// </summary>
-        /// <param name="path"></param>
-        public void SetTexture() => texture = Game.TextureStore.Get();
+        public void SetTexture(string path) => texture = Game.TextureStore.Get(path);
 
         protected override void OnRender()
         {

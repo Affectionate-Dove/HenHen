@@ -12,7 +12,8 @@ namespace HenHen.Framework
 {
     public class Game
     {
-        public static TextureStore TextureStore { get; } = new();
+        private static TextureStore textureStore;
+        public static TextureStore TextureStore => textureStore;
         public Window Window { get; }
         public ScreenStack ScreenStack { get; }
         public InputManager InputManager { get; }
@@ -22,6 +23,7 @@ namespace HenHen.Framework
             Window = new Window(new Vector2(600, 400), "HenHen");
             InputManager = CreateInputManager();
             ScreenStack = new ScreenStack();
+            textureStore = new TextureStore();
         }
 
         /// <param name="timeDelta">In seconds.</param>
