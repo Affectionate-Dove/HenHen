@@ -6,6 +6,10 @@ root = true
 
 #### Core EditorConfig Options ####
 
+# License header
+file_header_template = Copyright (c) Affectionate Dove <contact@affectionatedove.com>.\nLicensed under the Affectionate Dove Limited Code Review License.\nSee the LICENSE file in the repository root for full license text.
+dotnet_diagnostic.IDE0073.severity = warning
+
 # Indentation and spacing
 indent_size = 4
 indent_style = space
@@ -30,3 +34,7 @@ dotnet_diagnostic.IDE0005.severity = warning
 
 # IDE0011: Add braces
 csharp_prefer_braces = false:warning
+
+# IDE0040: Require accessibility modifier
+# dotnet_style_require_accessibility_modifiers = always
+dotnet_diagnostic.IDE0040.severity = warning
