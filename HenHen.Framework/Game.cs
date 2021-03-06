@@ -1,4 +1,9 @@
-﻿using HenHen.Framework.Input;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Review License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Input;
+using HenHen.Framework.IO.Stores;
 using HenHen.Framework.Screens;
 using System.Numerics;
 using static Raylib_cs.Raylib;
@@ -7,10 +12,10 @@ namespace HenHen.Framework
 {
     public class Game
     {
+        private static TextureStore textureStore;
+        public static TextureStore TextureStore => textureStore;
         public Window Window { get; }
-
         public ScreenStack ScreenStack { get; }
-
         public InputManager InputManager { get; }
 
         public Game()
@@ -18,15 +23,24 @@ namespace HenHen.Framework
             Window = new Window(new Vector2(600, 400), "HenHen");
             InputManager = CreateInputManager();
             ScreenStack = new ScreenStack();
+            textureStore = new TextureStore();
         }
-
-        protected virtual InputManager CreateInputManager() => new InputManager();
 
         /// <param name="timeDelta">In seconds.</param>
         public void Loop(float timeDelta)
         {
             Update(timeDelta);
             Draw();
+        }
+
+        protected virtual InputManager CreateInputManager() => new InputManager();
+
+        protected virtual void OnUpdate()
+        {
+        }
+
+        protected virtual void OnRender()
+        {
         }
 
         private void Draw()
@@ -45,14 +59,6 @@ namespace HenHen.Framework
             ScreenStack.Update();
             InputManager.Update(timeDelta);
             OnUpdate();
-        }
-
-        protected virtual void OnUpdate()
-        {
-        }
-
-        protected virtual void OnRender()
-        {
         }
     }
 }
