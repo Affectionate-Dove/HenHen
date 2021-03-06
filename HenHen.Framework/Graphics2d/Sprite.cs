@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Extensions;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Review License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Extensions;
 using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d
@@ -13,6 +17,8 @@ namespace HenHen.Framework.Graphics2d
         /// Loads a texture from a file path. Previous texture is automatically unloaded.
         /// </summary>
         /// <param name="path"></param>
+        public void SetTexture() => texture = Game.TextureStore.Get();
+
         protected override void OnRender()
         {
             base.OnRender();

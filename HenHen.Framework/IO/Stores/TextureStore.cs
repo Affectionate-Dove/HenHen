@@ -1,4 +1,5 @@
 ﻿using Raylib_cs;
+using System;
 using System.Collections.Generic;
 
 namespace HenHen.Framework.IO.Stores
@@ -12,5 +13,10 @@ namespace HenHen.Framework.IO.Stores
         protected override void LoadInternal(string assetName) => textures.Add(assetName, Raylib.LoadTexture(assetName));
 
         protected override void UnloadInternal(string assetName) => Raylib.UnloadTexture(GetInternal(assetName));
+
+        internal Texture2D Get()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

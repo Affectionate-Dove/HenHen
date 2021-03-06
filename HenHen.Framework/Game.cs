@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Input;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Review License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Input;
 using HenHen.Framework.IO.Stores;
 using HenHen.Framework.Screens;
 using System.Numerics;
@@ -8,12 +12,9 @@ namespace HenHen.Framework
 {
     public class Game
     {
-        private static readonly TextureStore TextureStore;
-
+        public static TextureStore TextureStore { get; } = new();
         public Window Window { get; }
-
         public ScreenStack ScreenStack { get; }
-
         public InputManager InputManager { get; }
 
         public Game()
@@ -39,8 +40,6 @@ namespace HenHen.Framework
         protected virtual void OnRender()
         {
         }
-
-        private static TextureStore GetTextureStore() => TextureStore;
 
         private void Draw()
         {
