@@ -7,7 +7,7 @@ root = true
 #### Core EditorConfig Options ####
 
 # License header
-file_header_template = Copyright (c) Affectionate Dove <contact@affectionatedove.com>.\nLicensed under the Affectionate Dove Limited Code Review License.\nSee the LICENSE file in the repository root for full license text.
+file_header_template = Copyright (c) Affectionate Dove <contact@affectionatedove.com>.\nLicensed under the Affectionate Dove Limited Code Viewing License.\nSee the LICENSE file in the repository root for full license text.
 dotnet_diagnostic.IDE0073.severity = warning
 
 # Indentation and spacing

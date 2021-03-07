@@ -1,11 +1,17 @@
-﻿namespace HenHen.Framework.Input
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+namespace HenHen.Framework.Input
 {
     public static class InputKeyExtensions
     {
         public static Raylib_cs.KeyboardKey ToRaylibKey(this KeyboardKey key) => (Raylib_cs.KeyboardKey)key;
+
         public static KeyboardKey FromRaylibKey(this Raylib_cs.KeyboardKey btn) => (KeyboardKey)btn;
 
         public static Raylib_cs.MouseButton ToRaylibMouseButton(this MouseButton button) => (Raylib_cs.MouseButton)button;
+
         public static MouseButton FromRaylibMouseButton(this Raylib_cs.MouseButton button) => (MouseButton)button;
     }
 

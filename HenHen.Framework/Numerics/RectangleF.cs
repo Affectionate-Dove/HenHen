@@ -1,4 +1,8 @@
-﻿using System.Numerics;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using System.Numerics;
 
 namespace HenHen.Framework.Numerics
 {
@@ -42,7 +46,7 @@ namespace HenHen.Framework.Numerics
         /// </summary>
         public Vector2 Size
         {
-            get => new Vector2(Width, Height);
+            get => new(Width, Height);
             set
             {
                 Width = value.X;
@@ -52,7 +56,7 @@ namespace HenHen.Framework.Numerics
 
         public Vector2 TopLeft
         {
-            get => new Vector2(Left, Top);
+            get => new(Left, Top);
             set
             {
                 Top = value.Y;
@@ -62,7 +66,7 @@ namespace HenHen.Framework.Numerics
 
         public Vector2 BottomRight
         {
-            get => new Vector2(Right, Bottom);
+            get => new(Right, Bottom);
             set
             {
                 Bottom = value.Y;
@@ -70,6 +74,6 @@ namespace HenHen.Framework.Numerics
             }
         }
 
-        public override string ToString() => $"Left={Left},Top={Top},Right={Right},Bottom={Bottom}";
+        public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
     }
 }

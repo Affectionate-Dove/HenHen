@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Graphics2d;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Graphics2d;
 using System;
 
 namespace HenHen.Framework.Screens
@@ -6,6 +10,7 @@ namespace HenHen.Framework.Screens
     public class Screen : Container, IContainer<Drawable>
     {
         public event Action<Screen> ScreenPushed;
+
         public event Action Exited;
 
         public Screen() => RelativeSizeAxes = Axes.Both;

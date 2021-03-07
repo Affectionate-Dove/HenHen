@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Graphics2d.Layouts;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Graphics2d.Layouts;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -7,16 +11,10 @@ namespace HenHen.Framework.Graphics2d
 {
     public class Container : Drawable, IContainer<Drawable>
     {
+        public MarginPadding Padding;
         public Axes AutoSizeAxes { get; set; }
 
         public List<Drawable> Children { get; } = new List<Drawable>();
-
-        public MarginPadding Padding;
-
-        protected Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition + Padding.TopLeft;
-
-        protected Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize - Padding.Total;
-
         IEnumerable<Drawable> IContainer<Drawable>.Children => Children;
 
         public ContainerLayoutInfo ContainerLayoutInfo { get; protected set; }
@@ -32,6 +30,10 @@ namespace HenHen.Framework.Graphics2d
             if (Children.Remove(child))
                 child.Parent = null;
         }
+
+        protected Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition + Padding.TopLeft;
+
+        protected Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize - Padding.Total;
 
         protected override void PreUpdate()
         {
@@ -50,12 +52,6 @@ namespace HenHen.Framework.Graphics2d
                 child.Update();
             UpdateContainerLayoutInfo();
         }
-
-        private void UpdateContainerLayoutInfo() => ContainerLayoutInfo = new ContainerLayoutInfo
-        {
-            ChildrenRenderPosition = ComputeChildrenRenderPosition(),
-            ChildrenRenderSize = ComputeChildrenRenderSize()
-        };
 
         protected override void OnRender()
         {
@@ -86,5 +82,11 @@ namespace HenHen.Framework.Graphics2d
                 renSize.Y = maxY + Padding.TotalVertical;
             return renSize;
         }
+
+        private void UpdateContainerLayoutInfo() => ContainerLayoutInfo = new ContainerLayoutInfo
+        {
+            ChildrenRenderPosition = ComputeChildrenRenderPosition(),
+            ChildrenRenderSize = ComputeChildrenRenderSize()
+        };
     }
 }
