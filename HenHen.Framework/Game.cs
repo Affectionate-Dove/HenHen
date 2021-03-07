@@ -13,15 +13,18 @@ namespace HenHen.Framework
     public class Game
     {
         private static TextureStore textureStore;
+        private static InputManager inputManager;
+
         public static TextureStore TextureStore => textureStore;
+        public static InputManager InputManager => inputManager;
+
         public Window Window { get; }
         public ScreenStack ScreenStack { get; }
-        public InputManager InputManager { get; }
 
         public Game()
         {
             Window = new Window(new Vector2(600, 400), "HenHen");
-            InputManager = CreateInputManager();
+            inputManager = CreateInputManager();
             ScreenStack = new ScreenStack();
             textureStore = new TextureStore();
         }
@@ -33,7 +36,7 @@ namespace HenHen.Framework
             Draw();
         }
 
-        protected virtual InputManager CreateInputManager() => new InputManager();
+        protected virtual InputManager CreateInputManager() => new();
 
         protected virtual void OnUpdate()
         {
