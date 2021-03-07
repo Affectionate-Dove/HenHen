@@ -1,4 +1,8 @@
-﻿using NUnit.Framework;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using NUnit.Framework;
 
 namespace HenHen.Framework.Tests.IO.Stores
 {
@@ -9,7 +13,7 @@ namespace HenHen.Framework.Tests.IO.Stores
         [Test]
         public void LoadTest()
         {
-            string assetName = "some asset name";
+            var assetName = "some asset name";
             testStore.Load(assetName);
             Assert.IsTrue(testStore.IsLoaded(assetName));
         }
@@ -17,7 +21,7 @@ namespace HenHen.Framework.Tests.IO.Stores
         [Test]
         public void UnloadTest()
         {
-            string assetName = "unloading test";
+            var assetName = "unloading test";
             testStore.Load(assetName);
             Assert.IsTrue(testStore.IsLoaded(assetName));
             testStore.Unload(assetName);
@@ -27,7 +31,7 @@ namespace HenHen.Framework.Tests.IO.Stores
         [Test]
         public void GetTest()
         {
-            string assetName = "get test";
+            var assetName = "get test";
             testStore.Load(assetName);
             Assert.AreEqual(assetName, testStore.Get(assetName));
             testStore.Unload(assetName);

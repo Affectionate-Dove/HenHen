@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Graphics2d;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
 using HenHen.Framework.UI;
 using System;
@@ -75,13 +79,13 @@ namespace HenHen.Framework.VisualTests
 
         private class TestSceneButton : Button
         {
+            public Type Type { get; }
+
             public TestSceneButton(Type type)
             {
                 Type = type;
                 Text = type.Name;
             }
-
-            public Type Type { get; }
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using System.Collections.Generic;
 
 namespace HenHen.Framework.Input
 {
@@ -76,15 +80,43 @@ namespace HenHen.Framework.Input
             SetKeysToMonitor();
         }
 
-        protected abstract Dictionary<TInputAction, List<KeyboardKey>> CreateDefaultKeybindings();
-
-        protected virtual InputPropagator<TInputAction> CreatePropagator() => new InputPropagator<TInputAction>();
-
         public void Update()
         {
             HandleMonitoredKeysPresses();
             HandleActiveActionsReleases();
         }
+
+        /// <summary>
+        /// Whether all keys for a <see cref="TInputAction"/>
+        /// keybinding are pressed.
+        /// </summary>
+        public bool AreAllKeysPressedForAction(TInputAction action)
+        {
+            foreach (var key in ActionKeyBindings[action])
+            {
+                if (!InputManager.IsKeyDown(key))
+                    return false;
+            }
+            return true;
+        }
+
+        protected abstract Dictionary<TInputAction, List<KeyboardKey>> CreateDefaultKeybindings();
+
+        protected virtual InputPropagator<TInputAction> CreatePropagator() => new InputPropagator<TInputAction>();
+
+        /// <summary>
+        /// Called when all keys in a keybinding
+        /// for a given <see cref="TInputAction"/> were pressed.
+        /// </summary>
+        /// <param name="inputAction">The action that was triggered.</param>
+        protected void OnActionPress(TInputAction inputAction) => Propagator.OnActionPressed(inputAction);
+
+        /// <summary>
+        /// Triggered when at least one key in a keybinding
+        /// for a pressed <see cref="TInputAction"/> was released.
+        /// </summary>
+        /// <param name="inputAction">The action that was triggered.</param>
+        protected void OnActionRelease(TInputAction inputAction) => Propagator.OnActionReleased(inputAction);
 
         private void HandleMonitoredKeysPresses()
         {
@@ -131,34 +163,6 @@ namespace HenHen.Framework.Input
                 OnActionRelease(activeAction);
             activeInputActions.Clear();
         }
-
-        /// <summary>
-        /// Whether all keys for a <see cref="TInputAction"/>
-        /// keybinding are pressed.
-        /// </summary>
-        public bool AreAllKeysPressedForAction(TInputAction action)
-        {
-            foreach (var key in ActionKeyBindings[action])
-            {
-                if (!InputManager.IsKeyDown(key))
-                    return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Called when all keys in a keybinding
-        /// for a given <see cref="TInputAction"/> were pressed.
-        /// </summary>
-        /// <param name="inputAction">The action that was triggered.</param>
-        protected void OnActionPress(TInputAction inputAction) => Propagator.OnActionPressed(inputAction);
-
-        /// <summary>
-        /// Triggered when at least one key in a keybinding
-        /// for a pressed <see cref="TInputAction"/> was released.
-        /// </summary>
-        /// <param name="inputAction">The action that was triggered.</param>
-        protected void OnActionRelease(TInputAction inputAction) => Propagator.OnActionReleased(inputAction);
 
         /// <summary>
         /// Generates contents of <see cref="keysToMonitor"/>
