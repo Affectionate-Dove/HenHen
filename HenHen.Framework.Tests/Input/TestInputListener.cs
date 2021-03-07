@@ -1,14 +1,17 @@
-﻿using HenHen.Framework.Input;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Input;
 using System.Collections.Generic;
 
 namespace HenHen.Framework.Tests.Input
 {
     public class TestInputListener : IInputListener<TestAction>
     {
+        public readonly HashSet<TestAction> HandledActions = new();
         public bool ReceivedPress { get; private set; }
         public bool ReceivedRelease { get; private set; }
-
-        public readonly HashSet<TestAction> HandledActions = new();
 
         public bool OnActionPressed(TestAction action)
         {
