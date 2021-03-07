@@ -23,7 +23,7 @@ namespace HenHen.Framework
 
         public Game()
         {
-            Window = new Window(new Vector2(600, 400), "HenHen");
+            Window = new Window(new Vector2(1280, 680), "HenHen");
             inputManager = CreateInputManager();
             ScreenStack = new ScreenStack();
             textureStore = new TextureStore();
