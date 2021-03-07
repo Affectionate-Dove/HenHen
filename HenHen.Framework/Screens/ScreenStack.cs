@@ -12,7 +12,7 @@ namespace HenHen.Framework.Screens
 {
     public class ScreenStack : Drawable, IContainer<Screen>
     {
-        private readonly List<Screen> screens = new List<Screen>();
+        private readonly List<Screen> screens = new();
 
         public Screen CurrentScreen => screens.Count == 0 ? null : screens[^1];
 

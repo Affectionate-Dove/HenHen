@@ -15,7 +15,7 @@ namespace HenHen.Framework.Graphics2d
 
         public Vector2 TopLeft
         {
-            get => new Vector2(Left, Top);
+            get => new(Left, Top);
             set
             {
                 Top = value.Y;
@@ -25,7 +25,7 @@ namespace HenHen.Framework.Graphics2d
 
         public Vector2 BottomRight
         {
-            get => new Vector2(Right, Bottom);
+            get => new(Right, Bottom);
             set
             {
                 Bottom = value.Y;
@@ -55,6 +55,6 @@ namespace HenHen.Framework.Graphics2d
             set => Top = Bottom = value;
         }
 
-        public Vector2 Total => new Vector2(TotalHorizontal, TotalVertical);
+        public Vector2 Total => new(TotalHorizontal, TotalVertical);
     }
 }

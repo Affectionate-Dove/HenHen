@@ -15,7 +15,7 @@ namespace HenHen.Framework.Graphics2d
 
         public Vector2 Origin { get; init; }
 
-        public RectangleF LocalRect => new RectangleF { TopLeft = LocalPosition, Size = RenderSize };
+        public RectangleF LocalRect => new() { TopLeft = LocalPosition, Size = RenderSize };
 
         public RectangleF RenderRect
         {

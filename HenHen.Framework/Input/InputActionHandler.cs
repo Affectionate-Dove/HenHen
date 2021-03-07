@@ -102,7 +102,7 @@ namespace HenHen.Framework.Input
 
         protected abstract Dictionary<TInputAction, List<KeyboardKey>> CreateDefaultKeybindings();
 
-        protected virtual InputPropagator<TInputAction> CreatePropagator() => new InputPropagator<TInputAction>();
+        protected virtual InputPropagator<TInputAction> CreatePropagator() => new();
 
         /// <summary>
         /// Called when all keys in a keybinding
