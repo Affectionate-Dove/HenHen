@@ -14,9 +14,11 @@ namespace HenHen.Framework
     {
         private static TextureStore textureStore;
         private static InputManager inputManager;
+        private static ModelStore modelStore;
 
         public static TextureStore TextureStore => textureStore;
         public static InputManager InputManager => inputManager;
+        public static ModelStore ModelStore => modelStore;
 
         public Window Window { get; }
         public ScreenStack ScreenStack { get; }
@@ -27,6 +29,7 @@ namespace HenHen.Framework
             inputManager = CreateInputManager();
             ScreenStack = new ScreenStack();
             textureStore = new TextureStore();
+            modelStore = new ModelStore();
         }
 
         /// <param name="timeDelta">In seconds.</param>
