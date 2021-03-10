@@ -2,7 +2,6 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Collisions;
 using System;
 using System.Numerics;
 
@@ -10,7 +9,6 @@ namespace HenHen.Framework.Worlds.Nodes
 {
     public abstract class Node
     {
-        public CollisionBody CollisionBody { get; set; }
         public int Id { get; set; }
         public Vector3 Position { get; set; }
 
