@@ -8,10 +8,10 @@ using System.Numerics;
 
 namespace HenHen.Framework.Tests.Extensions
 {
-    public class Vector2ExtensionsTests
+    public class VectorExtensionsTests
     {
         [Test]
-        public void GetAngleTest()
+        public void GetAngleVector2Test()
         {
             var v = new Vector2(0, 1);
             Assert.AreEqual(180, v.GetAngle());
@@ -33,7 +33,7 @@ namespace HenHen.Framework.Tests.Extensions
         }
 
         [Test]
-        public void GetRotatedTest()
+        public void GetRotatedVector2Test()
         {
             var v = new Vector2(0, -1);
             AreApproximatelyEqual(new Vector2(1, 0), v.GetRotated(90));
@@ -42,7 +42,25 @@ namespace HenHen.Framework.Tests.Extensions
             AreApproximatelyEqual(v, v.GetRotated(360));
         }
 
+        [Test]
+        public void GetRotatedVector3Test()
+        {
+            var v = new Vector3(0, 0, 1);
+            AreApproximatelyEqual(new Vector3(1, 0, 0), v.GetRotated(new Vector3(0, 90, 0)));
+            AreApproximatelyEqual(new Vector3(0, 0, -1), v.GetRotated(new Vector3(0, 180, 0)));
+            AreApproximatelyEqual(new Vector3(-1, 0, 0), v.GetRotated(new Vector3(0, 270, 0)));
+            AreApproximatelyEqual(v, v.GetRotated(new Vector3(0, 360, 0)));
+        }
+
         private static void AreApproximatelyEqual(Vector2 expected, Vector2 actual)
+        {
+            if ((expected - actual).LengthSquared() < 0.001f)
+                Assert.Pass();
+            else
+                Assert.AreEqual(expected, actual);
+        }
+
+        private static void AreApproximatelyEqual(Vector3 expected, Vector3 actual)
         {
             if ((expected - actual).LengthSquared() < 0.001f)
                 Assert.Pass();
