@@ -19,7 +19,9 @@ namespace HenHen.Framework.Graphics3d
             {
                 position = Position,
                 up = new Vector3(0, 1, 0),
-                target = CalculatePoint()
+                target = CalculatePoint(),
+                fovy = 70,
+                type = Raylib_cs.CameraType.CAMERA_PERSPECTIVE
             };
         }
 

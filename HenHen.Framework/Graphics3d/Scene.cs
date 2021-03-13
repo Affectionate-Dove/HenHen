@@ -18,5 +18,7 @@ namespace HenHen.Framework.Graphics3d
                 spatial.Render();
             Raylib_cs.Raylib.EndMode3D();
         }
+
+        public void Update() => Camera.Update();
     }
 }
