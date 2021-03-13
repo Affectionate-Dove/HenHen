@@ -10,6 +10,8 @@ namespace HenHen.Framework.Worlds.Mediums
     {
         public MediumType Type { get; set; }
         public Triangle3 Triangle { get; set; }
+
+        public override string ToString() => $"{{{nameof(Type)}={Type},{nameof(Triangle)}={Triangle}}}";
     }
 
     public enum MediumType
