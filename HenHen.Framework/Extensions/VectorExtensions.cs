@@ -34,15 +34,15 @@ namespace HenHen.Framework.Extensions
         public static Vector3 GetRotated(this Vector3 v, Vector3 rotation)
         {
             rotation = (float)radiansMultiplier * rotation;
-            var sinAlpha = MathF.Sin(rotation.X);
-            var cosAlpha = MathF.Cos(rotation.X);
+            var sinAlpha = MathF.Sin(-rotation.Z);
+            var cosAlpha = MathF.Cos(-rotation.Z);
             var sinBeta = MathF.Sin(rotation.Y);
             var cosBeta = MathF.Cos(rotation.Y);
-            var sinGamma = MathF.Sin(rotation.Z);
-            var cosGamma = MathF.Cos(rotation.Z);
-            return new Vector3((cosAlpha * cosBeta) + (cosAlpha * sinBeta * sinGamma) - (sinAlpha * cosGamma) + (cosAlpha * sinBeta * cosGamma) + (sinAlpha * sinGamma),
-                (sinAlpha * cosBeta) + (sinAlpha * sinBeta * sinGamma) + (cosAlpha * cosGamma) + (sinAlpha * sinBeta * cosGamma) - (cosAlpha * sinGamma),
-                (-sinBeta) + (cosBeta * sinGamma) + (cosBeta * cosGamma));
+            var sinGamma = MathF.Sin(-rotation.X);
+            var cosGamma = MathF.Cos(-rotation.X);
+            return new Vector3((v.X * (cosAlpha * cosBeta)) + (v.Y * ((cosAlpha * sinBeta * sinGamma) - (sinAlpha * cosGamma))) + (v.Z * ((cosAlpha * sinBeta * cosGamma) + (sinAlpha * sinGamma))),
+                (v.X * (sinAlpha * cosBeta)) + (v.Y * ((sinAlpha * sinBeta * sinGamma) + (cosAlpha * cosGamma))) + (v.Z * ((sinAlpha * sinBeta * cosGamma) - (cosAlpha * sinGamma))),
+                (v.X * (-sinBeta)) + (v.Y * (cosBeta * sinGamma)) + (v.Z * (cosBeta * cosGamma)));
         }
     }
 }
