@@ -43,18 +43,46 @@ namespace HenHen.Framework.Tests.Extensions
         }
 
         [Test]
-        public void GetRotatedVector3Test()
+        public void GetRotatedVector3YTest()
         {
-            var v = new Vector3(0, 0, 1);
-            AreApproximatelyEqual(new Vector3(1, 0, 0), v.GetRotated(new Vector3(0, 90, 0)));
-            AreApproximatelyEqual(new Vector3(0, 0, -1), v.GetRotated(new Vector3(0, 180, 0)));
-            AreApproximatelyEqual(new Vector3(-1, 0, 0), v.GetRotated(new Vector3(0, 270, 0)));
+            var v = new Vector3(0, 1, 1);
+            AreApproximatelyEqual(new Vector3(1, 1, 0), v.GetRotated(new Vector3(0, 90, 0)));
+            AreApproximatelyEqual(new Vector3(0, 1, -1), v.GetRotated(new Vector3(0, 180, 0)));
+            AreApproximatelyEqual(new Vector3(-1, 1, 0), v.GetRotated(new Vector3(0, 270, 0)));
             AreApproximatelyEqual(v, v.GetRotated(new Vector3(0, 360, 0)));
+        }
+
+        [Test]
+        public void GetRotatedVector3ZTest()
+        {
+            var v = new Vector3(0, 1, 1);
+            AreApproximatelyEqual(new Vector3(1, 0, 1), v.GetRotated(new Vector3(0, 0, 90)));
+            AreApproximatelyEqual(new Vector3(0, -1, 1), v.GetRotated(new Vector3(0, 0, 180)));
+            AreApproximatelyEqual(new Vector3(-1, 0, 1), v.GetRotated(new Vector3(0, 0, 270)));
+            AreApproximatelyEqual(v, v.GetRotated(new Vector3(0, 0, 360)));
+        }
+
+        [Test]
+        public void GetRotatedVector3XTest()
+        {
+            var v = new Vector3(1, 1, 0);
+            AreApproximatelyEqual(new Vector3(1, 0, -1), v.GetRotated(new Vector3(90, 0, 0)));
+            AreApproximatelyEqual(new Vector3(1, -1, 0), v.GetRotated(new Vector3(180, 0, 0)));
+            AreApproximatelyEqual(new Vector3(1, 0, 1), v.GetRotated(new Vector3(270, 0, 0)));
+            AreApproximatelyEqual(v, v.GetRotated(new Vector3(360, 0, 0)));
+        }
+
+        [Test]
+        public void GetRotatedVector3YZTest()
+        {
+            var v = new Vector3(0, 1, 0);
+            AreApproximatelyEqual(new Vector3(0, 0, 1), v.GetRotated(new Vector3(0, 90, 90)));
+            AreApproximatelyEqual(v, v.GetRotated(new Vector3(360, 360, 0)));
         }
 
         private static void AreApproximatelyEqual(Vector2 expected, Vector2 actual)
         {
-            if ((expected - actual).LengthSquared() < 0.001f)
+            if ((expected - actual).LengthSquared() < 0.0000001f)
                 Assert.Pass();
             else
                 Assert.AreEqual(expected, actual);
@@ -62,7 +90,7 @@ namespace HenHen.Framework.Tests.Extensions
 
         private static void AreApproximatelyEqual(Vector3 expected, Vector3 actual)
         {
-            if ((expected - actual).LengthSquared() < 0.001f)
+            if ((expected - actual).Length() < 1E-16)
                 Assert.Pass();
             else
                 Assert.AreEqual(expected, actual);
