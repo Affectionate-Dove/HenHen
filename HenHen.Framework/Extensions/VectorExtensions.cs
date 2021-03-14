@@ -44,5 +44,7 @@ namespace HenHen.Framework.Extensions
                 (v.X * (sinAlpha * cosBeta)) + (v.Y * ((sinAlpha * sinBeta * sinGamma) + (cosAlpha * cosGamma))) + (v.Z * ((sinAlpha * sinBeta * cosGamma) - (cosAlpha * sinGamma))),
                 (v.X * (-sinBeta)) + (v.Y * (cosBeta * sinGamma)) + (v.Z * (cosBeta * cosGamma)));
         }
+
+        public static Vector2 ToTopDownPoint(this Vector3 v) => new(v.X, v.Z);
     }
 }

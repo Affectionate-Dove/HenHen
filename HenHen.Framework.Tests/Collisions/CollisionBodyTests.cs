@@ -5,6 +5,7 @@
 using HenHen.Framework.Collisions;
 using HenHen.Framework.Numerics;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -36,8 +37,13 @@ namespace HenHen.Framework.Tests.Collisions
         [TestCaseSource(nameof(EnumerateTestCases))]
         public void ContainingSphereTest((Sphere[] spheres, Sphere expected) testCase)
         {
-            var collisionBody = new CollisionBody(testCase.spheres);
-            Assert.AreEqual(testCase.expected, collisionBody.ContainingSphere);
+            if (testCase.spheres.Length == 0)
+                Assert.Throws<ArgumentException>(() => new CollisionBody(testCase.spheres));
+            else
+            {
+                var collisionBody = new CollisionBody(testCase.spheres);
+                Assert.AreEqual(testCase.expected, collisionBody.ContainingSphere);
+            }
         }
     }
 }

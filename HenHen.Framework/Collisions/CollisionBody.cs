@@ -20,6 +20,8 @@ namespace HenHen.Framework.Collisions
         public CollisionBody(IEnumerable<Sphere> spheres)
         {
             this.spheres = spheres.ToArray();
+            if (this.spheres.Length == 0)
+                throw new ArgumentException($"Must contain at least 1 sphere to create a {nameof(CollisionBody)}", nameof(spheres));
             ContainingSphere = new Sphere { Radius = GetFarthestDistanceFromCenter(spheres) };
         }
 
