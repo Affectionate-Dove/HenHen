@@ -19,13 +19,13 @@ namespace HenHen.Framework.Collisions
         public static bool IsPointInTriangle(Vector2 p, Triangle2 t)
         {
             // credit: https://stackoverflow.com/a/20861130/6394285
-            var s = t.A.Y * t.C.X - t.A.X * t.C.Y + (t.C.Y - t.A.Y) * p.X + (t.A.X - t.C.X) * p.Y;
-            var h = t.A.X * t.B.Y - t.A.Y * t.B.X + (t.A.Y - t.B.Y) * p.X + (t.B.X - t.A.X) * p.Y;
+            var s = (t.A.Y * t.C.X) - (t.A.X * t.C.Y) + ((t.C.Y - t.A.Y) * p.X) + ((t.A.X - t.C.X) * p.Y);
+            var h = (t.A.X * t.B.Y) - (t.A.Y * t.B.X) + ((t.A.Y - t.B.Y) * p.X) + ((t.B.X - t.A.X) * p.Y);
 
             if ((s < 0) != (h < 0))
                 return false;
 
-            var A = -t.B.Y * t.C.X + t.A.Y * (t.C.X - t.B.X) + t.A.X * (t.B.Y - t.C.Y) + t.B.X * t.C.Y;
+            var A = (-t.B.Y * t.C.X) + (t.A.Y * (t.C.X - t.B.X)) + (t.A.X * (t.B.Y - t.C.Y)) + (t.B.X * t.C.Y);
 
             return A < 0 ?
                     (s <= 0 && s + h >= A) :
