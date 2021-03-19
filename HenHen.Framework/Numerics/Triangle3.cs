@@ -24,6 +24,13 @@ namespace HenHen.Framework.Numerics
 
         public Vector3 Normal => Vector3.Cross(A, B);
 
+        public Triangle2 ToTopDownTriangle() => new()
+        {
+            A = new Vector2(A.X, A.Z),
+            B = new Vector2(B.X, B.Z),
+            C = new Vector2(C.X, C.Z)
+        };
+
         public override string ToString() => $"{{{nameof(A)}={A},{nameof(B)}={B},{nameof(C)}={C}}}";
     }
 }

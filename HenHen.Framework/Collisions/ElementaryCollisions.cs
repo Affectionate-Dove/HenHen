@@ -15,14 +15,30 @@ namespace HenHen.Framework.Collisions
         /// <remarks>A point on the edge of the circle is considered to be inside.</remarks>
         public static bool IsPointInCircle(Vector2 p, Circle c) => (c.CenterPosition - p).Length() <= c.Radius;
 
-        public static bool IsPointInTriangle(Vector2 p, Triangle2 t) => Raylib_cs.Raylib.CheckCollisionPointTriangle(p, t.A, t.B, t.C);
+        /// <remarks>A point on the edge of a triangle is considered to be in it.</remarks>
+        public static bool IsPointInTriangle(Vector2 p, Triangle2 t)
+        {
+            // credit: https://stackoverflow.com/a/20861130/6394285
+            var s = (t.A.Y * t.C.X) - (t.A.X * t.C.Y) + ((t.C.Y - t.A.Y) * p.X) + ((t.A.X - t.C.X) * p.Y);
+            var h = (t.A.X * t.B.Y) - (t.A.Y * t.B.X) + ((t.A.Y - t.B.Y) * p.X) + ((t.B.X - t.A.X) * p.Y);
 
-        public static bool IsPointInRectangle(Vector2 p, RectangleF r) => Raylib_cs.Raylib.CheckCollisionPointRec(p, new Raylib_cs.Rectangle(r.Left, r.Top, r.Width, r.Height));
+            if ((s < 0) != (h < 0))
+                return false;
 
-        /// <remarks>Touching edges aren't considered to be a collision.</remarks>
-        public static bool AreCirclesColliding(Circle a, Circle b) => (a.CenterPosition - b.CenterPosition).Length() < a.Radius + b.Radius;
+            var A = (-t.B.Y * t.C.X) + (t.A.Y * (t.C.X - t.B.X)) + (t.A.X * (t.B.Y - t.C.Y)) + (t.B.X * t.C.Y);
 
-        /// <remarks>Touching edges aren't considered to be a collision.</remarks>
-        public static bool AreSpheresColliding(Sphere a, Sphere b) => (a.CenterPosition - b.CenterPosition).Length() < a.Radius + b.Radius;
+            return A < 0 ?
+                    (s <= 0 && s + h >= A) :
+                    (s >= 0 && s + h <= A);
+        }
+
+        /// <remarks>A point on the edge of a rectangle is considered to be in it.</remarks>
+        public static bool IsPointInRectangle(Vector2 p, RectangleF r) => r.Left <= p.X && p.X <= r.Right && r.Top >= p.Y && p.Y >= r.Bottom;
+
+        /// <remarks>Touching edges are considered to be a collision.</remarks>
+        public static bool AreCirclesColliding(Circle a, Circle b) => (a.CenterPosition - b.CenterPosition).Length() <= a.Radius + b.Radius;
+
+        /// <remarks>Touching edges are considered to be a collision.</remarks>
+        public static bool AreSpheresColliding(Sphere a, Sphere b) => (a.CenterPosition - b.CenterPosition).Length() <= a.Radius + b.Radius;
     }
 }
