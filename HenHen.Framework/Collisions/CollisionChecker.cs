@@ -14,6 +14,16 @@ namespace HenHen.Framework.Collisions
 {
     public static class CollisionChecker
     {
+        /// <summary>
+        /// Checks all provided nodes for overlapping
+        /// <see cref="Node.CollisionBody"/>'s, and calls
+        /// <see cref="ICollisionHandler.OnCollision(Node, Node)"/>
+        /// if they collide.
+        /// </summary>
+        /// <remarks>
+        /// <paramref name="handler"/> is only notified once about
+        /// a collision between a pair of nodes.
+        /// </remarks>
         public static void CheckNodeCollisions(IReadOnlyList<Node> nodes, ICollisionHandler handler)
         {
             for (var i = 0; i < nodes.Count - 1; i++)
@@ -28,17 +38,25 @@ namespace HenHen.Framework.Collisions
                     if (b.CollisionBody is null)
                         continue;
 
-                    if (ElementaryCollisions.AreSpheresColliding(a.CollisionBody.ContainingSphere, b.CollisionBody.ContainingSphere))
+                    var containingSphereA = GetSphereInAbsoluteCoordinates(a, a.CollisionBody.ContainingSphere);
+                    var containingSphereB = GetSphereInAbsoluteCoordinates(b, b.CollisionBody.ContainingSphere);
+
+                    if (ElementaryCollisions.AreSpheresColliding(containingSphereA, containingSphereB))
                     {
                         if (a.CollisionBody.Spheres.Count is 1 && b.CollisionBody.Spheres.Count is 1)
                             handler.OnCollision(a, b);
-                        else if (ThouroughlyCheckSpheresForCollision(a.CollisionBody.Spheres, b.CollisionBody.Spheres))
+                        else if (ThouroughlyCheckNodesForCollision(a, b))
                             handler.OnCollision(a, b);
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Approximately checks whether the whole
+        /// <paramref name="node"/>'s <see cref="Node.CollisionBody"/>
+        /// is contained within <paramref name="mediums"/>.
+        /// </summary>
         public static bool IsNodeContainedInMediums(Node node, IEnumerable<Medium> mediums)
         {
             if (node.CollisionBody is null)
@@ -60,7 +78,7 @@ namespace HenHen.Framework.Collisions
             var boundaryPointsCount = (int)(alpha * MathF.Sqrt(pointsAmount));
             var phi = (MathF.Sqrt(5) + 1) / 2; // golden ratio
 
-            float Radius(int k) => k > pointsAmount - boundaryPointsCount ? 1 : MathF.Sqrt(k - 0.5f) / MathF.Sqrt(pointsAmount - (boundaryPointsCount + 1) * 0.5f);
+            float Radius(int k) => k > pointsAmount - boundaryPointsCount ? 1 : MathF.Sqrt(k - 0.5f) / MathF.Sqrt(pointsAmount - ((boundaryPointsCount + 1) * 0.5f));
 
             for (var k = 1; k <= pointsAmount; k++)
             {
@@ -98,17 +116,25 @@ namespace HenHen.Framework.Collisions
             return true;
         }
 
-        private static bool ThouroughlyCheckSpheresForCollision(IEnumerable<Sphere> groupA, IEnumerable<Sphere> groupB)
+        private static bool ThouroughlyCheckNodesForCollision(Node a, Node b)
         {
-            foreach (var a in groupA)
+            foreach (var aLocalSphere in a.CollisionBody.Spheres)
             {
-                foreach (var b in groupB)
+                var aAbsSphere = GetSphereInAbsoluteCoordinates(a, aLocalSphere);
+                foreach (var bLocalSphere in b.CollisionBody.Spheres)
                 {
-                    if (ElementaryCollisions.AreSpheresColliding(a, b))
+                    var bAbsSphere = GetSphereInAbsoluteCoordinates(b, bLocalSphere);
+                    if (ElementaryCollisions.AreSpheresColliding(aAbsSphere, bAbsSphere))
                         return true;
                 }
             }
             return false;
         }
+
+        private static Sphere GetSphereInAbsoluteCoordinates(Node node, Sphere sphere) => new()
+        {
+            CenterPosition = sphere.CenterPosition + node.Position,
+            Radius = sphere.Radius
+        };
     }
 }

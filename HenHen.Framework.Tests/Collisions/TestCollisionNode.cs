@@ -12,8 +12,9 @@ namespace HenHen.Framework.Tests.Collisions
 {
     public class TestCollisionNode : Node
     {
-        public TestCollisionNode(Vector3 position, IEnumerable<Sphere> spheres)
+        public TestCollisionNode(int id, Vector3 position, IEnumerable<Sphere> spheres)
         {
+            Id = id;
             Position = position;
             CollisionBody = new CollisionBody(spheres);
         }

@@ -33,6 +33,6 @@ namespace HenHen.Framework.Collisions
             return maxDistance;
         }
 
-        public override string ToString() => $"{{CollisionBody: {Spheres}}}";
+        public override string ToString() => $"{{{nameof(Spheres)}: {string.Join(',', spheres)}}}";
     }
 }
