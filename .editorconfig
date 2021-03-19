@@ -69,3 +69,9 @@ dotnet_style_predefined_type_for_locals_parameters_members = true:warning
 
 #prefer no curly braces if allowed
 csharp_prefer_braces = false:warning
+
+# IDE0048: Add parentheses for clarity
+dotnet_diagnostic.IDE0048.severity = suggestion
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity
+dotnet_style_parentheses_in_other_operators = always_for_clarity
