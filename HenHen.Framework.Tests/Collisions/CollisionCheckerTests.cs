@@ -4,6 +4,7 @@
 
 using HenHen.Framework.Collisions;
 using HenHen.Framework.Numerics;
+using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -14,10 +15,102 @@ namespace HenHen.Framework.Tests.Collisions
 {
     public class CollisionCheckerTests
     {
+        private Medium[] mediums;
+
+        public static IEnumerable<(Node node, bool expected)> NodeInMediumsCases()
+        {
+            yield return (new TestCollisionNode(1, new Vector3(0, 0, 2), new Sphere[] { new() { Radius = 2 } }), false);
+            yield return (new TestCollisionNode(2, new Vector3(-1.5f, 0, 2.5f), new Sphere[]
+            { new() { Radius = 0.5f } }), true);
+            yield return (new TestCollisionNode(3, new Vector3(1.5f, 0, 4.5f), new Sphere[] { new() { Radius = 2 } }), false);
+            yield return (new TestCollisionNode(4, new Vector3(5.5f, 0, -2.5f), new Sphere[]
+                { new() { Radius = 0.5f } }), false);
+            yield return (new TestCollisionNode(5, new Vector3(0.5f, 0, 5.5f), new Sphere[]
+                { new() { Radius = 0.5f }, new() { Radius = 0.2f, CenterPosition = new Vector3(0.4f) } }), false);
+        }
+
+        [SetUp]
+        public void SetUpMediums()
+        {
+            mediums = new Medium[8];
+            mediums[0] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = new Vector3(1, 0, 0),
+                    B = new Vector3(4, 0, -2),
+                    C = new Vector3(1, 0, -2)
+                }
+            };
+            mediums[1] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = mediums[0].Triangle.A,
+                    B = new Vector3(3, 0, 2),
+                    C = mediums[0].Triangle.B
+                }
+            };
+            mediums[2] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = mediums[0].Triangle.C,
+                    B = new Vector3(-1, 0, -1),
+                    C = new Vector3(1, 0, 2)
+                }
+            };
+            mediums[3] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = mediums[2].Triangle.B,
+                    B = new Vector3(-2, 0, 1),
+                    C = mediums[2].Triangle.C
+                }
+            };
+            mediums[4] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = mediums[0].Triangle.A,
+                    B = mediums[2].Triangle.C,
+                    C = mediums[1].Triangle.B
+                }
+            };
+            mediums[5] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = mediums[3].Triangle.B,
+                    B = new Vector3(-2, 0, 4),
+                    C = mediums[2].Triangle.C
+                }
+            };
+            mediums[6] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = mediums[5].Triangle.C,
+                    B = mediums[5].Triangle.B,
+                    C = new Vector3(1, 0, 8)
+                }
+            };
+            mediums[7] = new Medium
+            {
+                Triangle = new Triangle3
+                {
+                    A = new Vector3(1.0001f, 0, 2),
+                    B = mediums[6].Triangle.B,
+                    C = mediums[1].Triangle.B
+                }
+            };
+        }
+
         [Test]
         public void CheckNodeCollisionsTest()
         {
-            var tc = new NodeCollisionTestCase();
+            var tc = new NodeCollisionTestManager();
             {
                 var a = new TestCollisionNode(1, new Vector3(), new[] { new Sphere { Radius = 1 } });
                 var b = new TestCollisionNode(2, new Vector3(1.5f, 0, 1.5f), new[] { new Sphere { Radius = 1.5f } });
@@ -43,10 +136,10 @@ namespace HenHen.Framework.Tests.Collisions
             }
         }
 
-        [Test]
-        public void IsNodeContainedInMediumsTest() => Assert.Inconclusive("Test not implemented");
+        [TestCaseSource(nameof(NodeInMediumsCases))]
+        public void IsNodeContainedInMediumsTest((Node node, bool expected) tc) => Assert.AreEqual(tc.expected, CollisionChecker.IsNodeContainedInMediums(tc.node, mediums), $"Node id: {tc.node.Id}");
 
-        public class NodeCollisionTestCase
+        private class NodeCollisionTestManager
         {
             private readonly HashSet<(Node a, Node b)> expectedCollisions = new();
             private readonly List<Node> nodes = new();

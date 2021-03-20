@@ -62,9 +62,10 @@ namespace HenHen.Framework.Collisions
             if (node.CollisionBody is null)
                 return IsPointContainedInMediums(node.Position.ToTopDownPoint(), mediums);
 
-            foreach (var sphere in node.CollisionBody.Spheres)
+            foreach (var localSphere in node.CollisionBody.Spheres)
             {
-                if (!IsCircleContainedInMediums(sphere.ToTopDownCircle(), mediums))
+                var absSphere = GetSphereInAbsoluteCoordinates(node, localSphere);
+                if (!IsCircleContainedInMediums(absSphere.ToTopDownCircle(), mediums))
                     return false;
             }
             return true;
@@ -100,18 +101,23 @@ namespace HenHen.Framework.Collisions
 
         private static bool IsCircleContainedInMediums(Circle circle, IEnumerable<Medium> mediums)
         {
-            const float pointsPerUnit = 20;
-            var pointsAmount = (int)(pointsPerUnit * circle.Area);
+            const float pointsPerSquareUnit = 50;
+            var pointsAmount = (int)(pointsPerSquareUnit * circle.Area);
             foreach (var point in SunflowerPoints(circle, pointsAmount))
             {
+                var pointContained = false;
                 foreach (var medium in mediums)
                 {
                     if (ElementaryCollisions.IsPointInTriangle(point, medium.Triangle.ToTopDownTriangle()))
-                        continue;
+                    {
+                        pointContained = true;
+                        break;
+                    }
                 }
 
                 // if no triangles contain this point, the circle is not contained in any medium
-                return false;
+                if (!pointContained)
+                    return false;
             }
             return true;
         }
