@@ -16,6 +16,12 @@ namespace HenHen.Framework.Worlds.Nodes
 
         public void Simulate(TimeSpan duration) => Simulation(duration);
 
+        public override string ToString() => $"{GetType().Name}:{{" +
+            $"{nameof(Id)}:{Id}," +
+            $"{nameof(Position)}:{Position}," +
+            $"{nameof(CollisionBody)}:{CollisionBody}" +
+            $"}}";
+
         protected virtual void Simulation(TimeSpan duration)
         {
         }
