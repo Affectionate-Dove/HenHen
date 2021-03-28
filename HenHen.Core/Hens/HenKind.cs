@@ -2,19 +2,16 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Collisions;
+
 namespace HenHen.Core.Hens
 {
-    public class Hen
+    /// <summary>
+    /// Describes a kind ("breed") of a Hen.
+    /// </summary>
+    public record HenKind
     {
-        public int Id;
-        public int Health;
-        public HenStatistics Statistics;
-        public HenType Type;
-        public string Kind { get; }
-    }
-
-    public enum HenType
-    {
-        PROWADZACY, STUDENT, POMOCNIK
+        public string Name { get; init; }
+        public CollisionBody CollisionBody { get; init; }
     }
 }

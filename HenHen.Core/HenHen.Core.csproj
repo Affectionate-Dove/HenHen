@@ -6,4 +6,8 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HenHen.Framework\HenHen.Framework.csproj" />
+  </ItemGroup>
+
 </Project>
