@@ -12,5 +12,5 @@ namespace HenHen.Core.Worlds.Plants
         int MaxFruits,
         int FruitGrowthDuration,
         int FruitGrowthDurationVariance,
-        IReadOnlyList<string> Seasons);
+        IReadOnlyList<string> Seasons) : PlantBreed(Name, GrowthStagesDuration, GrowthStagesDurationVariance);
 }

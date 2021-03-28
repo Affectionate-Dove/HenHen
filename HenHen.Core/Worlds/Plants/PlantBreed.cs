@@ -6,9 +6,7 @@ using System.Collections.Generic;
 
 namespace HenHen.Core.Worlds.Plants
 {
-    public record FlowerBreed(string Name,
+    public record PlantBreed(string Name,
         IReadOnlyList<int> GrowthStagesDuration,
-        IReadOnlyList<int> GrowthStagesDurationVariance,
-        IReadOnlyList<(int amount, int chance)> DropAmount,
-        IReadOnlyList<string> PossibleSeasons) : PlantBreed(Name, GrowthStagesDuration, GrowthStagesDurationVariance);
+        IReadOnlyList<int> GrowthStagesDurationVariance);
 }
