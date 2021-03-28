@@ -52,7 +52,7 @@ namespace HenHen.Framework.Worlds.PathFinding
         public void DisconnectSymmetrically(PathNode other)
         {
             connections.Remove(other);
-            other.connections.Remove(other);
+            other.connections.Remove(this);
         }
 
         /// <summary>
