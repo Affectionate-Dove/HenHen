@@ -14,16 +14,16 @@ namespace HenHen.Core.Worlds.Plants
         public Flower(FlowerBreed breed) : base(breed)
         {
             var random = new Random();
-            var randomPoint = random.NextDouble();
-            var currentEndPoint = 0.0;
+            var currentEndPoint = 0;
             var suma = 0.0;
             for (var i = 0; i < breed.DropAmount.Count; i++)
             {
                 suma += breed.DropAmount[i].chance;
             }
+            var randomPoint = random.NextDouble() * suma;
             for (var i = 0; i < breed.DropAmount.Count; i++)
             {
-                currentEndPoint += (breed.DropAmount[i].chance / suma);
+                currentEndPoint += breed.DropAmount[i].chance;
                 if (randomPoint <= currentEndPoint)
                 {
                     DropAmount = breed.DropAmount[i].amount;
