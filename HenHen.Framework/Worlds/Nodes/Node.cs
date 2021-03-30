@@ -14,7 +14,7 @@ namespace HenHen.Framework.Worlds.Nodes
         public int Id { get; set; }
         public Vector3 Position { get; set; }
 
-        virtual public void OnCollision(Node a)
+        public virtual void OnCollision(Node a)
         {
         }
 
