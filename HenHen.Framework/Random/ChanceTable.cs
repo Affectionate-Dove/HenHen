@@ -7,23 +7,24 @@ using System.Linq;
 
 namespace HenHen.Framework.Random
 {
-    public record ChanceTable<T>(IReadOnlyList<ChanceTableEntry<T>> Entries)
+    public record ChanceTable<T>(IReadOnlyCollection<ChanceTableEntry<T>> Entries)
     {
-        private static readonly System.Random random = new System.Random();
+        private static readonly System.Random random = new();
+
         public T GetRandom()
         {
             var currentEndPoint = 0;
             var sum = Entries.Sum(entry => entry.Chance);
             var randomPoint = random.NextDouble() * sum;
-            for (var i = 0; i < Entries.Count; i++)
+
+            foreach (var entry in Entries)
             {
-                currentEndPoint += Entries[i].Chance;
-                if (randomPoint <= currentEndPoint)
-                {
-                    return Entries[i].Value;
-                }
+                currentEndPoint += entry.Chance;
+                if (randomPoint < currentEndPoint)
+                    return entry.Value;
             }
-            throw new System.Exception("Couldn't pick random value.");
+
+            throw new System.Exception("Couldn't pick a random value.");
         }
     }
 }
