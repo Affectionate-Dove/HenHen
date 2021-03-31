@@ -1,4 +1,9 @@
-﻿using HenHen.Framework.Input;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Input;
+using HenHen.Framework.IO.Stores;
 using HenHen.Framework.Screens;
 using System.Numerics;
 using static Raylib_cs.Raylib;
@@ -7,26 +12,41 @@ namespace HenHen.Framework
 {
     public class Game
     {
+        private static TextureStore textureStore;
+        private static InputManager inputManager;
+        private static ModelStore modelStore;
+
+        public static TextureStore TextureStore => textureStore;
+        public static InputManager InputManager => inputManager;
+        public static ModelStore ModelStore => modelStore;
+
         public Window Window { get; }
-
         public ScreenStack ScreenStack { get; }
-
-        public InputManager InputManager { get; }
 
         public Game()
         {
-            Window = new Window(new Vector2(600, 400), "HenHen");
-            InputManager = CreateInputManager();
+            Window = new Window(new Vector2(1280, 680), "HenHen");
+            inputManager = CreateInputManager();
             ScreenStack = new ScreenStack();
+            textureStore = new TextureStore();
+            modelStore = new ModelStore();
         }
-
-        protected virtual InputManager CreateInputManager() => new InputManager();
 
         /// <param name="timeDelta">In seconds.</param>
         public void Loop(float timeDelta)
         {
             Update(timeDelta);
             Draw();
+        }
+
+        protected virtual InputManager CreateInputManager() => new();
+
+        protected virtual void OnUpdate()
+        {
+        }
+
+        protected virtual void OnRender()
+        {
         }
 
         private void Draw()
@@ -45,14 +65,6 @@ namespace HenHen.Framework
             ScreenStack.Update();
             InputManager.Update(timeDelta);
             OnUpdate();
-        }
-
-        protected virtual void OnUpdate()
-        {
-        }
-
-        protected virtual void OnRender()
-        {
         }
     }
 }

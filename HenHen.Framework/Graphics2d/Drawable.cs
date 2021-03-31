@@ -1,10 +1,15 @@
-﻿using System;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using System;
 using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d
 {
     public abstract class Drawable
     {
+        public IContainer Parent;
         public Vector2 Offset { get; set; }
         public Axes RelativePositionAxes { get; set; }
 
@@ -13,10 +18,42 @@ namespace HenHen.Framework.Graphics2d
 
         public Vector2 Anchor { get; set; }
         public Vector2 Origin { get; set; }
-
-        public IContainer Parent;
-
         public DrawableLayoutInfo LayoutInfo { get; private set; }
+
+        public void Update()
+        {
+            PreUpdate();
+            UpdateLayout();
+            PostUpdate();
+        }
+
+        public void Render() => OnRender();
+
+        protected virtual Vector2 ComputeRenderSize()
+        {
+            var size = Size;
+            if (Parent is null)
+                return size;
+
+            if (RelativeSizeAxes.HasFlag(Axes.X))
+                size.X *= Parent.ContainerLayoutInfo.ChildrenRenderSize.X;
+            if (RelativeSizeAxes.HasFlag(Axes.Y))
+                size.Y *= Parent.ContainerLayoutInfo.ChildrenRenderSize.Y;
+
+            return size;
+        }
+
+        protected virtual void PreUpdate()
+        {
+        }
+
+        protected virtual void PostUpdate()
+        {
+        }
+
+        protected virtual void OnRender()
+        {
+        }
 
         private Vector2 ComputeLocalPosition()
         {
@@ -41,29 +78,6 @@ namespace HenHen.Framework.Graphics2d
             return pos;
         }
 
-        protected virtual Vector2 ComputeRenderSize()
-        {
-            var size = Size;
-            if (Parent is null)
-                return size;
-
-            if (RelativeSizeAxes.HasFlag(Axes.X))
-                size.X *= Parent.ContainerLayoutInfo.ChildrenRenderSize.X;
-            if (RelativeSizeAxes.HasFlag(Axes.Y))
-                size.Y *= Parent.ContainerLayoutInfo.ChildrenRenderSize.Y;
-
-            return size;
-        }
-
-        public void Update()
-        {
-            PreUpdate();
-            UpdateLayout();
-            PostUpdate();
-        }
-
-        protected virtual void PreUpdate() { }
-
         private void UpdateLayout()
         {
             var localPos = ComputeLocalPosition();
@@ -74,16 +88,6 @@ namespace HenHen.Framework.Graphics2d
                 RenderPosition = ComputeRenderPosition(localPos),
                 RenderSize = ComputeRenderSize()
             };
-        }
-
-        protected virtual void PostUpdate()
-        {
-        }
-
-        public void Render() => OnRender();
-
-        protected virtual void OnRender()
-        {
         }
     }
 
