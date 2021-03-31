@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Graphics2d;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
 using HenHen.Framework.UI;
 using System;
@@ -50,7 +54,8 @@ namespace HenHen.Framework.VisualTests
 
             var rightContainer = new Container
             {
-                Padding = new MarginPadding { Left = 200 }
+                Padding = new MarginPadding { Left = 200 },
+                RelativeSizeAxes = Axes.Both
             };
             AddChild(rightContainer);
             rightContainer.AddChild(scenesContainer = new ScreenStack
@@ -65,7 +70,7 @@ namespace HenHen.Framework.VisualTests
         protected override void PostUpdate()
         {
             base.PostUpdate();
-            if (sceneIndex < sceneTypes.Count - 1 && (scenesContainer.CurrentScreen as VisualTestScene).IsSceneDone)
+            if (Game.InputManager.IsKeyPressed(Input.KeyboardKey.KEY_PAGE_DOWN) || (sceneIndex < sceneTypes.Count - 1 && (scenesContainer.CurrentScreen as VisualTestScene).IsSceneDone))
             {
                 scenesContainer.Pop();
                 sceneIndex++;
@@ -75,13 +80,13 @@ namespace HenHen.Framework.VisualTests
 
         private class TestSceneButton : Button
         {
+            public Type Type { get; }
+
             public TestSceneButton(Type type)
             {
                 Type = type;
                 Text = type.Name;
             }
-
-            public Type Type { get; }
         }
     }
 }

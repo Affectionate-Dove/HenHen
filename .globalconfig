@@ -1,0 +1,75 @@
+# Top level entry required to mark this as a global AnalyzerConfig file
+is_global = true
+
+# NOTE: No section headers for configuration entries
+
+#### Diagnostic configuration ####
+
+# CA1000: Do not declare static members on generic types
+dotnet_diagnostic.CA1000.severity = warning
+
+#### Core EditorConfig Options ####
+
+# License header
+file_header_template = Copyright (c) Affectionate Dove <contact@affectionatedove.com>.\nLicensed under the Affectionate Dove Limited Code Viewing License.\nSee the LICENSE file in the repository root for full license text.
+dotnet_diagnostic.IDE0073.severity = warning
+
+# Indentation and spacing
+indent_size = 4
+indent_style = space
+tab_width = 4
+
+# Expression-bodied members
+csharp_style_expression_bodied_accessors = when_on_single_line:suggestion
+csharp_style_expression_bodied_constructors = when_on_single_line:suggestion
+csharp_style_expression_bodied_indexers = when_on_single_line:suggestion
+csharp_style_expression_bodied_lambdas = when_on_single_line:suggestion
+csharp_style_expression_bodied_local_functions = when_on_single_line:suggestion
+csharp_style_expression_bodied_methods = when_on_single_line:warning
+csharp_style_expression_bodied_operators = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = when_on_single_line:suggestion
+
+# New line preferences
+end_of_line = crlf
+insert_final_newline = false
+
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = warning
+
+# IDE0011: Add braces
+csharp_prefer_braces = false:warning
+
+# IDE0040: Require accessibility modifier
+# dotnet_style_require_accessibility_modifiers = always
+dotnet_diagnostic.IDE0040.severity = warning
+
+
+# Style - implicit and explicit types
+
+# prefer var over explicit type in all cases, unless overridden by another code style rule
+csharp_style_var_elsewhere = true:warning
+# prefer var is used to declare variables with built-in system types such as int
+csharp_style_var_for_built_in_types = true:warning
+# prefer var when the type is already mentioned on the right-hand side of a declaration expression
+csharp_style_var_when_type_is_apparent = true:warning
+
+
+#Style - Pattern matching
+
+#prefer pattern matching instead of is expression with type casts
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+# IDE0090: Use 'new(...)'
+csharp_style_implicit_object_creation_when_type_is_apparent = true
+dotnet_diagnostic.IDE0090.severity = suggestion
+
+
+#Style - language keyword and framework type options
+
+#prefer the language keyword for local variables, method parameters, and class members, instead of the type name, for types that have a keyword to represent them
+dotnet_style_predefined_type_for_locals_parameters_members = true:warning
+
+#Style - Code block preferences
+
+#prefer no curly braces if allowed
+csharp_prefer_braces = false:warning

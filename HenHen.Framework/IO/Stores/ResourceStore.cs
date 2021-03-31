@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using System.Collections.Generic;
 
 namespace HenHen.Framework.IO.Stores
 {
@@ -6,12 +10,22 @@ namespace HenHen.Framework.IO.Stores
     {
         private readonly List<string> loadedAssetsNames = new();
 
-        public abstract void Load();
+        public void Load(string assetName)
+        {
+            if (IsLoaded(assetName))
+                throw new System.Exception();
+
+            loadedAssetsNames.Add(assetName);
+            LoadInternal(assetName);
+        }
 
         public void Unload(string assetName)
         {
             if (IsLoaded(assetName))
-                UnloadInternal();
+            {
+                UnloadInternal(assetName);
+                loadedAssetsNames.Remove(assetName);
+            }
             else
                 throw new System.Exception();
         }
@@ -23,13 +37,15 @@ namespace HenHen.Framework.IO.Stores
         public T Get(string assetName)
         {
             if (IsLoaded(assetName))
-                return GetInternal();
+                return GetInternal(assetName);
             else
                 throw new System.Exception();
         }
 
-        protected abstract void UnloadInternal();
+        protected abstract void LoadInternal(string assetName);
 
-        protected abstract T GetInternal();
+        protected abstract void UnloadInternal(string assetName);
+
+        protected abstract T GetInternal(string assetName);
     }
 }

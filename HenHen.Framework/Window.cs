@@ -1,24 +1,19 @@
-﻿using System.Numerics;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using System.Numerics;
 
 namespace HenHen.Framework
 {
     public class Window
     {
-        public Window(Vector2 size, string title)
-        {
-            InitWindow(size, title);
-            TargetFPS = 60;
-        }
-
-        protected void InitWindow(Vector2 size, string title)
-        {
-            var x = (int)size.X;
-            var y = (int)size.Y;
-            this.size = new Vector2(x, y);
-            Raylib_cs.Raylib.InitWindow(x, y, title);
-        }
-
         private Vector2 size;
+
+        private string title;
+
+        private int targetFPS;
+
         public Vector2 Size
         {
             get => size;
@@ -31,7 +26,6 @@ namespace HenHen.Framework
             }
         }
 
-        private string title;
         public string Title
         {
             get => title;
@@ -42,7 +36,6 @@ namespace HenHen.Framework
             }
         }
 
-        private int targetFPS;
         public int TargetFPS
         {
             get => targetFPS;
@@ -51,6 +44,20 @@ namespace HenHen.Framework
                 targetFPS = value;
                 Raylib_cs.Raylib.SetTargetFPS(targetFPS);
             }
+        }
+
+        public Window(Vector2 size, string title)
+        {
+            InitWindow(size, title);
+            TargetFPS = 60;
+        }
+
+        protected void InitWindow(Vector2 size, string title)
+        {
+            var x = (int)size.X;
+            var y = (int)size.Y;
+            this.size = new Vector2(x, y);
+            Raylib_cs.Raylib.InitWindow(x, y, title);
         }
     }
 }

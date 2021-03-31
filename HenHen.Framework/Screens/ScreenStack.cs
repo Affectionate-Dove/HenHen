@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Graphics2d;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Graphics2d.Layouts;
 using System;
 using System.Collections.Generic;
@@ -8,33 +12,13 @@ namespace HenHen.Framework.Screens
 {
     public class ScreenStack : Drawable, IContainer<Screen>
     {
-        private readonly List<Screen> screens = new List<Screen>();
+        private readonly List<Screen> screens = new();
 
         public Screen CurrentScreen => screens.Count == 0 ? null : screens[^1];
 
         public IEnumerable<Screen> Children => screens;
 
         public ContainerLayoutInfo ContainerLayoutInfo { get; private set; }
-
-        private Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition;
-        private Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize;
-
-        protected override void PostUpdate()
-        {
-            ContainerLayoutInfo = new ContainerLayoutInfo
-            {
-                ChildrenRenderPosition = ComputeChildrenRenderPosition(),
-                ChildrenRenderSize = ComputeChildrenRenderSize()
-            };
-            base.PostUpdate();
-            CurrentScreen?.Update();
-        }
-
-        protected override void OnRender()
-        {
-            base.OnRender();
-            CurrentScreen?.Render();
-        }
 
         public void Push(Screen screen)
         {
@@ -54,6 +38,27 @@ namespace HenHen.Framework.Screens
             RewireEventObserving(prev);
         }
 
+        protected override void PostUpdate()
+        {
+            ContainerLayoutInfo = new ContainerLayoutInfo
+            {
+                ChildrenRenderPosition = ComputeChildrenRenderPosition(),
+                ChildrenRenderSize = ComputeChildrenRenderSize()
+            };
+            base.PostUpdate();
+            CurrentScreen?.Update();
+        }
+
+        protected override void OnRender()
+        {
+            base.OnRender();
+            CurrentScreen?.Render();
+        }
+
+        private Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition;
+
+        private Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize;
+
         private void RewireEventObserving(Screen previous)
         {
             if (previous is not null)
@@ -69,6 +74,7 @@ namespace HenHen.Framework.Screens
         }
 
         private void OnScreenPushed(Screen nextScreen) => Push(nextScreen);
+
         private void OnScreenExited() => Pop();
     }
 }
