@@ -9,9 +9,5 @@ namespace HenHen.Core.Hens
     /// <summary>
     /// Describes a kind ("breed") of a Hen.
     /// </summary>
-    public record HenKind
-    {
-        public string Name { get; init; }
-        public CollisionBody CollisionBody { get; init; }
-    }
+    public record HenKind(string Name, Genome Genome, CollisionBody CollisionBody);
 }
