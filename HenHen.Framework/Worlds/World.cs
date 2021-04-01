@@ -2,22 +2,41 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Worlds.Chunks;
 using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
-using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace HenHen.Framework.Worlds
 {
     public class World
     {
-        public List<Medium> Mediums { get; } = new();
-        public List<Node> Nodes { get; } = new();
+        private readonly List<Medium> mediums = new();
+        private readonly List<Node> nodes = new();
 
-        public void Simulate(TimeSpan duration)
+        private readonly ChunksManager chunksManager = new(new Vector2(10, 10), 32);
+        public IReadOnlyCollection<Medium> Mediums => mediums;
+        public IReadOnlyCollection<Node> Nodes => nodes;
+
+        public object SynchronizedTime { get; private set; }
+
+        public void Simulate(object newTime)
         {
-            foreach (var node in Nodes)
-                node.Simulate(duration);
+            chunksManager.SimulateAllChunks(newTime);
+            SynchronizedTime = newTime;
+        }
+
+        public void AddNode(Node node)
+        {
+            nodes.Add(node);
+            chunksManager.RegisterNode(node);
+        }
+
+        public void AddMedium(Medium medium)
+        {
+            mediums.Add(medium);
+            chunksManager.RegisterMedium(medium);
         }
     }
 }
