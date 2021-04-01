@@ -8,7 +8,5 @@ namespace HenHen.Core.Hens
 {
     public class Hen : Node
     {
-        public int Health { get; set; }
-        public HenKind Kind { get; }
     }
 }
