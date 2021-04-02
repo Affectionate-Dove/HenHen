@@ -30,13 +30,33 @@ namespace HenHen.Framework.Worlds
         public void AddNode(Node node)
         {
             nodes.Add(node);
-            chunksManager.RegisterNode(node);
+            chunksManager.AddNode(node);
         }
 
         public void AddMedium(Medium medium)
         {
             mediums.Add(medium);
-            chunksManager.RegisterMedium(medium);
+            chunksManager.AddMedium(medium);
         }
+    }
+
+    public enum ChunkSimulationStrategy
+    {
+        /// <summary>
+        /// All the chunks in the world will be simulated.
+        /// </summary>
+        All,
+
+        /// <summary>
+        /// Only chunks in a circle will be simulated.
+        /// </summary>
+        BinaryCircle,
+
+        /// <summary>
+        /// Chunks in a given radius will be simulated,
+        /// and chunks outside of it will get gradually
+        /// less and longer simulation steps.
+        /// </summary>
+        FadingOutCircle
     }
 }

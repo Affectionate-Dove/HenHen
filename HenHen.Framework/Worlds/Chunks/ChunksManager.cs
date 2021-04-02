@@ -13,6 +13,9 @@ using System.Numerics;
 
 namespace HenHen.Framework.Worlds.Chunks
 {
+    /// <summary>
+    /// Used to manage <see cref="Chunk"/>s.
+    /// </summary>
     public class ChunksManager
     {
         private readonly ICollection<ChunkTransfer> nodeTransfers = new List<ChunkTransfer>();
@@ -20,7 +23,7 @@ namespace HenHen.Framework.Worlds.Chunks
 
         public IReadOnlyDictionary<Vector2, Chunk> Chunks { get; }
         public float ChunkSize { get; }
-        public int SynchronizedTime { get; private set; }
+        public object SynchronizedTime { get; private set; }
 
         /// <summary>
         /// When simulating a chunk that wasn't simulated
@@ -50,7 +53,7 @@ namespace HenHen.Framework.Worlds.Chunks
                 for (var y = 0; y < chunkCount.Y; y++)
                 {
                     var chunkPosition = new Vector2(x, y);
-                    chunks.Add(chunkPosition, new Chunk(chunkPosition, chunkSize));
+                    chunks.Add(chunkPosition, new Chunk(chunkPosition, this));
                 }
             }
 
@@ -58,16 +61,16 @@ namespace HenHen.Framework.Worlds.Chunks
             ChunkSize = chunkSize;
         }
 
-        public void RegisterNode(Node node)
+        public void AddNode(Node node)
         {
             var targetChunk = GetChunkForPosition(node.Position.ToTopDownPoint());
-            targetChunk.Nodes.Add(node);
+            targetChunk.AddNode(node);
         }
 
-        public void RegisterMedium(Medium medium)
+        public void AddMedium(Medium medium)
         {
             foreach (var chunk in GetChunksForMedium(medium))
-                chunk.Mediums.Add(medium);
+                chunk.AddMedium(medium);
         }
 
         public Chunk GetChunkForPosition(Vector2 position) => Chunks[GetChunkIndexForPosition(position)];
@@ -80,7 +83,7 @@ namespace HenHen.Framework.Worlds.Chunks
 
         public IEnumerable<Chunk> GetChunksForMedium(Medium medium)
         {
-            var vertexEnumerator = EnumerateMediumTopDownVertices(medium).GetEnumerator();
+            var vertexEnumerator = EnumerateTopDownVerticesOfMedium(medium).GetEnumerator();
             vertexEnumerator.MoveNext();
             var vertex = vertexEnumerator.Current;
             var mostLeftPos = vertex.X;
@@ -106,25 +109,21 @@ namespace HenHen.Framework.Worlds.Chunks
             }
         }
 
-        public void SimulateChunk(Chunk chunk, object newTime)
-        {
-            foreach (var node in chunk.Nodes)
-            {
-                node.Simulate(newTime);
-                var targetChunk = GetChunkForPosition(node.Position.ToTopDownPoint());
-                nodeTransfers.Add(new ChunkTransfer { Node = node, From = chunk, To = targetChunk });
-            }
-            chunk.SynchronizedTime = SynchronizedTime;
-        }
-
         public void PerformTransfers()
         {
             foreach (var transfer in nodeTransfers)
             {
-                transfer.From.Nodes.Remove(transfer.Node);
-                transfer.To.Nodes.Add(transfer.Node);
+                transfer.From.RemoveNode(transfer.Node);
+                transfer.To.AddNode(transfer.Node);
             }
             nodeTransfers.Clear();
+        }
+
+        public void SimulateChunk(Chunk chunk, object newTime)
+        {
+            // TODO: implement MaxSimulationStepTimeSpan
+            foreach (var nodeTransfer in chunk.SimulateChunk(newTime))
+                nodeTransfers.Add(nodeTransfer);
         }
 
         public void SimulateAllChunks(object newTime)
@@ -133,6 +132,12 @@ namespace HenHen.Framework.Worlds.Chunks
                 SimulateChunk(chunk, newTime);
         }
 
+        /// <summary>
+        /// Simulates all <see cref="Chunks"/> that have their center
+        /// in the specified <paramref name="circle"/>.
+        /// </summary>
+        /// <param name="circle"></param>
+        /// <param name="newTime"></param>
         public void SimulateChunksInCircle(Circle circle, object newTime)
         {
             var bottomLeft = circle.CenterPosition - new Vector2(circle.Radius);
@@ -154,38 +159,11 @@ namespace HenHen.Framework.Worlds.Chunks
             }
         }
 
-        private static IEnumerable<Vector2> EnumerateMediumTopDownVertices(Medium medium)
+        private static IEnumerable<Vector2> EnumerateTopDownVerticesOfMedium(Medium medium)
         {
             yield return medium.Triangle.A.ToTopDownPoint();
             yield return medium.Triangle.B.ToTopDownPoint();
             yield return medium.Triangle.C.ToTopDownPoint();
         }
-
-        private struct ChunkTransfer
-        {
-            public Node Node { get; init; }
-            public Chunk From { get; init; }
-            public Chunk To { get; init; }
-        }
-    }
-
-    public enum ChunkSimulationStrategy
-    {
-        /// <summary>
-        /// All the chunks in the world will be simulated.
-        /// </summary>
-        All,
-
-        /// <summary>
-        /// Only chunks in a circle will be simulated.
-        /// </summary>
-        BinaryCircle,
-
-        /// <summary>
-        /// Chunks in a given radius will be simulated,
-        /// and chunks outside of it will get gradually
-        /// less and longer simulation steps.
-        /// </summary>
-        FadingOutCircle
     }
 }
