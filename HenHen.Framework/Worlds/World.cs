@@ -14,13 +14,18 @@ namespace HenHen.Framework.Worlds
     {
         public List<Medium> Mediums { get; } = new();
         public List<Node> Nodes { get; } = new();
-        protected ICollisionHandler CollisionHandler { get; } = new WorldCollisionHandler();
 
         public void Simulate(TimeSpan duration)
         {
             foreach (var node in Nodes)
                 node.Simulate(duration);
-            CollisionChecker.CheckNodeCollisions(Nodes, CollisionHandler);
+            CollisionChecker.CheckNodeCollisions(Nodes, OnNodesCollision);
+        }
+
+        protected virtual void OnNodesCollision(Node a, Node b)
+        {
+            a.OnCollision(b);
+            b.OnCollision(a);
         }
     }
 }
