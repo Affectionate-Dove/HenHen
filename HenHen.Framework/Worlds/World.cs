@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Collisions;
 using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
 using System;
@@ -18,6 +19,13 @@ namespace HenHen.Framework.Worlds
         {
             foreach (var node in Nodes)
                 node.Simulate(duration);
+            CollisionChecker.CheckNodeCollisions(Nodes, OnNodesCollision);
+        }
+
+        protected virtual void OnNodesCollision(Node a, Node b)
+        {
+            a.OnCollision(b);
+            b.OnCollision(a);
         }
     }
 }
