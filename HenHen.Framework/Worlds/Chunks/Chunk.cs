@@ -19,8 +19,8 @@ namespace HenHen.Framework.Worlds.Chunks
 
         public Vector2 Index { get; }
         public ChunksManager Manager { get; }
-        public IReadOnlyCollection<Medium> Mediums => mediums;
-        public IReadOnlyCollection<Node> Nodes => nodes;
+        public IReadOnlyList<Medium> Mediums => mediums;
+        public IReadOnlyList<Node> Nodes => nodes;
         public object SynchronizedTime { get; private set; }
         public RectangleF Coordinates { get; }
 

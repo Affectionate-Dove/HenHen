@@ -2,7 +2,6 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Collisions;
 using HenHen.Framework.Extensions;
 using HenHen.Framework.Numerics;
 using HenHen.Framework.Worlds.Mediums;
@@ -18,29 +17,11 @@ namespace HenHen.Framework.Worlds.Chunks
     /// </summary>
     public class ChunksManager
     {
-        private readonly ICollection<ChunkTransfer> nodeTransfers = new List<ChunkTransfer>();
-        private int maxSimulationStepTimeSpan = 1;
-
         public IReadOnlyDictionary<Vector2, Chunk> Chunks { get; }
         public float ChunkSize { get; }
         public object SynchronizedTime { get; private set; }
 
-        /// <summary>
-        /// When simulating a chunk that wasn't simulated
-        /// for a long duration, if the duration exceeds
-        /// this value, it gets subdivided into more steps.
-        /// If set to 0, this functionality is disabled.
-        /// </summary>
-        public int MaxSimulationStepTimeSpan
-        {
-            get => maxSimulationStepTimeSpan;
-            set
-            {
-                if (value < 0)
-                    throw new Exception("Cannot be less than 0.");
-                maxSimulationStepTimeSpan = value;
-            }
-        }
+        public ChunkSimulationManager SimulationManager { get; }
 
         public ChunksManager(Vector2 chunkCount, float chunkSize)
         {
@@ -59,6 +40,7 @@ namespace HenHen.Framework.Worlds.Chunks
 
             Chunks = chunks;
             ChunkSize = chunkSize;
+            SimulationManager = new(this);
         }
 
         public void AddNode(Node node)
@@ -75,13 +57,22 @@ namespace HenHen.Framework.Worlds.Chunks
 
         public Chunk GetChunkForPosition(Vector2 position) => Chunks[GetChunkIndexForPosition(position)];
 
-        public Vector2 GetChunkIndexForPosition(Vector2 position)
+        public IEnumerable<Chunk> GetChunks(RectangleF rectangle)
+        {
+            for (var x = rectangle.Left; x <= rectangle.Right; x += ChunkSize)
+            {
+                for (var y = rectangle.Bottom; y <= rectangle.Top; y += ChunkSize)
+                    yield return GetChunkForPosition(new Vector2(x, y));
+            }
+        }
+
+        protected Vector2 GetChunkIndexForPosition(Vector2 position)
         {
             var chunkIndex = position / ChunkSize;
             return new Vector2((int)chunkIndex.X, (int)chunkIndex.Y);
         }
 
-        public IEnumerable<Chunk> GetChunksForMedium(Medium medium)
+        protected IEnumerable<Chunk> GetChunksForMedium(Medium medium)
         {
             var vertexEnumerator = EnumerateTopDownVerticesOfMedium(medium).GetEnumerator();
             vertexEnumerator.MoveNext();
@@ -106,56 +97,6 @@ namespace HenHen.Framework.Worlds.Chunks
                     var chunkIndex = new Vector2(x, y);
                     yield return Chunks[chunkIndex];
                 }
-            }
-        }
-
-        public void PerformTransfers()
-        {
-            foreach (var transfer in nodeTransfers)
-            {
-                transfer.From.RemoveNode(transfer.Node);
-                transfer.To.AddNode(transfer.Node);
-            }
-            nodeTransfers.Clear();
-        }
-
-        public void SimulateChunk(Chunk chunk, object newTime)
-        {
-            // TODO: implement MaxSimulationStepTimeSpan
-            foreach (var nodeTransfer in chunk.SimulateChunk(newTime))
-                nodeTransfers.Add(nodeTransfer);
-        }
-
-        public void SimulateAllChunks(object newTime)
-        {
-            foreach (var chunk in Chunks.Values)
-                SimulateChunk(chunk, newTime);
-        }
-
-        /// <summary>
-        /// Simulates all <see cref="Chunks"/> that have their center
-        /// in the specified <paramref name="circle"/>.
-        /// </summary>
-        /// <param name="circle"></param>
-        /// <param name="newTime"></param>
-        public void SimulateChunksInCircle(Circle circle, object newTime)
-        {
-            var bottomLeft = circle.CenterPosition - new Vector2(circle.Radius);
-            var topRight = circle.CenterPosition + new Vector2(circle.Radius);
-            var rect = new RectangleF { Left = bottomLeft.X, Right = topRight.X, Top = topRight.Y, Bottom = bottomLeft.Y };
-            foreach (var chunk in GetChunks(rect))
-            {
-                if (ElementaryCollisions.IsPointInCircle(chunk.Coordinates.Center, circle))
-                    SimulateChunk(chunk, newTime);
-            }
-        }
-
-        public IEnumerable<Chunk> GetChunks(RectangleF rectangle)
-        {
-            for (var x = rectangle.Left; x <= rectangle.Right; x += ChunkSize)
-            {
-                for (var y = rectangle.Bottom; y <= rectangle.Top; y += ChunkSize)
-                    yield return GetChunkForPosition(new Vector2(x, y));
             }
         }
 

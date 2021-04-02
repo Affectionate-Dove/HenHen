@@ -23,7 +23,7 @@ namespace HenHen.Framework.Worlds
 
         public void Simulate(object newTime)
         {
-            chunksManager.SimulateAllChunks(newTime);
+            chunksManager.SimulationManager.SimulateAllChunks(newTime);
             SynchronizedTime = newTime;
         }
 
