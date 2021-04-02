@@ -38,6 +38,12 @@ namespace HenHen.Framework.Worlds
             mediums.Add(medium);
             chunksManager.AddMedium(medium);
         }
+
+        protected virtual void OnNodesCollision(Node a, Node b)
+        {
+            a.OnCollision(b);
+            b.OnCollision(a);
+        }
     }
 
     public enum ChunkSimulationStrategy

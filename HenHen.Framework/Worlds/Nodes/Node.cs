@@ -12,7 +12,11 @@ namespace HenHen.Framework.Worlds.Nodes
         public CollisionBody CollisionBody { get; set; }
         public int Id { get; set; }
         public Vector3 Position { get; set; }
-        public object? SynchronizedTime { get; private set; }
+        public object SynchronizedTime { get; private set; }
+
+        public virtual void OnCollision(Node a)
+        {
+        }
 
         public void Simulate(object newTime)
         {
