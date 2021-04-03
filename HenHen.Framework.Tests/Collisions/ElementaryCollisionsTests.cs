@@ -69,6 +69,24 @@ namespace HenHen.Framework.Tests.Collisions
             (new Sphere{ CenterPosition = new Vector3(0, 0, 1), Radius = 0.999f }, new Sphere{ CenterPosition = new Vector3(0, 0, -1), Radius = 1 }, false),
         };
 
+        private static IEnumerable<(RectangleF a, RectangleF b, bool expected)> RectanglesTestCases => new[]
+        {
+            (new RectangleF(-2, -1, 1, 2), new RectangleF(0, 2, -2, 0), false),
+            (new RectangleF(-2, -1, 1, 2), new RectangleF(-2, 2, -2, 0), false),
+            (new RectangleF(-2, -1, 1, 2), new RectangleF(-2, 2, -2, 2), true),
+            (new RectangleF(-2, 2, -2, 2), new RectangleF(-1, 1, -1, 1), true),
+            (new RectangleF(-2, 2, -2, 2), new RectangleF(2, 3, -3, -2), true),
+        };
+
+        private static IEnumerable<(Box a, Box b, bool expected)> BoxesTestCases => new[]
+        {
+            (new Box(-2, -1, 1, 2, -2, -1), new Box(0, 2, -2, 0, 0, 2), false),
+            (new Box(-2, -1, 1, 2, -2, -1), new Box(-2, 2, -2, 0, 0, 2), false),
+            (new Box(-2, -1, 1, 2, -2, -1), new Box(-2, 2, -2, 2, -3, 0), true),
+            (new Box(-2, 2, -2, 2, -2, 2), new Box(-1, 1, -1, 1, -1, 1), true),
+            (new Box(-2, 2, -2, 2, -2, 2), new Box(2, 3, -3, -2, -3, -2), true),
+        };
+
         [TestCaseSource(nameof(PointCircleTestCases))]
         public void IsPointInCircleTest((Vector2 point, Circle circle, bool expected) testCase) => Assert.AreEqual(testCase.expected, ElementaryCollisions.IsPointInCircle(testCase.point, testCase.circle));
 
@@ -83,5 +101,11 @@ namespace HenHen.Framework.Tests.Collisions
 
         [TestCaseSource(nameof(SpheresTestCases))]
         public void AreSpheresCollidingTest((Sphere a, Sphere b, bool expected) testCase) => Assert.AreEqual(testCase.expected, ElementaryCollisions.AreSpheresColliding(testCase.a, testCase.b));
+
+        [TestCaseSource(nameof(RectanglesTestCases))]
+        public void AreRectanglesCollidingTest((RectangleF a, RectangleF b, bool expected) testCase) => Assert.AreEqual(testCase.expected, ElementaryCollisions.AreRectanglesColliding(testCase.a, testCase.b));
+
+        [TestCaseSource(nameof(BoxesTestCases))]
+        public void AreBoxesCollidingTest((Box a, Box b, bool expected) testCase) => Assert.AreEqual(testCase.expected, ElementaryCollisions.AreBoxesColliding(testCase.a, testCase.b));
     }
 }

@@ -14,6 +14,7 @@ namespace HenHen.Framework.Collisions
         private readonly Sphere[] spheres;
 
         public Sphere ContainingSphere { get; }
+        public Box BoundingBox { get; }
 
         public IReadOnlyCollection<Sphere> Spheres => spheres;
 
@@ -23,6 +24,22 @@ namespace HenHen.Framework.Collisions
             if (this.spheres.Length == 0)
                 throw new ArgumentException($"Must contain at least 1 sphere to create a {nameof(CollisionBody)}", nameof(spheres));
             ContainingSphere = new Sphere { Radius = GetFarthestDistanceFromCenter(spheres) };
+            BoundingBox = CreateBoundingBox(spheres);
+        }
+
+        private static Box CreateBoundingBox(IEnumerable<Sphere> spheres)
+        {
+            var box = new Box();
+            foreach (var sphere in spheres)
+            {
+                box.Left = Math.Min(box.Left, sphere.CenterPosition.X - sphere.Radius);
+                box.Right = Math.Max(box.Right, sphere.CenterPosition.X + sphere.Radius);
+                box.Bottom = Math.Min(box.Bottom, sphere.CenterPosition.Y - sphere.Radius);
+                box.Top = Math.Max(box.Top, sphere.CenterPosition.Y + sphere.Radius);
+                box.Back = Math.Min(box.Back, sphere.CenterPosition.Z - sphere.Radius);
+                box.Front = Math.Max(box.Front, sphere.CenterPosition.Z + sphere.Radius);
+            }
+            return box;
         }
 
         private static float GetFarthestDistanceFromCenter(IEnumerable<Sphere> spheres)

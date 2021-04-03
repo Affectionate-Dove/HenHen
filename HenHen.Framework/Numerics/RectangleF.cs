@@ -74,6 +74,14 @@ namespace HenHen.Framework.Numerics
             }
         }
 
+        public RectangleF(float left, float right, float bottom, float top)
+        {
+            Left = left;
+            Right = right;
+            Bottom = bottom;
+            Top = top;
+        }
+
         public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
     }
 }
