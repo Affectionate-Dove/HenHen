@@ -6,8 +6,10 @@ using HenHen.Framework.Numerics;
 using HenHen.Framework.Tests.Collisions;
 using HenHen.Framework.Worlds.Chunks;
 using HenHen.Framework.Worlds.Mediums;
+using HenHen.Framework.Worlds.Nodes;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -61,12 +63,32 @@ namespace HenHen.Framework.Tests.Worlds.Chunks
         {
             var chunk = CreateChunk();
             chunk.AddMedium(CreateMedium());
-            var node = CreateNode();
-            chunk.AddNode(node);
-            Assert.IsTrue(chunk.Nodes.Contains(node));
-            Assert.IsTrue(!chunk.Simulate(null).Contains(node));
-            node.Position = new Vector3();
-            Assert.IsTrue(chunk.Simulate(null).Contains(node));
+            var node1 = CreateNode();
+            var node2 = CreateNode();
+            chunk.AddNode(node1);
+            chunk.AddNode(node2);
+            Assert.IsTrue(chunk.Nodes.Contains(node1));
+            Assert.IsTrue(chunk.Nodes.Contains(node2));
+            var returnedNodes = new List<Node>();
+            returnedNodes.AddRange(chunk.Simulate(null));
+            Assert.IsFalse(returnedNodes.Contains(node1));
+            Assert.IsFalse(returnedNodes.Contains(node2));
+            node1.Position = new Vector3();
+            returnedNodes.Clear();
+            returnedNodes.AddRange(chunk.Simulate(null));
+            Assert.IsTrue(returnedNodes.Contains(node1));
+            Assert.IsFalse(returnedNodes.Contains(node2));
+            chunk.RemoveNode(node1);
+            node2.Position = new Vector3(257, 0, 129);
+            returnedNodes.Clear();
+            returnedNodes.AddRange(chunk.Simulate(null));
+            Assert.IsFalse(returnedNodes.Contains(node1));
+            Assert.IsTrue(returnedNodes.Contains(node2));
+            chunk.RemoveNode(node2);
+            returnedNodes.Clear();
+            returnedNodes.AddRange(chunk.Simulate(null));
+            Assert.IsFalse(returnedNodes.Contains(node1));
+            Assert.IsFalse(returnedNodes.Contains(node2));
         }
 
         private static Medium CreateMedium() => new()

@@ -2,6 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using System.Numerics;
+
 namespace HenHen.Framework.Numerics
 {
     public struct Box
@@ -27,6 +29,8 @@ namespace HenHen.Framework.Numerics
             Back = back;
             Front = front;
         }
+
+        public static Box operator +(Box box, Vector3 v) => new(box.Left + v.X, box.Right + v.X, box.Bottom + v.Y, box.Top + v.Y, box.Back + v.Z, box.Front + v.Z);
 
         public RectangleF ToTopDownRectangle() => new()
         {
