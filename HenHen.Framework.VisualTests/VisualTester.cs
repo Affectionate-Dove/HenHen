@@ -3,54 +3,40 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Graphics2d;
+using HenHen.Framework.Input;
 using HenHen.Framework.Screens;
 using HenHen.Framework.UI;
+using HenHen.Framework.VisualTests.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace HenHen.Framework.VisualTests
 {
-    public class VisualTester : Screen
+    public class VisualTester : Screen, IInputListener<VisualTesterControls>
     {
         private readonly FillFlowContainer scenesList;
         private readonly ScreenStack scenesContainer;
         private readonly List<Type> sceneTypes;
+        private readonly List<TestSceneButton> buttons;
+        private readonly VisualTesterInputActionHandler inputActionHandler;
         private int sceneIndex;
 
         public VisualTester()
         {
+            inputActionHandler = new VisualTesterInputActionHandler(Game.InputManager);
+            inputActionHandler.Propagator.Listeners.Add(this);
             RelativeSizeAxes = Axes.Both;
-            var leftContainer = new Container
-            {
-                RelativeSizeAxes = Axes.Y,
-                Size = new System.Numerics.Vector2(200, 1),
-            };
+
+            scenesList = CreateScenesList();
+            scenesContainer = new ScreenStack { RelativeSizeAxes = Axes.Both };
+            var leftContainer = CreateLeftContainer();
             AddChild(leftContainer);
-            leftContainer.AddChild(new Rectangle { RelativeSizeAxes = Axes.Both, Color = new ColorInfo(40, 40, 40) });
-            leftContainer.AddChild(scenesList = new FillFlowContainer
-            {
-                RelativeSizeAxes = Axes.Y,
-                Size = new System.Numerics.Vector2(200, 1),
-                Padding = new MarginPadding { Horizontal = 5, Vertical = 5 },
-                Spacing = 5,
-                Direction = Direction.Vertical
-            });
 
             sceneTypes = new List<Type>();
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
-            {
-                if (type.IsSubclassOf(typeof(VisualTestScene)))
-                {
-                    sceneTypes.Add(type);
-                    scenesList.AddChild(new TestSceneButton(type)
-                    {
-                        RelativeSizeAxes = Axes.X,
-                        Size = new System.Numerics.Vector2(1, 20),
-                        Color = new ColorInfo(60, 60, 60)
-                    });
-                }
-            }
+            buttons = new List<TestSceneButton>();
+            CreateAndAddButtons();
 
             var rightContainer = new Container
             {
@@ -58,28 +44,118 @@ namespace HenHen.Framework.VisualTests
                 RelativeSizeAxes = Axes.Both
             };
             AddChild(rightContainer);
-            rightContainer.AddChild(scenesContainer = new ScreenStack
-            {
-                RelativeSizeAxes = Axes.Both
-            });
+            rightContainer.AddChild(scenesContainer);
 
             if (sceneTypes.Count > 0)
                 scenesContainer.Push(Activator.CreateInstance(sceneTypes[sceneIndex]) as VisualTestScene);
+            UpdateButtonsColors();
+        }
+
+        public bool OnActionPressed(VisualTesterControls action)
+        {
+            if (action == VisualTesterControls.NextScene)
+                sceneIndex++;
+            else if (action == VisualTesterControls.PreviousScene)
+                sceneIndex--;
+            else
+                return false;
+
+            ChangeScene();
+            return true;
+        }
+
+        public void OnActionReleased(VisualTesterControls action)
+        {
         }
 
         protected override void PostUpdate()
         {
             base.PostUpdate();
-            if (Game.InputManager.IsKeyPressed(Input.KeyboardKey.KEY_PAGE_DOWN) || (sceneIndex < sceneTypes.Count - 1 && (scenesContainer.CurrentScreen as VisualTestScene).IsSceneDone))
+            if (sceneIndex < sceneTypes.Count - 1 && (scenesContainer.CurrentScreen as VisualTestScene).IsSceneDone)
             {
-                scenesContainer.Pop();
                 sceneIndex++;
-                scenesContainer.Push(Activator.CreateInstance(sceneTypes[sceneIndex]) as VisualTestScene);
+                ChangeScene();
+            }
+            inputActionHandler.Update();
+        }
+
+        private static FillFlowContainer CreateScenesList() => new()
+        {
+            RelativeSizeAxes = Axes.Y,
+            Size = new System.Numerics.Vector2(200, 1),
+            Padding = new MarginPadding { Horizontal = 5, Vertical = 5 },
+            Spacing = 5,
+            Direction = Direction.Vertical
+        };
+
+        private void CreateAndAddButtons()
+        {
+            var visualTestSceneTypes = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(type => type.IsSubclassOf(typeof(VisualTestScene)));
+
+            foreach (var type in visualTestSceneTypes)
+            {
+                sceneTypes.Add(type);
+                var button = new TestSceneButton(type)
+                {
+                    RelativeSizeAxes = Axes.X,
+                    Size = new System.Numerics.Vector2(1, 20)
+                };
+                scenesList.AddChild(button);
+                buttons.Add(button);
+            }
+        }
+
+        private Container CreateLeftContainer()
+        {
+            var leftContainer = new Container
+            {
+                RelativeSizeAxes = Axes.Y,
+                Size = new System.Numerics.Vector2(200, 1),
+            };
+            leftContainer.AddChild(new Rectangle
+            {
+                RelativeSizeAxes = Axes.Both,
+                Color = new ColorInfo(40, 40, 40)
+            });
+            leftContainer.AddChild(scenesList);
+
+            return leftContainer;
+        }
+
+        private void ChangeScene()
+        {
+            if (sceneTypes.Count == 0)
+                return; // take no action if there are no test scenes
+
+            // make sure the index is valid (loop around)
+            if (sceneIndex >= sceneTypes.Count)
+                sceneIndex = 0;
+            else if (sceneIndex < 0)
+                sceneIndex = sceneTypes.Count - 1;
+
+            scenesContainer.Pop();
+            scenesContainer.Push(Activator.CreateInstance(sceneTypes[sceneIndex]) as VisualTestScene);
+            UpdateButtonsColors();
+        }
+
+        private void UpdateButtonsColors()
+        {
+            foreach (var button in buttons)
+            {
+                Console.WriteLine(button.Type.Name);
+                if (button.Type == sceneTypes[sceneIndex])
+                    button.Highlight();
+                else
+                    button.Unhighlight();
             }
         }
 
         private class TestSceneButton : Button
         {
+            private static readonly ColorInfo highlightColor = new(100, 100, 100);
+            private static readonly ColorInfo defaultColor = new(60, 60, 60);
+
             public Type Type { get; }
 
             public TestSceneButton(Type type)
@@ -87,6 +163,10 @@ namespace HenHen.Framework.VisualTests
                 Type = type;
                 Text = type.Name;
             }
+
+            public void Highlight() => Color = highlightColor;
+
+            public void Unhighlight() => Color = defaultColor;
         }
     }
 }
