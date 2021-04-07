@@ -25,6 +25,10 @@ namespace HenHen.Framework.Worlds.Chunks
             ChunkSize = chunkSize;
         }
 
+        /// <remarks>
+        /// Will return an index even if
+        /// there is no chunk at that index.
+        /// </remarks>
         public Vector2 GetChunkIndexForPosition(Vector2 position) => new((int)(position.X / ChunkSize), (int)(position.Y / ChunkSize));
 
         public Chunk GetChunkForPosition(Vector2 position) => Chunks[GetChunkIndexForPosition(position)];
@@ -69,7 +73,7 @@ namespace HenHen.Framework.Worlds.Chunks
                 yield return GetChunkForPosition(node.Position.ToTopDownPoint());
                 yield break;
             }
-            var rect = node.CollisionBody.BoundingBox.ToTopDownRectangle();
+            var rect = (node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle();
             var bottomLeft = GetChunkIndexForPosition(new Vector2(rect.Left, rect.Bottom));
             var topRight = GetChunkIndexForPosition(new Vector2(rect.Right, rect.Top));
             for (var x = bottomLeft.X; x <= topRight.X; x++)
@@ -97,9 +101,9 @@ namespace HenHen.Framework.Worlds.Chunks
             }
             var bottomLeftChunkIndex = GetChunkIndexForPosition(new Vector2(mostLeftPos, mostDownPos));
             var topRightChunkIndex = GetChunkIndexForPosition(new Vector2(mostRightPos, mostUpPos));
-            for (var x = (int)bottomLeftChunkIndex.X; x < topRightChunkIndex.X; x++)
+            for (var x = (int)bottomLeftChunkIndex.X; x <= topRightChunkIndex.X; x++)
             {
-                for (var y = (int)bottomLeftChunkIndex.Y; y < topRightChunkIndex.Y; y++)
+                for (var y = (int)bottomLeftChunkIndex.Y; y <= topRightChunkIndex.Y; y++)
                 {
                     var chunkIndex = new Vector2(x, y);
                     yield return Chunks[chunkIndex];
