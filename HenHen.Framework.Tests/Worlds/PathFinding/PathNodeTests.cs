@@ -20,9 +20,26 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
         {
             PathNode a = new PathNode();
             PathNode b = new PathNode();
-            a.ConnectAsymmetrically(b);
+            a.ConnectAsymmetrically(b, true);
             Assert.IsTrue(a.Connections.Contains(b));
             Assert.IsFalse(b.Connections.Contains(a));
+
+            a.DisconnectAsymmetrically(b);
+            b.ConnectAsymmetrically(a);
+            a.ConnectAsymmetrically(b, true);
+            Assert.IsTrue(a.Connections.Contains(b));
+            Assert.IsFalse(b.Connections.Contains(a));
+
+            a.DisconnectAsymmetrically(b);
+            a.ConnectAsymmetrically(b, false);
+            Assert.IsTrue(a.Connections.Contains(b));
+            Assert.IsFalse(b.Connections.Contains(a));
+
+            a.DisconnectAsymmetrically(b);
+            b.ConnectAsymmetrically(a);
+            a.ConnectAsymmetrically(b, false);
+            Assert.IsTrue(a.Connections.Contains(b));
+            Assert.IsTrue(b.Connections.Contains(a));
         }
 
         [Test]
@@ -49,12 +66,6 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
             a.DisconnectAsymmetrically(b);
             Assert.IsFalse(a.Connections.Contains(b));
             Assert.IsTrue(b.Connections.Contains(a));
-            b.ConnectSymmetrically(a);
-            Assert.IsTrue(b.Connections.Contains(a));
-            Assert.IsTrue(a.Connections.Contains(b));
-            b.DisconnectAsymmetrically(a);
-            Assert.IsFalse(b.Connections.Contains(a));
-            Assert.IsTrue(a.Connections.Contains(b));
         }
     }
 }
