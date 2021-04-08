@@ -13,9 +13,13 @@ namespace HenHen.Framework.Worlds.PathFinding
 
         public void Update()
         {
-            if (i == Pathfinders.Count) i = 0;
+            if (i == Pathfinders.Count)
+                i = 0;
             Pathfinders[i].Update();
-            i++;
+            if (Pathfinders[i].State.HasFlag(PathfindingState.Finished))
+                Pathfinders.RemoveAt(i);
+            else
+                i++;
         }
     }
 }
