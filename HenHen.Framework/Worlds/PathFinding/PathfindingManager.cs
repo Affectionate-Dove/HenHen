@@ -13,6 +13,8 @@ namespace HenHen.Framework.Worlds.PathFinding
 
         public void Update()
         {
+            if (Pathfinders.Count == 0)
+                return;
             if (i == Pathfinders.Count)
                 i = 0;
             Pathfinders[i].Update();
