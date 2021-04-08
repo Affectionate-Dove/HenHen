@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Worlds.PathFinding;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Worlds.PathFinding;
 using NUnit.Framework;
 
 namespace HenHen.Framework.Tests.Worlds.PathFinding
@@ -8,8 +12,8 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
         [Test]
         public void ConnectSymmetricallyTest()
         {
-            PathNode a = new PathNode();
-            PathNode b = new PathNode();
+            var a = new PathNode();
+            var b = new PathNode();
             a.ConnectSymmetrically(b);
             Assert.IsTrue(a.Connections.Contains(b));
             Assert.IsTrue(b.Connections.Contains(a));
@@ -18,8 +22,8 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
         [Test]
         public void ConnectAsymmetricallyTest()
         {
-            PathNode a = new PathNode();
-            PathNode b = new PathNode();
+            var a = new PathNode();
+            var b = new PathNode();
             a.ConnectAsymmetrically(b, true);
             Assert.IsTrue(a.Connections.Contains(b));
             Assert.IsFalse(b.Connections.Contains(a));
@@ -45,8 +49,8 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
         [Test]
         public void DisconnectSymmetricallyTest()
         {
-            PathNode a = new PathNode();
-            PathNode b = new PathNode();
+            var a = new PathNode();
+            var b = new PathNode();
             a.ConnectSymmetrically(b);
             Assert.IsTrue(a.Connections.Contains(b));
             Assert.IsTrue(b.Connections.Contains(a));
@@ -58,8 +62,8 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
         [Test]
         public void DisconnectAsymmetricallyTest()
         {
-            PathNode a = new PathNode();
-            PathNode b = new PathNode();
+            var a = new PathNode();
+            var b = new PathNode();
             a.ConnectSymmetrically(b);
             Assert.IsTrue(a.Connections.Contains(b));
             Assert.IsTrue(b.Connections.Contains(a));
