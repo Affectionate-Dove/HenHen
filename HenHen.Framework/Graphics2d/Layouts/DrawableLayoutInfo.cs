@@ -1,4 +1,8 @@
-﻿using HenHen.Framework.Numerics;
+﻿// Copyright (c) Affectionate Dove <contact@affectionatedove.com>.
+// Licensed under the Affectionate Dove Limited Code Viewing License.
+// See the LICENSE file in the repository root for full license text.
+
+using HenHen.Framework.Numerics;
 using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d
@@ -11,7 +15,7 @@ namespace HenHen.Framework.Graphics2d
 
         public Vector2 Origin { get; init; }
 
-        public RectangleF LocalRect => new RectangleF { TopLeft = LocalPosition, Size = RenderSize };
+        public RectangleF LocalRect => new() { TopLeft = LocalPosition, Size = RenderSize };
 
         public RectangleF RenderRect
         {
