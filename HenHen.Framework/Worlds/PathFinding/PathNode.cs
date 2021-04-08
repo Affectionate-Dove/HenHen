@@ -44,7 +44,7 @@ namespace HenHen.Framework.Worlds.PathFinding
         public void ConnectAsymmetrically(PathNode other, bool forceAsymmetry = true)
         {
             connections.Add(other);
-            if (!forceAsymmetry)
+            if (forceAsymmetry)
                 other.connections.Remove(this);
         }
 
@@ -56,7 +56,7 @@ namespace HenHen.Framework.Worlds.PathFinding
         public void DisconnectSymmetrically(PathNode other)
         {
             connections.Remove(other);
-            other.connections.Remove(other);
+            other.connections.Remove(this);
         }
 
         /// <summary>
