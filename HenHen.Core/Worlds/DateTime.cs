@@ -37,8 +37,8 @@ namespace HenHen.Core.Worlds
         public int Seconds { get => Get(ticks, ticks_in_second); set => ticks = Set(value, ticks_in_second); }
         public int Second => Seconds % seconds_in_minute;
 
-        private static int Get(int unit, int surroundingUnit) => (unit + (surroundingUnit - 1)) / surroundingUnit;
+        private static int Get(int unit, int surroundingUnit) => unit / surroundingUnit;
 
-        private static int Set(int unit, int surroundingUnit) => (unit * surroundingUnit) - (surroundingUnit - 1);
+        private static int Set(int unit, int surroundingUnit) => unit * surroundingUnit;
     }
 }
