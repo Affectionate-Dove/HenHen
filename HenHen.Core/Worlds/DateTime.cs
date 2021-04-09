@@ -39,6 +39,6 @@ namespace HenHen.Core.Worlds
 
         private static int Get(int unit, int surroundingUnit) => unit / surroundingUnit;
 
-        private static int Set(int unit, int surroundingUnit) => unit * surroundingUnit;
+        private static int Set(int unit, int surroundingUnit) => checked(unit * surroundingUnit);
     }
 }
