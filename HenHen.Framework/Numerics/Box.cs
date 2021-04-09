@@ -32,6 +32,12 @@ namespace HenHen.Framework.Numerics
 
         public static Box operator +(Box box, Vector3 v) => new(box.Left + v.X, box.Right + v.X, box.Bottom + v.Y, box.Top + v.Y, box.Back + v.Z, box.Front + v.Z);
 
+        public static Box operator *(Box box, Vector3 v) => new(box.Left * v.X, box.Right * v.X, box.Bottom * v.Y, box.Top * v.Y, box.Back * v.Z, box.Front * v.Z);
+
+        public static Box operator -(Box box, Vector3 v) => new(box.Left - v.X, box.Right - v.X, box.Bottom - v.Y, box.Top - v.Y, box.Back - v.Z, box.Front - v.Z);
+
+        public static Box operator /(Box box, Vector3 v) => new(box.Left / v.X, box.Right / v.X, box.Bottom / v.Y, box.Top / v.Y, box.Back / v.Z, box.Front / v.Z);
+
         public RectangleF ToTopDownRectangle() => new()
         {
             Left = Left,
