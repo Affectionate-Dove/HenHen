@@ -12,12 +12,13 @@ namespace HenHen.Framework.Worlds
 {
     public class World
     {
+        private readonly List<Node> nodes = new();
         public List<Medium> Mediums { get; } = new();
-        public List<Node> Nodes { get; } = new();
+        public IReadOnlyList<Node> Nodes => nodes;
 
         public void AddNode(Node node)
         {
-            Nodes.Add(node);
+            nodes.Add(node);
             node.NodeEjected += OnNodeEjected;
         }
 
