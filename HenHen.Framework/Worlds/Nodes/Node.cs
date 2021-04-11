@@ -20,7 +20,7 @@ namespace HenHen.Framework.Worlds.Nodes
         {
         }
 
-        public void Simulate(TimeSpan duration) => Simulation(duration);
+        public void Simulate(double duration) => Simulation(duration);
 
         public override string ToString() => $"{GetType().Name}:{{" +
             $"{nameof(Id)}:{Id}," +
@@ -30,7 +30,7 @@ namespace HenHen.Framework.Worlds.Nodes
 
         protected void EjectNode(Node node) => NodeEjected?.Invoke(node);
 
-        protected virtual void Simulation(TimeSpan duration)
+        protected virtual void Simulation(double duration)
         {
         }
     }

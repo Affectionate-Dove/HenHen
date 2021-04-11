@@ -5,7 +5,6 @@
 using HenHen.Framework.Collisions;
 using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
-using System;
 using System.Collections.Generic;
 
 namespace HenHen.Framework.Worlds
@@ -22,7 +21,7 @@ namespace HenHen.Framework.Worlds
             node.NodeEjected += OnNodeEjected;
         }
 
-        public void Simulate(TimeSpan duration)
+        public void Simulate(double duration)
         {
             foreach (var node in Nodes)
                 node.Simulate(duration);
