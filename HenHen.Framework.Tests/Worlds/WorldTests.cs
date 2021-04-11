@@ -36,5 +36,17 @@ namespace HenHen.Framework.Tests.Worlds
             Assert.IsTrue(node1.CollisionRecord.Contains(node2));
             Assert.IsTrue(node2.CollisionRecord.Contains(node1));
         }
+
+        [Test]
+        public void OnNodeEjectedTest()
+        {
+            var world = new World();
+            var node = new TestCollisionNode(1, new Vector3(), new[] { new Sphere { Radius = 2 } });
+            world.AddNode(node);
+            Assert.IsTrue(world.Nodes.Contains(node));
+            var node1 = new TestCollisionNode(1, new Vector3(), new[] { new Sphere { Radius = 2 } });
+            node.EjectNewNode(node1);
+            Assert.IsTrue(world.Nodes.Contains(node1));
+        }
     }
 }
