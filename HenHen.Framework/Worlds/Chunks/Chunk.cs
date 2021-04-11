@@ -46,7 +46,7 @@ namespace HenHen.Framework.Worlds.Chunks
         public Vector2 Index { get; }
         public RectangleF Coordinates { get; }
 
-        public object SynchronizedTime { get; private set; }
+        public double SynchronizedTime { get; private set; }
 
         public Chunk(Vector2 index, float size)
         {
@@ -62,20 +62,21 @@ namespace HenHen.Framework.Worlds.Chunks
         }
 
         /// <summary>
-        /// Simulates all <see cref="Nodes"/> in this <see cref="Chunk"/>.
+        /// Simulates <see cref="Nodes"/> in this <see cref="Chunk"/>.
         /// </summary>
         /// <returns>
-        /// All <see cref="Node"/>s that aren't fully contained inside
-        /// this <see cref="Chunk"/>'s boundaries
+        /// Each simulated <see cref="Node"/>
         /// after the process of simulation.
         /// </returns>
         public IEnumerable<Node> Simulate(double newTime)
         {
+            if (newTime < SynchronizedTime)
+                throw new ArgumentOutOfRangeException(nameof(newTime), $"New time has to be greater than or equal to {nameof(SynchronizedTime)}");
+
             foreach (var node in Nodes)
             {
                 node.Simulate(newTime);
-                if (!IsRectFullyInside((node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle()))
-                    yield return node;
+                yield return node;
             }
             SynchronizedTime = newTime;
         }
@@ -102,10 +103,5 @@ namespace HenHen.Framework.Worlds.Chunks
             if (!nodesHashSet.Remove(node))
                 throw new InvalidOperationException($"The {nameof(node)} was in {nameof(nodesList)} but wasn't in {nameof(nodesHashSet)}.");
         }
-
-        private bool IsRectFullyInside(RectangleF rect) => rect.Left > Coordinates.Left
-            && rect.Right < Coordinates.Right
-            && rect.Top < Coordinates.Top
-            && rect.Bottom > Coordinates.Bottom;
     }
 }
