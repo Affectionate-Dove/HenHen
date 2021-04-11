@@ -11,6 +11,17 @@ namespace HenHen.Framework.Worlds.Chunks
         public IReadOnlyCollection<SimulationRingConfiguration> Rings { get; init; } = new List<SimulationRingConfiguration>();
 
         public ChunksSimulationStrategyType StrategyType { get; init; }
+
+        /// <summary>
+        /// Creates a strategy for simulating all chunks at once.
+        /// </summary>
+        public ChunksSimulationStrategy() => StrategyType = ChunksSimulationStrategyType.All;
+
+        public ChunksSimulationStrategy(ChunksSimulationStrategyType strategyType, IReadOnlyCollection<SimulationRingConfiguration> rings)
+        {
+            Rings = rings;
+            StrategyType = strategyType;
+        }
     }
 
     public enum ChunksSimulationStrategyType

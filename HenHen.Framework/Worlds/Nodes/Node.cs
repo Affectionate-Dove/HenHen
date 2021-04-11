@@ -16,11 +16,17 @@ namespace HenHen.Framework.Worlds.Nodes
         public int Id { get; set; }
         public Vector3 Position { get; set; }
 
+        public double SynchronizedTime { get; private set; }
+
         public virtual void OnCollision(Node a)
         {
         }
 
-        public void Simulate(double duration) => Simulation(duration);
+        public void Simulate(double newTime)
+        {
+            Simulation(newTime - SynchronizedTime);
+            SynchronizedTime = newTime;
+        }
 
         public override string ToString() => $"{GetType().Name}:{{" +
             $"{nameof(Id)}:{Id}," +

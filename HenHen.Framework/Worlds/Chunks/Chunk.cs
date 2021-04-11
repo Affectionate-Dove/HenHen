@@ -7,6 +7,7 @@ using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace HenHen.Framework.Worlds.Chunks
@@ -74,11 +75,10 @@ namespace HenHen.Framework.Worlds.Chunks
             if (newTime < SynchronizedTime)
                 throw new ArgumentOutOfRangeException(nameof(newTime), $"New time has to be greater or equal to {nameof(SynchronizedTime)}");
 
-            foreach (var node in Nodes)
+            foreach (var node in Nodes.Where(node => node.SynchronizedTime != newTime))
             {
                 node.Simulate(newTime);
-                if (!IsRectFullyInside((node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle()))
-                    yield return node;
+                yield return node;
             }
             SynchronizedTime = newTime;
         }
@@ -105,10 +105,5 @@ namespace HenHen.Framework.Worlds.Chunks
             if (!nodesHashSet.Remove(node))
                 throw new InvalidOperationException($"The {nameof(node)} was in {nameof(nodesList)} but wasn't in {nameof(nodesHashSet)}.");
         }
-
-        private bool IsRectFullyInside(RectangleF rect) => rect.Left > Coordinates.Left
-            && rect.Right < Coordinates.Right
-            && rect.Top < Coordinates.Top
-            && rect.Bottom > Coordinates.Bottom;
     }
 }

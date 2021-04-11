@@ -20,11 +20,14 @@ namespace HenHen.Framework.Worlds.Chunks
     {
         public IReadOnlyDictionary<Vector2, Chunk> Chunks { get; }
         public float ChunkSize { get; }
+        public ChunksSimulationManager SimulationManager { get; }
 
         public ChunksManager(Vector2 chunkCount, float chunkSize)
         {
             Chunks = CreateChunks(chunkCount, chunkSize);
             ChunkSize = chunkSize;
+
+            SimulationManager = CreateSimulationManager();
         }
 
         /// <remarks>
@@ -68,6 +71,20 @@ namespace HenHen.Framework.Worlds.Chunks
             }
         }
 
+        public IEnumerable<Chunk> GetChunksForNode(Node node)
+        {
+            if (node.CollisionBody is null)
+            {
+                yield return GetChunkForPosition(node.Position.ToTopDownPoint());
+                yield break;
+            }
+            var rect = (node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle();
+            foreach (var chunk in GetChunksForRectangle(rect))
+                yield return chunk;
+        }
+
+        protected virtual ChunksSimulationManager CreateSimulationManager() => new(this);
+
         private static Dictionary<Vector2, Chunk> CreateChunks(Vector2 chunkCount, float chunkSize)
         {
             var chunks = new Dictionary<Vector2, Chunk>((int)(chunkCount.X * chunkCount.Y));
@@ -87,18 +104,6 @@ namespace HenHen.Framework.Worlds.Chunks
             yield return medium.Triangle.A.ToTopDownPoint();
             yield return medium.Triangle.B.ToTopDownPoint();
             yield return medium.Triangle.C.ToTopDownPoint();
-        }
-
-        private IEnumerable<Chunk> GetChunksForNode(Node node)
-        {
-            if (node.CollisionBody is null)
-            {
-                yield return GetChunkForPosition(node.Position.ToTopDownPoint());
-                yield break;
-            }
-            var rect = (node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle();
-            foreach (var chunk in GetChunksForRectangle(rect))
-                yield return chunk;
         }
 
         private IEnumerable<Chunk> GetChunksForMedium(Medium medium)
