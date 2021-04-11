@@ -4,6 +4,7 @@
 
 using HenHen.Framework.UI;
 using HenHen.Framework.Worlds;
+using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d.Worlds
 {
@@ -20,7 +21,11 @@ namespace HenHen.Framework.Graphics2d.Worlds
             });
             AddChild(new SpriteText
             {
-                Text = "Placeholder"
+                Text = "Placeholder",
+                Anchor = new Vector2(0.5f),
+                Origin = new Vector2(0.5f),
+                RelativeSizeAxes = Axes.Both,
+                AlignMiddle = true
             });
             World = world;
         }
