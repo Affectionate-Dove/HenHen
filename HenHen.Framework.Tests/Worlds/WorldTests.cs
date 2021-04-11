@@ -7,7 +7,6 @@ using HenHen.Framework.Tests.Collisions;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Mediums;
 using NUnit.Framework;
-using System;
 using System.Numerics;
 
 namespace HenHen.Framework.Tests.Worlds
@@ -32,7 +31,7 @@ namespace HenHen.Framework.Tests.Worlds
                 }
             };
             world.Mediums.Add(medium);
-            world.Simulate(TimeSpan.FromSeconds(0.01));
+            world.Simulate(0.01);
             Assert.IsTrue(node1.CollisionRecord.Contains(node2));
             Assert.IsTrue(node2.CollisionRecord.Contains(node1));
         }

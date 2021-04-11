@@ -46,7 +46,7 @@ namespace HenHen.Framework.Worlds.Chunks
         public Vector2 Index { get; }
         public RectangleF Coordinates { get; }
 
-        public object SynchronizedTime { get; private set; }
+        public double SynchronizedTime { get; private set; }
 
         public Chunk(Vector2 index, float size)
         {
@@ -69,11 +69,14 @@ namespace HenHen.Framework.Worlds.Chunks
         /// this <see cref="Chunk"/>'s boundaries
         /// after the process of simulation.
         /// </returns>
-        public IEnumerable<Node> Simulate(object newTime)
+        public IEnumerable<Node> Simulate(double newTime)
         {
+            if (newTime < SynchronizedTime)
+                throw new ArgumentOutOfRangeException(nameof(newTime), $"New time has to be greater or equal to {nameof(SynchronizedTime)}");
+
             foreach (var node in Nodes)
             {
-                node.Simulate(new TimeSpan());
+                node.Simulate(newTime);
                 if (!IsRectFullyInside((node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle()))
                     yield return node;
             }

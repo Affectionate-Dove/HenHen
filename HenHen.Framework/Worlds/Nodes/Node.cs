@@ -3,7 +3,6 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Collisions;
-using System;
 using System.Numerics;
 
 namespace HenHen.Framework.Worlds.Nodes
@@ -18,7 +17,7 @@ namespace HenHen.Framework.Worlds.Nodes
         {
         }
 
-        public void Simulate(TimeSpan duration) => Simulation(duration);
+        public void Simulate(double duration) => Simulation(duration);
 
         public override string ToString() => $"{GetType().Name}:{{" +
             $"{nameof(Id)}:{Id}," +
@@ -26,7 +25,7 @@ namespace HenHen.Framework.Worlds.Nodes
             $"{nameof(CollisionBody)}:{CollisionBody}" +
             $"}}";
 
-        protected virtual void Simulation(TimeSpan duration)
+        protected virtual void Simulation(double duration)
         {
         }
     }
