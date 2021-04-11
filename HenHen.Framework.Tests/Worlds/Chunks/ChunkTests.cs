@@ -71,24 +71,8 @@ namespace HenHen.Framework.Tests.Worlds.Chunks
             Assert.IsTrue(chunk.Nodes.Contains(node2));
             var returnedNodes = new List<Node>();
             returnedNodes.AddRange(chunk.Simulate(1));
-            Assert.IsFalse(returnedNodes.Contains(node1));
-            Assert.IsFalse(returnedNodes.Contains(node2));
-            node1.Position = new Vector3();
-            returnedNodes.Clear();
-            returnedNodes.AddRange(chunk.Simulate(1));
             Assert.IsTrue(returnedNodes.Contains(node1));
-            Assert.IsFalse(returnedNodes.Contains(node2));
-            chunk.RemoveNode(node1);
-            node2.Position = new Vector3(257, 0, 129);
-            returnedNodes.Clear();
-            returnedNodes.AddRange(chunk.Simulate(1));
-            Assert.IsFalse(returnedNodes.Contains(node1));
             Assert.IsTrue(returnedNodes.Contains(node2));
-            chunk.RemoveNode(node2);
-            returnedNodes.Clear();
-            returnedNodes.AddRange(chunk.Simulate(1));
-            Assert.IsFalse(returnedNodes.Contains(node1));
-            Assert.IsFalse(returnedNodes.Contains(node2));
         }
 
         private static Medium CreateMedium() => new()
