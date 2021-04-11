@@ -10,6 +10,8 @@ namespace HenHen.Framework.Worlds.Nodes
 {
     public abstract class Node
     {
+        public event Action<Node> NodeEjected;
+
         public CollisionBody CollisionBody { get; set; }
         public int Id { get; set; }
         public Vector3 Position { get; set; }
@@ -25,6 +27,8 @@ namespace HenHen.Framework.Worlds.Nodes
             $"{nameof(Position)}:{Position}," +
             $"{nameof(CollisionBody)}:{CollisionBody}" +
             $"}}";
+
+        protected void EjectNode(Node node) => NodeEjected?.Invoke(node);
 
         protected virtual void Simulation(TimeSpan duration)
         {

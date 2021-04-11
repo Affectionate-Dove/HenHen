@@ -15,6 +15,12 @@ namespace HenHen.Framework.Worlds
         public List<Medium> Mediums { get; } = new();
         public List<Node> Nodes { get; } = new();
 
+        public void AddNode(Node node)
+        {
+            Nodes.Add(node);
+            node.NodeEjected += OnNodeEjected;
+        }
+
         public void Simulate(TimeSpan duration)
         {
             foreach (var node in Nodes)
@@ -27,5 +33,7 @@ namespace HenHen.Framework.Worlds
             a.OnCollision(b);
             b.OnCollision(a);
         }
+
+        private void OnNodeEjected(Node node) => AddNode(node);
     }
 }
