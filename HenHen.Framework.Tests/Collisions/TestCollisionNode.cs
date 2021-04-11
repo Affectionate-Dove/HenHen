@@ -27,9 +27,6 @@ namespace HenHen.Framework.Tests.Collisions
             CollisionRecord.Add(other);
         }
 
-        public void EjectNewNode(Node node)
-        {
-            EjectNode(node);
-        }
+        public void EjectNewNode(Node node) => EjectNode(node);
     }
 }

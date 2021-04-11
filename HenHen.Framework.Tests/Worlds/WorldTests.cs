@@ -8,6 +8,7 @@ using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Mediums;
 using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Numerics;
 
 namespace HenHen.Framework.Tests.Worlds
@@ -19,9 +20,9 @@ namespace HenHen.Framework.Tests.Worlds
         {
             var world = new World();
             var node1 = new TestCollisionNode(1, new Vector3(), new[] { new Sphere { Radius = 2 } });
-            world.Nodes.Add(node1);
+            world.AddNode(node1);
             var node2 = new TestCollisionNode(2, new Vector3(), new[] { new Sphere { Radius = 1 } });
-            world.Nodes.Add(node2);
+            world.AddNode(node2);
             var medium = new Medium
             {
                 Triangle = new Triangle3
