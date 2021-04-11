@@ -69,11 +69,11 @@ namespace HenHen.Framework.Worlds.Chunks
         /// this <see cref="Chunk"/>'s boundaries
         /// after the process of simulation.
         /// </returns>
-        public IEnumerable<Node> Simulate(object newTime)
+        public IEnumerable<Node> Simulate(double newTime)
         {
             foreach (var node in Nodes)
             {
-                node.Simulate(new TimeSpan());
+                node.Simulate(newTime);
                 if (!IsRectFullyInside((node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle()))
                     yield return node;
             }
