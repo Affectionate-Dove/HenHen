@@ -2,11 +2,16 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using System;
+
 namespace HenHen.Core.Worlds
 {
     public struct DateTime
     {
         public int ticks;
+        private const double season_at_year_start = 0.5;
+        private const int seasons_in_year = 4;
+        private const int months_in_season = 2;
         private const int months_in_year = 8;
         private const int weeks_in_month = 4;
         private const int days_in_week = 6;
@@ -15,70 +20,83 @@ namespace HenHen.Core.Worlds
         private const int seconds_in_minute = 60;
         private const int ticks_in_second = 60;
 
-        public int Years
+        public double Years
         {
-            get => Get(Months, months_in_year);
-            set => Months = Set(value, months_in_year);
+            get => GetFromBeginning(Months, months_in_year);
+            set => Months = SetFromBeginning(value, months_in_year);
         }
 
-        public int Months
+        public double Months
         {
-            get => Get(Weeks, weeks_in_month);
-            set => Weeks = Set(value, weeks_in_month);
+            get => GetFromBeginning(Weeks, weeks_in_month);
+            set => Weeks = SetFromBeginning(value, weeks_in_month);
         }
 
-        public int Month => Months % months_in_year;
+        public int Month => GetInSurroundingUnit(Months, months_in_year, 1);
 
-        public int Seasons => (Months + 1) / 2;
-        public int Season => Seasons % 4;
-
-        public int Weeks
+        public int Season
         {
-            get => Get(Days, days_in_week);
-            set => Days = Set(value, days_in_week);
+            get
+            {
+                var seasons = Months / months_in_season;
+                var offsetSeasons = seasons + season_at_year_start;
+                return GetInSurroundingUnit(offsetSeasons, seasons_in_year, 1);
+            }
         }
 
-        public int Week => Weeks % weeks_in_month;
-
-        public int Days
+        public double Weeks
         {
-            get => Get(Hours, hours_in_day);
-            set => Hours = Set(value, hours_in_day);
+            get => GetFromBeginning(Days, days_in_week);
+            set => Days = SetFromBeginning(value, days_in_week);
+        }
+
+        public int Week => GetInSurroundingUnit(Weeks, weeks_in_month, 1);
+
+        public double Days
+        {
+            get => GetFromBeginning(Hours, hours_in_day);
+            set => Hours = SetFromBeginning(value, hours_in_day);
         }
 
         /// <summary>
-        /// Day in month.
+        /// Day of month.
         /// </summary>
-        public int Day => Days % (days_in_week * weeks_in_month);
+        public int Day => GetInSurroundingUnit(Days, days_in_week * weeks_in_month, 1);
 
-        public int WeekDay => Days % days_in_week;
+        public int WeekDay => GetInSurroundingUnit(Days, days_in_week, 1);
 
-        public int Hours
+        public double Hours
         {
-            get => Get(Minutes, minutes_in_hour);
-            set => Minutes = Set(value, minutes_in_hour);
+            get => GetFromBeginning(Minutes, minutes_in_hour);
+            set => Minutes = SetFromBeginning(value, minutes_in_hour);
         }
 
-        public int Hour => Hours % hours_in_day;
+        public int Hour => GetInSurroundingUnit(Hours, hours_in_day, 0);
 
-        public int Minutes
+        public double Minutes
         {
-            get => Get(Seconds, seconds_in_minute);
-            set => Seconds = Set(value, seconds_in_minute);
+            get => GetFromBeginning(Seconds, seconds_in_minute);
+            set => Seconds = SetFromBeginning(value, seconds_in_minute);
         }
 
-        public int Minute => Minutes % minutes_in_hour;
+        public int Minute => GetInSurroundingUnit(Minutes, minutes_in_hour, 0);
 
-        public int Seconds
+        public double Seconds
         {
-            get => Get(ticks, ticks_in_second);
-            set => ticks = Set(value, ticks_in_second);
+            get => GetFromBeginning(ticks, ticks_in_second);
+            set => ticks = (int)Math.Round(SetFromBeginning(value, ticks_in_second));
         }
 
-        public int Second => Seconds % seconds_in_minute;
+        public int Second => GetInSurroundingUnit(Seconds, seconds_in_minute, 0);
 
-        private static int Get(int unit, int surroundingUnit) => unit / surroundingUnit;
+        private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => ((int)unit % surroundingUnit) + numericBase;
 
-        private static int Set(int unit, int surroundingUnit) => checked(unit * surroundingUnit);
+        private static double GetFromBeginning(double unit, int surroundingUnit) => unit / surroundingUnit;
+
+        private static double SetFromBeginning(double unit, int surroundingUnit)
+        {
+            var value = unit * surroundingUnit;
+            return value;
+        }
     }
 }
