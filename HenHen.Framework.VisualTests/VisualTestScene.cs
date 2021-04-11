@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
 
 namespace HenHen.Framework.VisualTests
@@ -10,6 +11,6 @@ namespace HenHen.Framework.VisualTests
     {
         public bool IsSceneDone { get; protected set; }
 
-        public VisualTestScene() => RelativeSizeAxes = Graphics2d.Axes.Both;
+        public VisualTestScene() => RelativeSizeAxes = Axes.Both;
     }
 }
