@@ -84,19 +84,15 @@ namespace HenHen.Core.Worlds
         public double Seconds
         {
             get => GetFromBeginning(ticks, ticks_in_second);
-            set => ticks = (int)Math.Round(SetFromBeginning(value, ticks_in_second));
+            set => ticks = checked((int)Math.Round(SetFromBeginning(value, ticks_in_second)));
         }
 
         public int Second => GetInSurroundingUnit(Seconds, seconds_in_minute, 0);
 
-        private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => ((int)unit % surroundingUnit) + numericBase;
+        private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => checked(((int)unit % surroundingUnit) + numericBase);
 
-        private static double GetFromBeginning(double unit, int surroundingUnit) => unit / surroundingUnit;
+        private static double GetFromBeginning(double unit, int surroundingUnit) => checked(unit / surroundingUnit);
 
-        private static double SetFromBeginning(double unit, int surroundingUnit)
-        {
-            var value = unit * surroundingUnit;
-            return value;
-        }
+        private static double SetFromBeginning(double unit, int surroundingUnit) => checked(unit * surroundingUnit);
     }
 }
