@@ -12,11 +12,11 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
 
         /// <summary>
         ///     Sorted set, with the smallest
-        ///     <see cref="ChunksSimulationRing"/> first.
+        ///     <see cref="ChunksSimulationRingConfiguration"/> first.
         /// </summary>
-        public IReadOnlySet<ChunksSimulationRing> Rings { get; } = new SortedSet<ChunksSimulationRing>();
+        public IReadOnlySet<ChunksSimulationRingConfiguration> Rings { get; } = new SortedSet<ChunksSimulationRingConfiguration>();
 
-        public ChunksSimulationStrategy(ChunksSimulationStrategyType type, IReadOnlySet<ChunksSimulationRing> rings)
+        public ChunksSimulationStrategy(ChunksSimulationStrategyType type, IReadOnlySet<ChunksSimulationRingConfiguration> rings)
         {
             Type = type;
             Rings = rings;
