@@ -82,6 +82,30 @@ namespace HenHen.Framework.Numerics
             Top = top;
         }
 
+        public static RectangleF operator +(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight + v,
+            TopLeft = rectangle.TopLeft + v
+        };
+
+        public static RectangleF operator -(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight - v,
+            TopLeft = rectangle.TopLeft - v
+        };
+
+        public static RectangleF operator *(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight * v,
+            TopLeft = rectangle.TopLeft * v
+        };
+
+        public static RectangleF operator /(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight / v,
+            TopLeft = rectangle.TopLeft / v
+        };
+
         public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
     }
 }
