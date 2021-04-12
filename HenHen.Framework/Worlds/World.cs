@@ -5,17 +5,23 @@
 using HenHen.Framework.Collisions;
 using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
-using System;
 using System.Collections.Generic;
 
 namespace HenHen.Framework.Worlds
 {
     public class World
     {
+        private readonly List<Node> nodes = new();
         public List<Medium> Mediums { get; } = new();
-        public List<Node> Nodes { get; } = new();
+        public IReadOnlyList<Node> Nodes => nodes;
 
-        public void Simulate(TimeSpan duration)
+        public void AddNode(Node node)
+        {
+            nodes.Add(node);
+            node.NodeEjected += OnNodeEjected;
+        }
+
+        public void Simulate(double duration)
         {
             foreach (var node in Nodes)
                 node.Simulate(duration);
@@ -27,5 +33,7 @@ namespace HenHen.Framework.Worlds
             a.OnCollision(b);
             b.OnCollision(a);
         }
+
+        private void OnNodeEjected(Node node) => AddNode(node);
     }
 }

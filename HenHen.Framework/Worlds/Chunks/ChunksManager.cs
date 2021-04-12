@@ -2,7 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Collisions;
 using HenHen.Framework.Extensions;
+using HenHen.Framework.Numerics;
 using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
 using System;
@@ -12,7 +14,7 @@ using System.Numerics;
 namespace HenHen.Framework.Worlds.Chunks
 {
     /// <summary>
-    /// Manages and exposes chunks.
+    /// Manages and exposes chunks and utilities related to them.
     /// </summary>
     public class ChunksManager
     {
@@ -45,6 +47,60 @@ namespace HenHen.Framework.Worlds.Chunks
                 chunk.AddNode(node);
         }
 
+        public IEnumerable<Chunk> GetChunksForRectangle(RectangleF rectangle)
+        {
+            var rightIndex = rectangle.Right / ChunkSize;
+            var topIndex = rectangle.Top / ChunkSize;
+            for (var x = (int)(rectangle.Left / ChunkSize); x <= rightIndex; x++)
+            {
+                for (var y = (int)(rectangle.Bottom / ChunkSize); y <= topIndex; y++)
+                    yield return Chunks[new Vector2(x, y)];
+            }
+        }
+
+        public IEnumerable<Chunk> GetChunksForCircle(Circle circle)
+        {
+            var rect = new RectangleF(circle.CenterPosition.X - circle.Radius, circle.CenterPosition.X + circle.Radius, circle.CenterPosition.Y - circle.Radius, circle.CenterPosition.Y + circle.Radius);
+            foreach (var chunk in GetChunksForRectangle(rect))
+            {
+                if (ElementaryCollisions.IsPointInCircle(chunk.Coordinates.Center, circle))
+                    yield return chunk;
+            }
+        }
+
+        public IEnumerable<Chunk> GetChunksForNode(Node node)
+        {
+            if (node.CollisionBody is null)
+            {
+                yield return GetChunkForPosition(node.Position.ToTopDownPoint());
+                yield break;
+            }
+            var rect = (node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle();
+            foreach (var chunk in GetChunksForRectangle(rect))
+                yield return chunk;
+        }
+
+        public IEnumerable<Chunk> GetChunksForMedium(Medium medium)
+        {
+            var vertexEnumerator = EnumerateTopDownVerticesOfMedium(medium).GetEnumerator();
+            vertexEnumerator.MoveNext();
+            var vertex = vertexEnumerator.Current;
+            var mostLeftPos = vertex.X;
+            var mostRightPos = vertex.X;
+            var mostUpPos = vertex.Y;
+            var mostDownPos = vertex.Y;
+            while (vertexEnumerator.MoveNext())
+            {
+                mostLeftPos = Math.Min(mostLeftPos, vertexEnumerator.Current.X);
+                mostDownPos = Math.Min(mostDownPos, vertexEnumerator.Current.Y);
+                mostRightPos = Math.Max(mostRightPos, vertexEnumerator.Current.X);
+                mostUpPos = Math.Max(mostUpPos, vertexEnumerator.Current.Y);
+            }
+            var rect = new RectangleF(mostLeftPos, mostRightPos, mostDownPos, mostUpPos);
+            foreach (var chunk in GetChunksForRectangle(rect))
+                yield return chunk;
+        }
+
         private static Dictionary<Vector2, Chunk> CreateChunks(Vector2 chunkCount, float chunkSize)
         {
             var chunks = new Dictionary<Vector2, Chunk>((int)(chunkCount.X * chunkCount.Y));
@@ -64,51 +120,6 @@ namespace HenHen.Framework.Worlds.Chunks
             yield return medium.Triangle.A.ToTopDownPoint();
             yield return medium.Triangle.B.ToTopDownPoint();
             yield return medium.Triangle.C.ToTopDownPoint();
-        }
-
-        private IEnumerable<Chunk> GetChunksForNode(Node node)
-        {
-            if (node.CollisionBody is null)
-            {
-                yield return GetChunkForPosition(node.Position.ToTopDownPoint());
-                yield break;
-            }
-            var rect = (node.CollisionBody.BoundingBox + node.Position).ToTopDownRectangle();
-            var bottomLeft = GetChunkIndexForPosition(new Vector2(rect.Left, rect.Bottom));
-            var topRight = GetChunkIndexForPosition(new Vector2(rect.Right, rect.Top));
-            for (var x = bottomLeft.X; x <= topRight.X; x++)
-            {
-                for (var y = bottomLeft.Y; y <= topRight.Y; y++)
-                    yield return Chunks[new Vector2(x, y)];
-            }
-        }
-
-        private IEnumerable<Chunk> GetChunksForMedium(Medium medium)
-        {
-            var vertexEnumerator = EnumerateTopDownVerticesOfMedium(medium).GetEnumerator();
-            vertexEnumerator.MoveNext();
-            var vertex = vertexEnumerator.Current;
-            var mostLeftPos = vertex.X;
-            var mostRightPos = vertex.X;
-            var mostUpPos = vertex.Y;
-            var mostDownPos = vertex.Y;
-            while (vertexEnumerator.MoveNext())
-            {
-                mostLeftPos = Math.Min(mostLeftPos, vertexEnumerator.Current.X);
-                mostDownPos = Math.Min(mostDownPos, vertexEnumerator.Current.Y);
-                mostRightPos = Math.Max(mostRightPos, vertexEnumerator.Current.X);
-                mostUpPos = Math.Max(mostUpPos, vertexEnumerator.Current.Y);
-            }
-            var bottomLeftChunkIndex = GetChunkIndexForPosition(new Vector2(mostLeftPos, mostDownPos));
-            var topRightChunkIndex = GetChunkIndexForPosition(new Vector2(mostRightPos, mostUpPos));
-            for (var x = (int)bottomLeftChunkIndex.X; x <= topRightChunkIndex.X; x++)
-            {
-                for (var y = (int)bottomLeftChunkIndex.Y; y <= topRightChunkIndex.Y; y++)
-                {
-                    var chunkIndex = new Vector2(x, y);
-                    yield return Chunks[chunkIndex];
-                }
-            }
         }
     }
 }
