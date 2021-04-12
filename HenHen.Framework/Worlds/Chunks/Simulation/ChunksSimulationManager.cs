@@ -52,7 +52,7 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
         ///     The point around which the simulation occurs
         ///     according to <see cref="Strategy"/>.
         /// </param>
-        public void Simulate(double newTime, Vector2 origin)
+        public void Simulate(double newTime, Vector2 origin = default)
         {
             SynchronizedTime = newTime;
             foreach (var chunk in GetChunksToSimulate(newTime, origin))
@@ -62,12 +62,14 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
 
         private void OnStrategyChanged()
         {
-            if (Strategy.Type != ChunksSimulationStrategyType.All && Strategy.Rings.Count == 0)
+            if (Strategy.Type != ChunksSimulationStrategyType.All && (Strategy.Rings == null || Strategy.Rings.Count == 0))
                 throw new Exception($"If the {nameof(Strategy.Type)} is not {nameof(ChunksSimulationStrategyType.All)}, there has to be at least one {nameof(ChunksSimulationRingConfiguration)} defined in {nameof(Strategy.Rings)}.");
-            if (Strategy.Type == ChunksSimulationStrategyType.All && Strategy.Rings.Count != 0)
+            if (Strategy.Type == ChunksSimulationStrategyType.All && Strategy.Rings != null && Strategy.Rings.Count != 0)
                 throw new Exception($"There are {nameof(ChunksSimulationRingConfiguration)}s in {nameof(Strategy.Rings)}, but {nameof(Strategy.Type)} is {nameof(ChunksSimulationStrategyType.All)}, which makes them useless.");
 
             rings.Clear();
+            if (Strategy.Type == ChunksSimulationStrategyType.All)
+                return;
             foreach (var ringConfiguration in Strategy.Rings)
                 rings.Add(new ChunksSimulationRing(ringConfiguration));
         }
@@ -77,8 +79,13 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
             if (Strategy.Type == ChunksSimulationStrategyType.All)
                 return ChunksManager.Chunks.Values;
 
-            var radius = rings.Where(ring => ring.AdvanceTimeIfShouldBeSimulated(newTime))
-                .LastOrDefault().Radius;
+            var widestRing = rings.Where(ring => ring.AdvanceTimeIfShouldBeSimulated(newTime))
+                .LastOrDefault();
+
+            if (widestRing is null)
+                return Array.Empty<Chunk>();
+
+            var radius = widestRing.Radius;
 
             if (Strategy.Type == ChunksSimulationStrategyType.Circle)
                 return ChunksManager.GetChunksForCircle(new() { CenterPosition = origin, Radius = radius });
@@ -105,8 +112,8 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
         private void ContainNodeInMediums(Node node)
         {
             var mediumsToCheck = ChunksManager.GetChunksForNode(node).SelectMany(c => c.Mediums);
-            if (!CollisionChecker.IsNodeContainedInMediums(node, mediumsToCheck))
-                throw new NotImplementedException("Perform containing Node inside Mediums"); // TODO
+            //if (!CollisionChecker.IsNodeContainedInMediums(node, mediumsToCheck))
+            //    throw new NotImplementedException("Perform containing Node inside Mediums"); // TODO
         }
 
         private void RegisterNodeTransfers(Node node, Chunk origin)
