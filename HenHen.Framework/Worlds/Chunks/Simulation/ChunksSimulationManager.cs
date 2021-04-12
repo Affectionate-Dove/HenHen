@@ -3,6 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Collisions;
+using HenHen.Framework.Numerics;
 using HenHen.Framework.Worlds.Nodes;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,23 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
     {
         private readonly List<NodeTransfer> nodeTransfers = new();
 
+        private readonly SortedSet<ChunksSimulationRing> rings = new();
+        private ChunksSimulationStrategy strategy;
+
         /// <summary>
         ///     The time at the start of the latest simulation.
         /// </summary>
         public double SynchronizedTime { get; private set; }
+
+        public ChunksSimulationStrategy Strategy
+        {
+            get => strategy;
+            set
+            {
+                strategy = value;
+                OnStrategyChanged();
+            }
+        }
 
         protected ChunksManager ChunksManager { get; }
 
@@ -41,12 +55,41 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
         public void Simulate(double newTime, Vector2 origin)
         {
             SynchronizedTime = newTime;
-            foreach (var chunk in GetChunksToSimulate(origin))
+            foreach (var chunk in GetChunksToSimulate(newTime, origin))
                 SimulateChunk(chunk, newTime);
             PerformNodesTransfers();
         }
 
-        private IEnumerable<Chunk> GetChunksToSimulate(Vector2 origin) => throw new NotImplementedException();
+        private void OnStrategyChanged()
+        {
+            if (Strategy.Type != ChunksSimulationStrategyType.All && Strategy.Rings.Count == 0)
+                throw new Exception($"If the {nameof(Strategy.Type)} is not {nameof(ChunksSimulationStrategyType.All)}, there has to be at least one {nameof(ChunksSimulationRingConfiguration)} defined in {nameof(Strategy.Rings)}.");
+            if (Strategy.Type == ChunksSimulationStrategyType.All && Strategy.Rings.Count != 0)
+                throw new Exception($"There are {nameof(ChunksSimulationRingConfiguration)}s in {nameof(Strategy.Rings)}, but {nameof(Strategy.Type)} is {nameof(ChunksSimulationStrategyType.All)}, which makes them useless.");
+
+            rings.Clear();
+            foreach (var ringConfiguration in Strategy.Rings)
+                rings.Add(new ChunksSimulationRing(ringConfiguration));
+        }
+
+        private IEnumerable<Chunk> GetChunksToSimulate(double newTime, Vector2 origin)
+        {
+            if (Strategy.Type == ChunksSimulationStrategyType.All)
+                return ChunksManager.Chunks.Values;
+
+            var radius = rings.Where(ring => ring.AdvanceTimeIfShouldBeSimulated(newTime))
+                .LastOrDefault().Radius;
+
+            if (Strategy.Type == ChunksSimulationStrategyType.Circle)
+                return ChunksManager.GetChunksForCircle(new() { CenterPosition = origin, Radius = radius });
+            else if (Strategy.Type == ChunksSimulationStrategyType.Square)
+            {
+                var square = new RectangleF(origin.X - radius, origin.X + radius, origin.Y - radius, origin.Y + radius);
+                return ChunksManager.GetChunksForRectangle(square);
+            }
+
+            throw new NotImplementedException($"Handling the value \"{Strategy.Type}\" for {nameof(Strategy.Type)} is not implemented.");
+        }
 
         private void SimulateChunk(Chunk chunk, double newTime)
         {
@@ -63,7 +106,7 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
         {
             var mediumsToCheck = ChunksManager.GetChunksForNode(node).SelectMany(c => c.Mediums);
             if (!CollisionChecker.IsNodeContainedInMediums(node, mediumsToCheck))
-                throw new NotImplementedException("Perform containing Node inside Mediums");
+                throw new NotImplementedException("Perform containing Node inside Mediums"); // TODO
         }
 
         private void RegisterNodeTransfers(Node node, Chunk origin)
