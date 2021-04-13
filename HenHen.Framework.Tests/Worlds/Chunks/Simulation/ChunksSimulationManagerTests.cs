@@ -7,6 +7,7 @@ using HenHen.Framework.Worlds.Chunks.Simulation;
 using HenHen.Framework.Worlds.Nodes;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace HenHen.Framework.Tests.Worlds.Chunks.Simulation
@@ -21,11 +22,8 @@ namespace HenHen.Framework.Tests.Worlds.Chunks.Simulation
             var synchronizedTime = 1;
             testSuite.SimulationManager.Simulate(synchronizedTime);
             Assert.AreEqual(synchronizedTime, testSuite.SimulationManager.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node11.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node12.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node13.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node21.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node22.SynchronizedTime);
+            foreach (var node in testSuite.Nodes.SelectMany(row => row))
+                Assert.AreEqual(synchronizedTime, node.SynchronizedTime, node.Position.ToString());
         }
 
         [Test]
@@ -40,16 +38,14 @@ namespace HenHen.Framework.Tests.Worlds.Chunks.Simulation
             var synchronizedTime = 1;
             testSuite.SimulationManager.Simulate(synchronizedTime, new Vector2(1));
             Assert.AreEqual(synchronizedTime, testSuite.SimulationManager.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node11.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node12.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node21.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node22.SynchronizedTime);
 
-            Assert.AreEqual(0, testSuite.Node13.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node23.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node33.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node31.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node32.SynchronizedTime);
+            foreach (var node in testSuite.Nodes.SelectMany(node => node))
+            {
+                if (node.Position.X is <= 2 && node.Position.Z is <= 2)
+                    Assert.AreEqual(synchronizedTime, node.SynchronizedTime, node.Position.ToString());
+                else
+                    Assert.AreEqual(0, node.SynchronizedTime, node.Position.ToString());
+            }
         }
 
         [Test]
@@ -64,16 +60,22 @@ namespace HenHen.Framework.Tests.Worlds.Chunks.Simulation
             var synchronizedTime = 1;
             testSuite.SimulationManager.Simulate(synchronizedTime, new Vector2(1.5f));
             Assert.AreEqual(synchronizedTime, testSuite.SimulationManager.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node11.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node12.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node21.SynchronizedTime);
 
-            Assert.AreEqual(0, testSuite.Node22.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node13.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node23.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node33.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node31.SynchronizedTime);
-            Assert.AreEqual(0, testSuite.Node32.SynchronizedTime);
+            var expectedSimulatedNodes = new List<TestNode>
+            {
+                testSuite.Nodes[0][1],
+                testSuite.Nodes[1][0],
+                testSuite.Nodes[1][1],
+                testSuite.Nodes[1][2],
+                testSuite.Nodes[2][1],
+            };
+            foreach (var node in testSuite.Nodes.SelectMany(node => node))
+            {
+                if (expectedSimulatedNodes.Contains(node))
+                    Assert.AreEqual(synchronizedTime, node.SynchronizedTime, node.Position.ToString());
+                else
+                    Assert.AreEqual(0, node.SynchronizedTime, node.Position.ToString());
+            }
         }
 
         [Test]
@@ -95,27 +97,18 @@ namespace HenHen.Framework.Tests.Worlds.Chunks.Simulation
             }
 
             Assert.AreEqual(synchronizedTime, testSuite.SimulationManager.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node11.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node12.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node13.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node21.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node22.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node23.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node31.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node32.SynchronizedTime);
-            Assert.AreEqual(synchronizedTime, testSuite.Node33.SynchronizedTime);
 
-            Assert.AreEqual(3, testSuite.Node11.TimesSimulated);
+            foreach (var node in testSuite.Nodes.SelectMany(node => node))
+            {
+                Assert.AreEqual(synchronizedTime, node.SynchronizedTime, node.Position.ToString());
 
-            Assert.AreEqual(2, testSuite.Node21.TimesSimulated);
-            Assert.AreEqual(2, testSuite.Node12.TimesSimulated);
-            Assert.AreEqual(2, testSuite.Node22.TimesSimulated);
-
-            Assert.AreEqual(1, testSuite.Node31.TimesSimulated);
-            Assert.AreEqual(1, testSuite.Node32.TimesSimulated);
-            Assert.AreEqual(1, testSuite.Node33.TimesSimulated);
-            Assert.AreEqual(1, testSuite.Node13.TimesSimulated);
-            Assert.AreEqual(1, testSuite.Node23.TimesSimulated);
+                if (node.Position.X <= 1 && node.Position.Z <= 1)
+                    Assert.AreEqual(3, node.TimesSimulated, node.Position.ToString());
+                else if (node.Position.X <= 2 && node.Position.Z <= 2)
+                    Assert.AreEqual(2, node.TimesSimulated, node.Position.ToString());
+                else
+                    Assert.AreEqual(1, node.TimesSimulated, node.Position.ToString());
+            }
         }
 
         private class TestNode : Node
@@ -131,29 +124,19 @@ namespace HenHen.Framework.Tests.Worlds.Chunks.Simulation
 
         private record TestSuite
         {
-            public TestNode Node11;
-            public TestNode Node21;
-            public TestNode Node31;
-            public TestNode Node12;
-            public TestNode Node22;
-            public TestNode Node32;
-            public TestNode Node13;
-            public TestNode Node23;
-            public TestNode Node33;
+            public TestNode[][] Nodes;
 
             public TestSuite()
             {
                 ChunksManager = new ChunksManager(new Vector2(4), 1);
                 SimulationManager = new ChunksSimulationManager(ChunksManager);
-                ChunksManager.AddNode(Node11 = new TestNode { Position = new(1, 0, 1) });
-                ChunksManager.AddNode(Node12 = new TestNode { Position = new(1, 0, 2) });
-                ChunksManager.AddNode(Node13 = new TestNode { Position = new(1, 0, 3) });
-                ChunksManager.AddNode(Node21 = new TestNode { Position = new(2, 0, 1) });
-                ChunksManager.AddNode(Node22 = new TestNode { Position = new(2, 0, 2) });
-                ChunksManager.AddNode(Node23 = new TestNode { Position = new(2, 0, 3) });
-                ChunksManager.AddNode(Node31 = new TestNode { Position = new(3, 0, 1) });
-                ChunksManager.AddNode(Node32 = new TestNode { Position = new(3, 0, 2) });
-                ChunksManager.AddNode(Node33 = new TestNode { Position = new(3, 0, 3) });
+                Nodes = new TestNode[4][];
+                for (var y = 0; y <= 3; y++)
+                {
+                    Nodes[y] = new TestNode[4];
+                    for (var x = 0; x <= 3; x++)
+                        ChunksManager.AddNode(Nodes[y][x] = new TestNode { Position = new Vector3(x, 0, y) });
+                }
             }
 
             public ChunksManager ChunksManager { get; }

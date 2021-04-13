@@ -13,7 +13,7 @@ using System.Numerics;
 namespace HenHen.Framework.Worlds.Chunks.Simulation
 {
     /// <summary>
-    ///     Manages organized <see cref="Chunk"/> simulation.
+    ///     Manages organized simulation of <see cref="Chunk"/>s.
     /// </summary>
     public partial class ChunksSimulationManager
     {
@@ -65,7 +65,7 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
             if (Strategy.Type != ChunksSimulationStrategyType.All && (Strategy.Rings == null || Strategy.Rings.Count == 0))
                 throw new Exception($"If the {nameof(Strategy.Type)} is not {nameof(ChunksSimulationStrategyType.All)}, there has to be at least one {nameof(ChunksSimulationRingConfiguration)} defined in {nameof(Strategy.Rings)}.");
             if (Strategy.Type == ChunksSimulationStrategyType.All && Strategy.Rings != null && Strategy.Rings.Count != 0)
-                throw new Exception($"There are {nameof(ChunksSimulationRingConfiguration)}s in {nameof(Strategy.Rings)}, but {nameof(Strategy.Type)} is {nameof(ChunksSimulationStrategyType.All)}, which makes them useless.");
+                throw new Exception($"There are {nameof(ChunksSimulationRingConfiguration)}s in {nameof(Strategy.Rings)}, but {nameof(Strategy.Type)} is {nameof(ChunksSimulationStrategyType.All)}, making them useless.");
 
             rings.Clear();
             if (Strategy.Type == ChunksSimulationStrategyType.All)
