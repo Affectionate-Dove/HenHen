@@ -19,6 +19,26 @@ namespace HenHen.Framework.Numerics
             set => Radius = value / 2;
         }
 
+        public static Sphere operator +(Sphere sphere, Vector3 v) => new()
+        {
+            CenterPosition = sphere.CenterPosition + v
+        };
+
+        public static Sphere operator -(Sphere sphere, Vector3 v) => new()
+        {
+            CenterPosition = sphere.CenterPosition - v
+        };
+
+        public static Sphere operator *(Sphere sphere, Vector3 v) => new()
+        {
+            CenterPosition = sphere.CenterPosition * v
+        };
+
+        public static Sphere operator /(Sphere sphere, Vector3 v) => new()
+        {
+            CenterPosition = sphere.CenterPosition / v
+        };
+
         public Circle ToTopDownCircle() => new()
         {
             CenterPosition = new Vector2(CenterPosition.X, CenterPosition.Z),

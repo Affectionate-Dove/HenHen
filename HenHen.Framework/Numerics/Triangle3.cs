@@ -24,6 +24,34 @@ namespace HenHen.Framework.Numerics
 
         public Vector3 Normal => Vector3.Cross(A, B);
 
+        public static Triangle3 operator +(Triangle3 triangle3, Vector3 v) => new()
+        {
+            A = triangle3.A + v,
+            B = triangle3.B + v,
+            C = triangle3.C + v
+        };
+
+        public static Triangle3 operator -(Triangle3 triangle3, Vector3 v) => new()
+        {
+            A = triangle3.A - v,
+            B = triangle3.B - v,
+            C = triangle3.C - v
+        };
+
+        public static Triangle3 operator *(Triangle3 triangle3, Vector3 v) => new()
+        {
+            A = triangle3.A * v,
+            B = triangle3.B * v,
+            C = triangle3.C * v
+        };
+
+        public static Triangle3 operator /(Triangle3 triangle3, Vector3 v) => new()
+        {
+            A = triangle3.A / v,
+            B = triangle3.B / v,
+            C = triangle3.C / v
+        };
+
         public Triangle2 ToTopDownTriangle() => new()
         {
             A = new Vector2(A.X, A.Z),

@@ -113,6 +113,16 @@ namespace HenHen.Framework.Tests.Worlds.Chunks
             Assert.AreEqual(expected, chunksManager.GetChunkIndexForPosition(position));
         }
 
+        [Test]
+        public void GetChunksForRectangleDoesntThrowTest()
+        {
+            var cm = CreateChunksManager();
+            var rect = new RectangleF(-1, 100, -1, 100);
+            List<Chunk> chunks = new();
+            Assert.DoesNotThrow(() => chunks.AddRange(cm.GetChunksForRectangle(rect)));
+            Assert.AreEqual(100, chunks.Count);
+        }
+
         [TestCaseSource(nameof(AddMediumTestCases))]
         public void AddMediumTest(AddMediumTestCase tc)
         {
