@@ -130,7 +130,11 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
                 nodeTransfers.Add(new NodeTransfer(node, NodeTransfer.TransferType.From, origin));
         }
 
-        private void PerformNodesTransfers() => nodeTransfers.ForEach(transfer => transfer.Perform());
+        private void PerformNodesTransfers()
+        {
+            nodeTransfers.ForEach(transfer => transfer.Perform());
+            nodeTransfers.Clear();
+        }
 
         private void OnNodesCollision(Node a, Node b)
         {
