@@ -19,12 +19,16 @@ namespace HenHen.Framework.Worlds.Chunks
     public class ChunksManager
     {
         public IReadOnlyDictionary<Vector2, Chunk> Chunks { get; }
+        public Vector2 ChunkCount { get; }
+        public RectangleF ChunksIndexesBoundingRect { get; }
         public float ChunkSize { get; }
 
         public ChunksManager(Vector2 chunkCount, float chunkSize)
         {
             Chunks = CreateChunks(chunkCount, chunkSize);
+            ChunkCount = chunkCount;
             ChunkSize = chunkSize;
+            ChunksIndexesBoundingRect = new(0, ChunkCount.X - 1, 0, ChunkCount.Y - 1);
         }
 
         /// <remarks>
@@ -49,11 +53,20 @@ namespace HenHen.Framework.Worlds.Chunks
 
         public IEnumerable<Chunk> GetChunksForRectangle(RectangleF rectangle)
         {
+            var leftIndex = rectangle.Left / ChunkSize;
             var rightIndex = rectangle.Right / ChunkSize;
             var topIndex = rectangle.Top / ChunkSize;
-            for (var x = (int)(rectangle.Left / ChunkSize); x <= rightIndex; x++)
+            var bottomIndex = rectangle.Bottom / ChunkSize;
+            rectangle = new RectangleF(leftIndex, rightIndex, bottomIndex, topIndex);
+
+            var intersection = rectangle.GetIntersection(ChunksIndexesBoundingRect);
+            if (!intersection.HasValue)
+                yield break;
+            rectangle = intersection.Value;
+
+            for (var x = (int)rectangle.Left; x <= rectangle.Right; x++)
             {
-                for (var y = (int)(rectangle.Bottom / ChunkSize); y <= topIndex; y++)
+                for (var y = (int)rectangle.Bottom; y <= rectangle.Top; y++)
                     yield return Chunks[new Vector2(x, y)];
             }
         }
