@@ -21,12 +21,16 @@ namespace HenHen.Framework.VisualTests
         private readonly List<Type> sceneTypes;
         private readonly List<TestSceneButton> buttons;
         private readonly VisualTesterInputActionHandler inputActionHandler;
+        private readonly SceneInputActionHandler sceneInputActionHandler;
         private int sceneIndex;
 
         public VisualTester()
         {
             inputActionHandler = new VisualTesterInputActionHandler(Game.InputManager);
             inputActionHandler.Propagator.Listeners.Add(this);
+
+            sceneInputActionHandler = new SceneInputActionHandler(Game.InputManager);
+
             RelativeSizeAxes = Axes.Both;
 
             scenesList = CreateScenesList();
@@ -47,7 +51,7 @@ namespace HenHen.Framework.VisualTests
             rightContainer.AddChild(scenesContainer);
 
             if (sceneTypes.Count > 0)
-                scenesContainer.Push(Activator.CreateInstance(sceneTypes[sceneIndex]) as VisualTestScene);
+                scenesContainer.Push(CreateVisualTestScene(sceneTypes[sceneIndex]));
             UpdateButtonsColors();
         }
 
@@ -77,6 +81,7 @@ namespace HenHen.Framework.VisualTests
                 ChangeScene();
             }
             inputActionHandler.Update();
+            sceneInputActionHandler.Update();
         }
 
         private static FillFlowContainer CreateScenesList() => new()
@@ -87,6 +92,13 @@ namespace HenHen.Framework.VisualTests
             Spacing = 5,
             Direction = Direction.Vertical
         };
+
+        private VisualTestScene CreateVisualTestScene(Type type)
+        {
+            var visualTestScene = Activator.CreateInstance(type) as VisualTestScene;
+            sceneInputActionHandler.Propagator.Listeners.Add(visualTestScene);
+            return visualTestScene;
+        }
 
         private void CreateAndAddButtons()
         {
@@ -135,7 +147,8 @@ namespace HenHen.Framework.VisualTests
                 sceneIndex = sceneTypes.Count - 1;
 
             scenesContainer.Pop();
-            scenesContainer.Push(Activator.CreateInstance(sceneTypes[sceneIndex]) as VisualTestScene);
+            sceneInputActionHandler.Propagator.Listeners.Clear();
+            scenesContainer.Push(CreateVisualTestScene(sceneTypes[sceneIndex]));
             UpdateButtonsColors();
         }
 
