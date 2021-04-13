@@ -88,9 +88,9 @@ namespace HenHen.Framework.Tests.Worlds.Chunks.Simulation
             });
 
             var synchronizedTime = 0d;
-            for (var i = 0; i < 30; i++)
+            for (var i = 1; i <= 30; i++)
             {
-                synchronizedTime += 0.1;
+                synchronizedTime = i / 10d;
                 testSuite.SimulationManager.Simulate(synchronizedTime, new Vector2(0));
             }
 
