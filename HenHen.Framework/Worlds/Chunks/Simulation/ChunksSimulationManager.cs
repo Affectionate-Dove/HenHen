@@ -39,7 +39,16 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
 
         protected ChunksManager ChunksManager { get; }
 
-        public ChunksSimulationManager(ChunksManager chunksManager) => ChunksManager = chunksManager;
+        /// <summary>
+        ///     Sets <see cref="Strategy"/> with
+        ///     <see cref="ChunksSimulationStrategy.Type"/> equal to
+        ///     <see cref="ChunksSimulationStrategyType.All"/>.
+        /// </summary>
+        public ChunksSimulationManager(ChunksManager chunksManager)
+        {
+            ChunksManager = chunksManager;
+            Strategy = new(ChunksSimulationStrategyType.All, null);
+        }
 
         /// <summary>
         ///     Simulates chunks according to <see cref="Strategy"/>.
