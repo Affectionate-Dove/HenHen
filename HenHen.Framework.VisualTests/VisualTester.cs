@@ -174,7 +174,7 @@ namespace HenHen.Framework.VisualTests
             public TestSceneButton(Type type)
             {
                 Type = type;
-                Text = type.Name;
+                Text = type.Name.Replace("TestScene", null);
             }
 
             public void Highlight() => Color = highlightColor;
