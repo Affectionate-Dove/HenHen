@@ -7,23 +7,41 @@ using System.Collections.Generic;
 
 namespace HenHen.Framework.Worlds.PathFinding
 {
+    /// <summary>
+    /// Finds a path to
+    /// the given <see cref="Destination"/> by visiting nodes
+    /// using a naive algorithm.
+    /// </summary>
     public class PathfindingAgent
     {
-        public List<PathNode> VisitedNodes;
-        public PathNode CurrentNode;
-        public PathNode Destination;
-
         public event Action<PathfindingAgent> AgentCreated;
 
         public event Action<List<PathNode>> PathFound;
 
-        public PathfindingAgent(List<PathNode> visitedNodes, PathNode currentNode, PathNode destination)
+        public List<PathNode> VisitedNodes { get; }
+        public PathNode CurrentNode { get; }
+        public PathNode Destination { get; }
+
+        public PathfindingAgent(PathNode startNode, PathNode destination)
+        {
+            CurrentNode = startNode;
+            Destination = destination;
+        }
+
+        private PathfindingAgent(List<PathNode> visitedNodes, PathNode currentNode, PathNode destination)
         {
             VisitedNodes = visitedNodes;
             CurrentNode = currentNode;
             Destination = destination;
         }
 
+        /// <summary>
+        /// If <see cref="CurrentNode"/> is the <see cref="Destination"/>,
+        /// notifies that it's been found.
+        /// Otherwise, creates more agents and
+        /// places them in connected nodes that haven't been visited yet.
+        /// Raises the <see cref="AgentCreated"/> event on agent creation.
+        /// </summary>
         public void Run()
         {
             if (CurrentNode == Destination)
