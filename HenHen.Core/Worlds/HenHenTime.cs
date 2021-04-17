@@ -18,6 +18,11 @@ namespace HenHen.Core.Worlds
         private const int minutes_in_hour = 60;
         private const int seconds_in_minute = 60;
         private const int ticks_in_second = 1000;
+        private const long ticks_in_minute = ticks_in_second * seconds_in_minute;
+        private const long ticks_in_hour = ticks_in_minute * minutes_in_hour;
+        private const long ticks_in_day = ticks_in_hour * hours_in_day;
+        private const long ticks_in_month = ticks_in_day * days_in_week * weeks_in_month;
+        private const long ticks_in_year = ticks_in_month * months_in_year;
         private long ticks;
 
         public double Years
@@ -25,6 +30,8 @@ namespace HenHen.Core.Worlds
             get => GetFromBeginning(Months, months_in_year);
             set => Months = SetFromBeginning(value, months_in_year);
         }
+
+        public int Year => (int)(Years + 1);
 
         public double Months
         {
@@ -88,6 +95,8 @@ namespace HenHen.Core.Worlds
         }
 
         public int Second => GetInSurroundingUnit(Seconds, seconds_in_minute, 0);
+
+        public HenHenTime(int year, int month, int day) => ticks = ((year - 1) * ticks_in_year) + ((month - 1) * ticks_in_month) + ((day - 1) * ticks_in_day);
 
         private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => checked(((int)unit % surroundingUnit) + numericBase);
 

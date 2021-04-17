@@ -144,6 +144,18 @@ namespace HenHen.Core.Tests.Worlds
             IsGetSameAsSet(() => dateTime.Years, v => dateTime.Years = v);
         }
 
+        [TestCase(1, 4, 8)]
+        [TestCase(3, 7, 1)]
+        [TestCase(1, 1, 1)]
+        [TestCase(8, 8, 3)]
+        public void YearMonthDayConstructorTest(int year, int month, int day)
+        {
+            var dateTime = new HenHenTime(year, month, day);
+            Assert.AreEqual(year, dateTime.Year);
+            Assert.AreEqual(month, dateTime.Month);
+            Assert.AreEqual(day, dateTime.Day);
+        }
+
         private static void IsGetSameAsSet(System.Func<double> getter, System.Action<double> setter)
         {
             for (var i = 0; i < 200; i++)
