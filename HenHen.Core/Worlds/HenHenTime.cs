@@ -18,7 +18,7 @@ namespace HenHen.Core.Worlds
         private const int hours_in_day = 24;
         private const int minutes_in_hour = 60;
         private const int seconds_in_minute = 60;
-        private const int ticks_in_second = 60;
+        private const int ticks_in_second = 1000;
 
         public double Years
         {
