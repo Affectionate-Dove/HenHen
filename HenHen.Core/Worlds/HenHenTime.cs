@@ -8,7 +8,6 @@ namespace HenHen.Core.Worlds
 {
     public struct HenHenTime
     {
-        public int ticks;
         private const double season_at_year_start = 0.5;
         private const int seasons_in_year = 4;
         private const int months_in_season = 2;
@@ -19,6 +18,7 @@ namespace HenHen.Core.Worlds
         private const int minutes_in_hour = 60;
         private const int seconds_in_minute = 60;
         private const int ticks_in_second = 1000;
+        private long ticks;
 
         public double Years
         {
@@ -84,7 +84,7 @@ namespace HenHen.Core.Worlds
         public double Seconds
         {
             get => GetFromBeginning(ticks, ticks_in_second);
-            set => ticks = checked((int)Math.Round(SetFromBeginning(value, ticks_in_second)));
+            set => ticks = checked((long)Math.Round(SetFromBeginning(value, ticks_in_second)));
         }
 
         public int Second => GetInSurroundingUnit(Seconds, seconds_in_minute, 0);
