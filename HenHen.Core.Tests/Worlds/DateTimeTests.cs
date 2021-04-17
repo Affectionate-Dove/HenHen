@@ -13,7 +13,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(20, 2.5, 3)]
         public void YearsTest(double months, double expectedYears, int expectedYear)
         {
-            var dateTime = new DateTime
+            var dateTime = new HenHenTime
             {
                 Months = months
             };
@@ -28,7 +28,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(1, 0.25, 1)]
         public void MonthsTest(double weeks, double expectedMonths, int expectedMonth)
         {
-            var dateTime = new DateTime
+            var dateTime = new HenHenTime
             {
                 Weeks = weeks
             };
@@ -50,7 +50,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(27, 3)]
         public void SeasonTest(double months, int expectedSeason)
         {
-            var dateTime = new DateTime
+            var dateTime = new HenHenTime
             {
                 Months = months
             };
@@ -62,7 +62,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(51, 8.5, 1)]
         public void WeeksTest(double days, double expectedWeeks, int expectedWeek)
         {
-            var dateTime = new DateTime
+            var dateTime = new HenHenTime
             {
                 Days = days
             };
@@ -79,7 +79,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(576, 24, 1, 1)]
         public void DaysTest(double hours, double expectedDays, int expectedDayOfMonth, int expectedWeekDay)
         {
-            var dateTime = new DateTime
+            var dateTime = new HenHenTime
             {
                 Hours = hours
             };
@@ -96,7 +96,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(1470, 24.5, 0)]
         public void HoursTest(double minutes, double expectedHours, int expectedHour)
         {
-            var dateTime = new DateTime
+            var dateTime = new HenHenTime
             {
                 Minutes = minutes
             };
@@ -112,7 +112,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(1470, 24.5, 24)]
         public void MinutesTest(double seconds, double expectedMinutes, int expectedMinute)
         {
-            var dateTime = new DateTime
+            var dateTime = new HenHenTime
             {
                 Seconds = seconds
             };
@@ -127,14 +127,14 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(61, 1)]
         public void SecondsTest(double seconds, int expectedSecond)
         {
-            var dateTime = new DateTime { Seconds = seconds };
+            var dateTime = new HenHenTime { Seconds = seconds };
             Assert.AreEqual(dateTime.Second, expectedSecond);
         }
 
         [Test]
         public void SetAndGetTest()
         {
-            var dateTime = new DateTime();
+            var dateTime = new HenHenTime();
             IsGetSameAsSet(() => dateTime.Seconds, v => dateTime.Seconds = v);
             IsGetSameAsSet(() => dateTime.Minutes, v => dateTime.Minutes = v);
             IsGetSameAsSet(() => dateTime.Hours, v => dateTime.Hours = v);

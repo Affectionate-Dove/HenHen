@@ -6,7 +6,7 @@ using System;
 
 namespace HenHen.Core.Worlds
 {
-    public struct DateTime
+    public struct HenHenTime
     {
         public int ticks;
         private const double season_at_year_start = 0.5;
