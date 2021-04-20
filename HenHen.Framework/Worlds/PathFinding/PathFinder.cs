@@ -2,7 +2,6 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using System;
 using System.Collections.Generic;
 
 namespace HenHen.Framework.Worlds.PathFinding
@@ -13,8 +12,8 @@ namespace HenHen.Framework.Worlds.PathFinding
     /// </summary>
     public class Pathfinder
     {
-        private readonly List<PathNode> result = new();
-
+        private readonly List<PathfindingAgent> pathfindingAgents = new();
+        private List<PathNode> result = new();
         public PathfindingState State { get; protected set; } = PathfindingState.NotStarted;
 
         /// <summary>
@@ -28,11 +27,42 @@ namespace HenHen.Framework.Worlds.PathFinding
 
         public PathRequest Request { get; }
 
-        public Pathfinder(PathRequest request) => Request = request;
+        public Pathfinder(PathRequest request)
+        {
+            Request = request;
+            State = PathfindingState.InProgress;
+            var agent = new PathfindingAgent(Request.Start, Request.End);
+            Agent_AgentCreated(agent);
+        }
 
         /// <summary>
         /// Performs a bit of pathfinding computations.
         /// </summary>
-        public void Update() => throw new NotImplementedException();
+        public void Update(int limit)
+        {
+            for (var i = 0; i < limit; i++)
+            {
+                var agent = pathfindingAgents[0];
+                agent.Run();
+                pathfindingAgents.RemoveAt(0);
+                if (State == PathfindingState.Successful)
+                    break;
+            }
+            if (State != PathfindingState.Successful && pathfindingAgents.Count == 0)
+                State = PathfindingState.Failed;
+        }
+
+        private void Agent_AgentCreated(PathfindingAgent obj)
+        {
+            obj.PathFound += Agent_PathFound;
+            obj.AgentCreated += Agent_AgentCreated;
+            pathfindingAgents.Add(obj);
+        }
+
+        private void Agent_PathFound(List<PathNode> obj)
+        {
+            result = obj;
+            State = PathfindingState.Successful;
+        }
     }
 }
