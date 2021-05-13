@@ -3,6 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Extensions;
+using System;
 using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d
@@ -19,6 +20,13 @@ namespace HenHen.Framework.Graphics2d
             base.OnRender();
             var rect = LayoutInfo.RenderRect;
             Raylib_cs.Raylib.DrawLineEx(A + rect.TopLeft, B + rect.TopLeft, Thickness, Color.ToRaylibColor());
+        }
+
+        protected override Vector2 ComputeRenderSize()
+        {
+            base.ComputeRenderSize();
+            var delta = new Vector2(Math.Abs(A.X - B.X), Math.Abs(A.Y - B.Y));
+            return delta;
         }
     }
 }
