@@ -20,6 +20,26 @@ namespace HenHen.Framework.Numerics
         public float Circumference => 2 * System.MathF.PI * Radius;
         public float Area => System.MathF.PI * (Radius * Radius);
 
+        public static Circle operator +(Circle circle, Vector2 v) => new()
+        {
+            CenterPosition = circle.CenterPosition + v
+        };
+
+        public static Circle operator -(Circle circle, Vector2 v) => new()
+        {
+            CenterPosition = circle.CenterPosition - v
+        };
+
+        public static Circle operator *(Circle circle, Vector2 v) => new()
+        {
+            CenterPosition = circle.CenterPosition * v
+        };
+
+        public static Circle operator /(Circle circle, Vector2 v) => new()
+        {
+            CenterPosition = circle.CenterPosition / v
+        };
+
         public override string ToString() => $"{{{nameof(CenterPosition)}={CenterPosition},{nameof(Radius)}={Radius}}}";
     }
 }
