@@ -22,11 +22,6 @@ namespace HenHen.Framework.Graphics2d
             Raylib_cs.Raylib.DrawLineEx(A + rect.TopLeft, B + rect.TopLeft, Thickness, Color.ToRaylibColor());
         }
 
-        protected override Vector2 ComputeRenderSize()
-        {
-            base.ComputeRenderSize();
-            var delta = new Vector2(Math.Abs(A.X - B.X), Math.Abs(A.Y - B.Y));
-            return delta;
-        }
+        protected override Vector2 ComputeRenderSize() => new(Math.Abs(A.X - B.X), Math.Abs(A.Y - B.Y));
     }
 }
