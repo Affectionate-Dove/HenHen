@@ -21,7 +21,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
 
         /// <summary>
         ///     Returns a rectangle that defines the area
-        ///     of the world that is visible.
+        ///     of the world that is visible (in world units).
         /// </summary>
         /// <remarks>
         ///     If either coordinate of <paramref name="renderingSpaceSize"/>
@@ -45,6 +45,56 @@ namespace HenHen.Framework.Graphics2d.Worlds
             var widthToHeightRatio = renderingSpaceSize.X / renderingSpaceSize.Y;
             var width = widthToHeightRatio * height;
             return new(width, height);
+        }
+
+        /// <summary>
+        ///     Translates a position in world (world units)
+        ///     to a position in rendering area (pixels).
+        /// </summary>
+        public Vector2 PositionToRenderingSpace(Vector2 positionInWorld, Vector2 renderingSpaceSize)
+        {
+            var visibleArea = GetVisibleArea(renderingSpaceSize);
+
+            Vector2 pixelsPerUnit;
+            {
+                var pixelsPerUnitF = renderingSpaceSize.X / visibleArea.Width;
+                pixelsPerUnit = new Vector2(pixelsPerUnitF, -pixelsPerUnitF);
+                // since world has Y going up, and rendering has Y going down,
+                // Y is with a minus
+            }
+
+            // this position is what would be returned as (0, 0):
+            var zeroPixelsInWorld = visibleArea.TopLeft;
+
+            var positionInWorldRelativeToZeroPixelsInWorld = positionInWorld - zeroPixelsInWorld;
+            var positionInPixels = positionInWorldRelativeToZeroPixelsInWorld * pixelsPerUnit;
+
+            return positionInPixels;
+        }
+
+        /// <summary>
+        ///     Translates an area rectangle in world (world units)
+        ///     to an area rectangle in rendering area (pixels).
+        /// </summary>
+        public RectangleF AreaToRenderingSpace(RectangleF area, Vector2 renderingSpaceSize)
+        {
+            var visibleArea = GetVisibleArea(renderingSpaceSize);
+
+            Vector2 pixelsPerUnit;
+            {
+                var pixelsPerUnitF = renderingSpaceSize.X / visibleArea.Width;
+                pixelsPerUnit = new Vector2(pixelsPerUnitF, -pixelsPerUnitF);
+                // since world has Y going up, and rendering has Y going down,
+                // Y is with a minus
+            }
+
+            // this position is what would be returned as (0, 0):
+            var zeroPixelsInWorld = visibleArea.TopLeft;
+
+            var areaInWorldRelativeToZeroPixelsInWorld = area - zeroPixelsInWorld;
+            var areaInPixels = areaInWorldRelativeToZeroPixelsInWorld * pixelsPerUnit;
+
+            return areaInPixels;
         }
     }
 }
