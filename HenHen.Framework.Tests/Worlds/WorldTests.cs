@@ -32,7 +32,7 @@ namespace HenHen.Framework.Tests.Worlds
                     C = new Vector3(10, 0, -10)
                 }
             };
-            world.Mediums.Add(medium);
+            world.AddMedium(medium);
             world.Simulate(0.01);
             Assert.IsTrue(node1.CollisionRecord.Contains(node2));
             Assert.IsTrue(node2.CollisionRecord.Contains(node1));
