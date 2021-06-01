@@ -4,6 +4,7 @@
 
 using HenHen.Core.Worlds;
 using NUnit.Framework;
+using System;
 
 namespace HenHen.Core.Tests.Worlds
 {
@@ -148,9 +149,21 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(3, 7, 1)]
         [TestCase(1, 1, 1)]
         [TestCase(8, 8, 3)]
-        public void YearMonthDayConstructorTest(int year, int month, int day)
+        [TestCase(0, 8, 3, true)]
+        [TestCase(1, -2, 3, true)]
+        public void YearMonthDayConstructorTest(int year, int month, int day, bool shouldThrow = false)
         {
-            var dateTime = new HenHenTime(year, month, day);
+            HenHenTime dateTime;
+            try
+            {
+                dateTime = new HenHenTime(year, month, day);
+                Assert.IsFalse(shouldThrow);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Assert.IsTrue(shouldThrow);
+                return;
+            }
             Assert.AreEqual(year, dateTime.Year);
             Assert.AreEqual(month, dateTime.Month);
             Assert.AreEqual(day, dateTime.Day);
@@ -162,15 +175,29 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(8, 8, 3, 0, 0, 5)]
         [TestCase(1, 4, 8, 1, 2, 3)]
         [TestCase(3, 7, 1, 4, 5, 6)]
-        public void YearToSecondConstructorTest(int year, int month, int day, int hour, int minute, int second)
+        [TestCase(3, 7, 1, 4, 5, HenHenTime.SECONDS_IN_MINUTE, true)]
+        public void YearToSecondConstructorTest(int year, int month, int day, int hour, int minute, int second, bool shouldThrow = false)
         {
-            var dateTime = new HenHenTime(year, month, day, hour, minute, second);
+            HenHenTime dateTime;
+            try
+            {
+                dateTime = new HenHenTime(year, month, day, hour, minute, second);
+                Assert.IsFalse(shouldThrow);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Assert.IsTrue(shouldThrow);
+                return;
+            }
             Assert.AreEqual(year, dateTime.Year);
             Assert.AreEqual(month, dateTime.Month);
             Assert.AreEqual(day, dateTime.Day);
+            Assert.AreEqual(hour, dateTime.Hour);
+            Assert.AreEqual(minute, dateTime.Minute);
+            Assert.AreEqual(second, dateTime.Second);
         }
 
-        private static void IsGetSameAsSet(System.Func<double> getter, System.Action<double> setter)
+        private static void IsGetSameAsSet(Func<double> getter, Action<double> setter)
         {
             for (var i = 0; i < 200; i++)
             {
