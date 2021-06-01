@@ -98,6 +98,8 @@ namespace HenHen.Core.Worlds
 
         public HenHenTime(int year, int month, int day) => ticks = ((year - 1) * ticks_in_year) + ((month - 1) * ticks_in_month) + ((day - 1) * ticks_in_day);
 
+        public HenHenTime(int year, int month, int day, int hour, int minute, int second) : this(year, month, day) => ticks += (hour * hours_in_day) + (minute * minutes_in_hour) + (second * seconds_in_minute);
+
         private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => checked(((int)unit % surroundingUnit) + numericBase);
 
         private static double GetFromBeginning(double unit, int surroundingUnit) => checked(unit / surroundingUnit);
