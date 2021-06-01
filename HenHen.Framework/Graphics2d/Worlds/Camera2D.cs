@@ -82,7 +82,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         {
             var visibleArea = GetVisibleArea(renderingSpaceSize);
 
-            var pixelsPerUnit = GetPixelsPerUnit(renderingSpaceSize, area.Width);
+            var pixelsPerUnit = GetPixelsPerUnit(renderingSpaceSize, visibleArea.Width);
 
             // this position is what would be returned as (0, 0):
             var zeroPixelsInWorld = visibleArea.TopLeft;
