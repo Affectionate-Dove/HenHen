@@ -132,9 +132,22 @@ namespace HenHen.Core.Worlds
 
         public static bool operator <(HenHenTime a, HenHenTime b) => a.ticks < b.ticks;
 
+        public static bool operator <=(HenHenTime left, HenHenTime right) => left.CompareTo(right) <= 0;
+
+        public static bool operator >=(HenHenTime left, HenHenTime right) => left.CompareTo(right) >= 0;
+
         public int CompareTo(HenHenTime other) => Math.Sign(ticks - other.ticks);
 
         public bool Equals(HenHenTime other) => ticks == other.ticks;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is HenHenTime henHenTime)
+                return Equals(henHenTime);
+            return false;
+        }
+
+        public override int GetHashCode() => unchecked((int)ticks);
 
         private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => checked(((int)unit % surroundingUnit) + numericBase);
 
