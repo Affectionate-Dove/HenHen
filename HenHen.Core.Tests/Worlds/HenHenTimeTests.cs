@@ -174,6 +174,30 @@ namespace HenHen.Core.Tests.Worlds
             Assert.AreEqual(second, dateTime.Second);
         }
 
+        [Test]
+        public void CompareToTest()
+        {
+            var a = new HenHenTime(2, 1, 1);
+            var b = new HenHenTime(3, 1, 1);
+            var c = new HenHenTime(3, 1, 1);
+            Assert.Less(a.CompareTo(b), 0);
+            Assert.Greater(b.CompareTo(a), 0);
+            Assert.AreEqual(b.CompareTo(b), 0);
+            Assert.AreEqual(a.CompareTo(a), 0);
+            Assert.AreEqual(b.CompareTo(c), 0);
+        }
+
+        [Test]
+        public void EqualsTest()
+        {
+            var a = new HenHenTime(2, 1, 1);
+            var b = new HenHenTime(3, 1, 1);
+            var c = new HenHenTime(3, 1, 1);
+            Assert.AreNotEqual(a, b);
+            Assert.AreEqual(b, c);
+            Assert.AreNotEqual(a, c);
+        }
+
         private static void IsGetSameAsStaticCtor(Func<HenHenTime, double> getter, Func<double, HenHenTime> setter)
         {
             for (var i = 0; i < 200; i++)

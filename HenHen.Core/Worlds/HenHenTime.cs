@@ -6,7 +6,7 @@ using System;
 
 namespace HenHen.Core.Worlds
 {
-    public readonly struct HenHenTime
+    public readonly struct HenHenTime : IComparable<HenHenTime>, IEquatable<HenHenTime>
     {
         public const double season_at_year_start = 0.5;
         public const int SEASONS_IN_YEAR = 4;
@@ -107,6 +107,10 @@ namespace HenHen.Core.Worlds
         public static HenHenTime FromMinutes(double minutes) => new(checked((long)(minutes * ticks_in_minute)));
 
         public static HenHenTime FromSeconds(double seconds) => new(checked((long)(seconds * ticks_in_second)));
+
+        public int CompareTo(HenHenTime other) => Math.Sign(ticks - other.ticks);
+
+        public bool Equals(HenHenTime other) => ticks == other.ticks;
 
         private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => checked(((int)unit % surroundingUnit) + numericBase);
 
