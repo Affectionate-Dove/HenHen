@@ -198,6 +198,24 @@ namespace HenHen.Core.Tests.Worlds
             Assert.AreNotEqual(a, c);
         }
 
+        [Test]
+        public void OperatorTest()
+        {
+            var a = HenHenTime.FromDays(1);
+            var b = HenHenTime.FromHours(12);
+            var c = new HenHenTime(1, 1, 2);
+            Assert.AreEqual(new HenHenTime(1, 1, 2, 12, 0, 0), a + b);
+            Assert.AreEqual(new HenHenTime(1, 1, 1, 12, 0, 0), a - b);
+            Assert.AreEqual(new HenHenTime(1, 1, 3, 0, 0, 0), a * 2);
+            Assert.AreEqual(new HenHenTime(1, 1, 1, 12, 0, 0), a / 2);
+            Assert.AreEqual(2, a / b);
+            Assert.AreEqual(0.5f, b / a);
+            Assert.IsTrue(a != b);
+            Assert.IsTrue(a == c);
+            Assert.IsTrue(a > b);
+            Assert.IsFalse(a < b);
+        }
+
         private static void IsGetSameAsStaticCtor(Func<HenHenTime, double> getter, Func<double, HenHenTime> setter)
         {
             for (var i = 0; i < 200; i++)

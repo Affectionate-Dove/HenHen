@@ -108,6 +108,30 @@ namespace HenHen.Core.Worlds
 
         public static HenHenTime FromSeconds(double seconds) => new(checked((long)(seconds * ticks_in_second)));
 
+        public static HenHenTime operator +(HenHenTime a, HenHenTime b) => new(checked(a.ticks + b.ticks));
+
+        public static HenHenTime operator -(HenHenTime a, HenHenTime b)
+        {
+            var ticks = checked(a.ticks - b.ticks);
+            if (ticks < 0)
+                throw new OverflowException($"The subtraction operation resulted in negative {nameof(HenHenTime)}.");
+            return new(ticks);
+        }
+
+        public static HenHenTime operator *(HenHenTime a, double b) => new(checked((long)(a.ticks * b)));
+
+        public static HenHenTime operator /(HenHenTime a, double b) => new(checked((long)(a.ticks / b)));
+
+        public static double operator /(HenHenTime a, HenHenTime b) => a.ticks / (double)b.ticks;
+
+        public static bool operator ==(HenHenTime a, HenHenTime b) => a.Equals(b);
+
+        public static bool operator !=(HenHenTime a, HenHenTime b) => !a.Equals(b);
+
+        public static bool operator >(HenHenTime a, HenHenTime b) => a.ticks > b.ticks;
+
+        public static bool operator <(HenHenTime a, HenHenTime b) => a.ticks < b.ticks;
+
         public int CompareTo(HenHenTime other) => Math.Sign(ticks - other.ticks);
 
         public bool Equals(HenHenTime other) => ticks == other.ticks;
