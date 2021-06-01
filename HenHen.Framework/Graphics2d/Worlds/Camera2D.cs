@@ -19,6 +19,15 @@ namespace HenHen.Framework.Graphics2d.Worlds
         /// </summary>
         public float FovY { get; set; }
 
+        public static Vector2 GetPixelsPerUnit(Vector2 renderingSpaceSize, float visibleAreaWidth)
+        {
+            var pixelsPerUnitF = renderingSpaceSize.X / visibleAreaWidth;
+
+            // since world has Y going up, and rendering has Y going down,
+            // Y is with a minus
+            return new Vector2(pixelsPerUnitF, -pixelsPerUnitF);
+        }
+
         /// <summary>
         ///     Returns a rectangle that defines the area
         ///     of the world that is visible (in world units).
@@ -54,14 +63,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         public Vector2 PositionToRenderingSpace(Vector2 positionInWorld, Vector2 renderingSpaceSize)
         {
             var visibleArea = GetVisibleArea(renderingSpaceSize);
-
-            Vector2 pixelsPerUnit;
-            {
-                var pixelsPerUnitF = renderingSpaceSize.X / visibleArea.Width;
-                pixelsPerUnit = new Vector2(pixelsPerUnitF, -pixelsPerUnitF);
-                // since world has Y going up, and rendering has Y going down,
-                // Y is with a minus
-            }
+            var pixelsPerUnit = GetPixelsPerUnit(renderingSpaceSize, visibleArea.Width);
 
             // this position is what would be returned as (0, 0):
             var zeroPixelsInWorld = visibleArea.TopLeft;
@@ -80,13 +82,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         {
             var visibleArea = GetVisibleArea(renderingSpaceSize);
 
-            Vector2 pixelsPerUnit;
-            {
-                var pixelsPerUnitF = renderingSpaceSize.X / visibleArea.Width;
-                pixelsPerUnit = new Vector2(pixelsPerUnitF, -pixelsPerUnitF);
-                // since world has Y going up, and rendering has Y going down,
-                // Y is with a minus
-            }
+            var pixelsPerUnit = GetPixelsPerUnit(renderingSpaceSize, area.Width);
 
             // this position is what would be returned as (0, 0):
             var zeroPixelsInWorld = visibleArea.TopLeft;
