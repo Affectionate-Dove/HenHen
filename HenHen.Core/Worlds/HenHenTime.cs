@@ -6,7 +6,7 @@ using System;
 
 namespace HenHen.Core.Worlds
 {
-    public struct HenHenTime
+    public readonly struct HenHenTime
     {
         public const double season_at_year_start = 0.5;
         public const int SEASONS_IN_YEAR = 4;
@@ -22,23 +22,16 @@ namespace HenHen.Core.Worlds
         private const long ticks_in_minute = ticks_in_second * SECONDS_IN_MINUTE;
         private const long ticks_in_hour = ticks_in_minute * MINUTES_IN_HOUR;
         private const long ticks_in_day = ticks_in_hour * HOURS_IN_DAY;
-        private const long ticks_in_month = ticks_in_day * DAYS_IN_WEEK * WEEKS_IN_MONTH;
+        private const long ticks_in_week = ticks_in_day * DAYS_IN_WEEK;
+        private const long ticks_in_month = ticks_in_day * DAYS_IN_MONTH;
         private const long ticks_in_year = ticks_in_month * MONTHS_IN_YEAR;
-        private long ticks;
+        private readonly long ticks;
 
-        public double Years
-        {
-            get => GetFromBeginning(Months, MONTHS_IN_YEAR);
-            set => Months = SetFromBeginning(value, MONTHS_IN_YEAR);
-        }
+        public double Years => GetFromBeginning(Months, MONTHS_IN_YEAR);
 
         public int Year => (int)(Years + 1);
 
-        public double Months
-        {
-            get => GetFromBeginning(Weeks, WEEKS_IN_MONTH);
-            set => Weeks = SetFromBeginning(value, WEEKS_IN_MONTH);
-        }
+        public double Months => GetFromBeginning(Weeks, WEEKS_IN_MONTH);
 
         public int Month => GetInSurroundingUnit(Months, MONTHS_IN_YEAR, 1);
 
@@ -52,19 +45,11 @@ namespace HenHen.Core.Worlds
             }
         }
 
-        public double Weeks
-        {
-            get => GetFromBeginning(Days, DAYS_IN_WEEK);
-            set => Days = SetFromBeginning(value, DAYS_IN_WEEK);
-        }
+        public double Weeks => GetFromBeginning(Days, DAYS_IN_WEEK);
 
         public int Week => GetInSurroundingUnit(Weeks, WEEKS_IN_MONTH, 1);
 
-        public double Days
-        {
-            get => GetFromBeginning(Hours, HOURS_IN_DAY);
-            set => Hours = SetFromBeginning(value, HOURS_IN_DAY);
-        }
+        public double Days => GetFromBeginning(Hours, HOURS_IN_DAY);
 
         /// <summary>
         /// Day of month.
@@ -73,27 +58,15 @@ namespace HenHen.Core.Worlds
 
         public int WeekDay => GetInSurroundingUnit(Days, DAYS_IN_WEEK, 1);
 
-        public double Hours
-        {
-            get => GetFromBeginning(Minutes, MINUTES_IN_HOUR);
-            set => Minutes = SetFromBeginning(value, MINUTES_IN_HOUR);
-        }
+        public double Hours => GetFromBeginning(Minutes, MINUTES_IN_HOUR);
 
         public int Hour => GetInSurroundingUnit(Hours, HOURS_IN_DAY, 0);
 
-        public double Minutes
-        {
-            get => GetFromBeginning(Seconds, SECONDS_IN_MINUTE);
-            set => Seconds = SetFromBeginning(value, SECONDS_IN_MINUTE);
-        }
+        public double Minutes => GetFromBeginning(Seconds, SECONDS_IN_MINUTE);
 
         public int Minute => GetInSurroundingUnit(Minutes, MINUTES_IN_HOUR, 0);
 
-        public double Seconds
-        {
-            get => GetFromBeginning(ticks, ticks_in_second);
-            set => ticks = checked((long)Math.Round(SetFromBeginning(value, ticks_in_second)));
-        }
+        public double Seconds => GetFromBeginning(ticks, ticks_in_second);
 
         public int Second => GetInSurroundingUnit(Seconds, SECONDS_IN_MINUTE, 0);
 
@@ -119,10 +92,24 @@ namespace HenHen.Core.Worlds
             ticks += (hour * ticks_in_hour) + (minute * ticks_in_minute) + (second * ticks_in_second);
         }
 
+        private HenHenTime(long ticks) => this.ticks = ticks;
+
+        public static HenHenTime FromYears(double years) => new(checked((long)(years * ticks_in_year)));
+
+        public static HenHenTime FromMonths(double months) => new(checked((long)(months * ticks_in_month)));
+
+        public static HenHenTime FromDays(double days) => new(checked((long)(days * ticks_in_day)));
+
+        public static HenHenTime FromWeeks(double weeks) => new(checked((long)(weeks * ticks_in_week)));
+
+        public static HenHenTime FromHours(double hours) => new(checked((long)(hours * ticks_in_hour)));
+
+        public static HenHenTime FromMinutes(double minutes) => new(checked((long)(minutes * ticks_in_minute)));
+
+        public static HenHenTime FromSeconds(double seconds) => new(checked((long)(seconds * ticks_in_second)));
+
         private static int GetInSurroundingUnit(double unit, int surroundingUnit, int numericBase) => checked(((int)unit % surroundingUnit) + numericBase);
 
         private static double GetFromBeginning(double unit, int surroundingUnit) => checked(unit / surroundingUnit);
-
-        private static double SetFromBeginning(double unit, int surroundingUnit) => checked(unit * surroundingUnit);
     }
 }

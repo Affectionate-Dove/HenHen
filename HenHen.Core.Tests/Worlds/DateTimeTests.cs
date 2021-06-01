@@ -14,13 +14,9 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(20, 2.5, 3)]
         public void YearsTest(double months, double expectedYears, int expectedYear)
         {
-            var dateTime = new HenHenTime
-            {
-                Months = months
-            };
+            var dateTime = HenHenTime.FromMonths(months);
             Assert.AreEqual(expectedYears, dateTime.Years);
-            // TODO:
-            // Assert.AreEqual(expectedYear, dateTime.Year);
+            Assert.AreEqual(expectedYear, dateTime.Year);
         }
 
         [TestCase(7, 1.75, 2)]
@@ -29,10 +25,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(1, 0.25, 1)]
         public void MonthsTest(double weeks, double expectedMonths, int expectedMonth)
         {
-            var dateTime = new HenHenTime
-            {
-                Weeks = weeks
-            };
+            var dateTime = HenHenTime.FromWeeks(weeks);
             Assert.AreEqual(expectedMonths, dateTime.Months);
             Assert.AreEqual(expectedMonth, dateTime.Month);
         }
@@ -51,10 +44,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(27, 3)]
         public void SeasonTest(double months, int expectedSeason)
         {
-            var dateTime = new HenHenTime
-            {
-                Months = months
-            };
+            var dateTime = HenHenTime.FromMonths(months);
             Assert.AreEqual(expectedSeason, dateTime.Season);
         }
 
@@ -63,10 +53,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(51, 8.5, 1)]
         public void WeeksTest(double days, double expectedWeeks, int expectedWeek)
         {
-            var dateTime = new HenHenTime
-            {
-                Days = days
-            };
+            var dateTime = HenHenTime.FromDays(days);
             Assert.AreEqual(expectedWeeks, dateTime.Weeks);
             Assert.AreEqual(expectedWeek, dateTime.Week);
         }
@@ -80,10 +67,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(576, 24, 1, 1)]
         public void DaysTest(double hours, double expectedDays, int expectedDayOfMonth, int expectedWeekDay)
         {
-            var dateTime = new HenHenTime
-            {
-                Hours = hours
-            };
+            var dateTime = HenHenTime.FromHours(hours);
             Assert.AreEqual(expectedDays, dateTime.Days);
             Assert.AreEqual(expectedDayOfMonth, dateTime.Day);
             Assert.AreEqual(expectedWeekDay, dateTime.WeekDay);
@@ -97,10 +81,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(1470, 24.5, 0)]
         public void HoursTest(double minutes, double expectedHours, int expectedHour)
         {
-            var dateTime = new HenHenTime
-            {
-                Minutes = minutes
-            };
+            var dateTime = HenHenTime.FromMinutes(minutes);
             Assert.AreEqual(expectedHours, dateTime.Hours);
             Assert.AreEqual(expectedHour, dateTime.Hour);
         }
@@ -113,10 +94,7 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(1470, 24.5, 24)]
         public void MinutesTest(double seconds, double expectedMinutes, int expectedMinute)
         {
-            var dateTime = new HenHenTime
-            {
-                Seconds = seconds
-            };
+            var dateTime = HenHenTime.FromSeconds(seconds);
             Assert.AreEqual(expectedMinutes, dateTime.Minutes);
             Assert.AreEqual(expectedMinute, dateTime.Minute);
         }
@@ -128,21 +106,20 @@ namespace HenHen.Core.Tests.Worlds
         [TestCase(61, 1)]
         public void SecondsTest(double seconds, int expectedSecond)
         {
-            var dateTime = new HenHenTime { Seconds = seconds };
+            var dateTime = HenHenTime.FromSeconds(seconds);
             Assert.AreEqual(dateTime.Second, expectedSecond);
         }
 
         [Test]
         public void SetAndGetTest()
         {
-            var dateTime = new HenHenTime();
-            IsGetSameAsSet(() => dateTime.Seconds, v => dateTime.Seconds = v);
-            IsGetSameAsSet(() => dateTime.Minutes, v => dateTime.Minutes = v);
-            IsGetSameAsSet(() => dateTime.Hours, v => dateTime.Hours = v);
-            IsGetSameAsSet(() => dateTime.Days, v => dateTime.Days = v);
-            IsGetSameAsSet(() => dateTime.Weeks, v => dateTime.Weeks = v);
-            IsGetSameAsSet(() => dateTime.Months, v => dateTime.Months = v);
-            IsGetSameAsSet(() => dateTime.Years, v => dateTime.Years = v);
+            IsGetSameAsStaticCtor(dateTime => dateTime.Seconds, HenHenTime.FromSeconds);
+            IsGetSameAsStaticCtor(dateTime => dateTime.Minutes, HenHenTime.FromMinutes);
+            IsGetSameAsStaticCtor(dateTime => dateTime.Hours, HenHenTime.FromHours);
+            IsGetSameAsStaticCtor(dateTime => dateTime.Days, HenHenTime.FromDays);
+            IsGetSameAsStaticCtor(dateTime => dateTime.Weeks, HenHenTime.FromWeeks);
+            IsGetSameAsStaticCtor(dateTime => dateTime.Months, HenHenTime.FromMonths);
+            IsGetSameAsStaticCtor(dateTime => dateTime.Years, HenHenTime.FromYears);
         }
 
         [TestCase(1, 4, 8)]
@@ -197,12 +174,12 @@ namespace HenHen.Core.Tests.Worlds
             Assert.AreEqual(second, dateTime.Second);
         }
 
-        private static void IsGetSameAsSet(Func<double> getter, Action<double> setter)
+        private static void IsGetSameAsStaticCtor(Func<HenHenTime, double> getter, Func<double, HenHenTime> setter)
         {
             for (var i = 0; i < 200; i++)
             {
-                setter(i);
-                Assert.AreEqual(i, getter());
+                var henHenTime = setter(i);
+                Assert.AreEqual(i, getter(henHenTime));
             }
         }
     }
