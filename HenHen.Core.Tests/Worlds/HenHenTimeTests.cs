@@ -8,7 +8,7 @@ using System;
 
 namespace HenHen.Core.Tests.Worlds
 {
-    public class DateTimeTests
+    public class HenHenTimeTests
     {
         [TestCase(6, 0.75, 1)]
         [TestCase(20, 2.5, 3)]
