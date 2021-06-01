@@ -4,6 +4,7 @@
 
 using HenHen.Framework.Numerics;
 using NUnit.Framework;
+using System;
 using System.Numerics;
 
 namespace HenHen.Framework.Tests.Numerics
@@ -74,6 +75,33 @@ namespace HenHen.Framework.Tests.Numerics
             Assert.AreEqual(10, rect.Area);
             Assert.AreEqual(3, rect.Bottom);
             Assert.AreEqual(-6, rect.Right);
+        }
+
+        [Test]
+        public void GetIntersectionTest()
+        {
+            var rect1 = new RectangleF(1, 2, 1, 2);
+            var rect2 = new RectangleF(1.5f, 2.5f, 1.5f, 2.5f);
+            var rect1YD = new RectangleF(1, 2, 2, 1);
+            var rect2YD = new RectangleF(1.5f, 2.5f, 2.5f, 1.5f);
+            var rect3 = new RectangleF(3, 4, 3, 4);
+
+            Assert.Throws<Exception>(() => rect1.GetIntersection(rect1YD));
+            Assert.Throws<Exception>(() => rect1.GetIntersection(rect2YD));
+            Assert.Throws<Exception>(() => rect2.GetIntersection(rect1YD));
+            Assert.Throws<Exception>(() => rect2.GetIntersection(rect2YD));
+
+            RectangleF? expected = new RectangleF(1.5f, 2, 1.5f, 2);
+            Assert.AreEqual(expected, rect1.GetIntersection(rect2));
+            Assert.AreEqual(expected, rect2.GetIntersection(rect1));
+
+            expected = new RectangleF(1.5f, 2, 2, 1.5f);
+            Assert.AreEqual(expected, rect1YD.GetIntersection(rect2YD));
+            Assert.AreEqual(expected, rect2YD.GetIntersection(rect1YD));
+
+            expected = null;
+            Assert.AreEqual(expected, rect1.GetIntersection(rect3));
+            Assert.AreEqual(expected, rect3.GetIntersection(rect1));
         }
     }
 }

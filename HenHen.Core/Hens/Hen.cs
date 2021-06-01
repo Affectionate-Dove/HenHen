@@ -2,18 +2,12 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Worlds.Nodes;
+
 namespace HenHen.Core.Hens
 {
-    public class Hen
+    public class Hen : Node
     {
-        public int Id;
-        public int Health;
-        public HenStatistics Statistics;
-        public HenType Type;
-    }
-
-    public enum HenType
-    {
-        PROWADZACY, STUDENT, POMOCNIK
+        public HenKind Kind { get; }
     }
 }

@@ -40,5 +40,34 @@ namespace HenHen.Framework.Collisions
 
         /// <remarks>Touching edges are considered to be a collision.</remarks>
         public static bool AreSpheresColliding(Sphere a, Sphere b) => (a.CenterPosition - b.CenterPosition).Length() <= a.Radius + b.Radius;
+
+        /// <remarks>Touching edges are considered to be a collision.</remarks>
+        public static bool AreRectanglesColliding(RectangleF a, RectangleF b)
+        {
+            var aIsToTheRightOfB = a.Left > b.Right;
+            var aIsToTheLeftOfB = a.Right < b.Left;
+            var aIsAboveB = a.Bottom > b.Top;
+            var AIsBelowB = a.Top < b.Bottom;
+            return !(aIsToTheRightOfB
+              || aIsToTheLeftOfB
+              || aIsAboveB
+              || AIsBelowB);
+        }
+
+        public static bool AreBoxesColliding(Box a, Box b)
+        {
+            var aIsToTheRightOfB = a.Left > b.Right;
+            var aIsToTheLeftOfB = a.Right < b.Left;
+            var aIsAboveB = a.Bottom > b.Top;
+            var aIsBelowB = a.Top < b.Bottom;
+            var aIsInFrontOfB = a.Back > b.Front;
+            var aIsBehindB = a.Front < b.Back;
+            return !(aIsToTheRightOfB
+              || aIsToTheLeftOfB
+              || aIsAboveB
+              || aIsBelowB
+              || aIsInFrontOfB
+              || aIsBehindB);
+        }
     }
 }

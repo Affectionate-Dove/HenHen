@@ -2,12 +2,11 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Worlds.Nodes;
-
-namespace HenHen.Framework.Collisions
+namespace HenHen.Framework.VisualTests
 {
-    public interface ICollisionHandler
+    public enum VisualTesterControls
     {
-        void OnCollision(Node a, Node b);
+        PreviousScene,
+        NextScene
     }
 }
