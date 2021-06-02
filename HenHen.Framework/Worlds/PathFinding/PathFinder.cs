@@ -46,6 +46,8 @@ namespace HenHen.Framework.Worlds.PathFinding
         {
             for (var i = 0; limit <= 0 || i < limit; i++)
             {
+                if (pathfindingAgents.Count == 0)
+                    break;
                 var agent = pathfindingAgents[0];
                 agent.Run();
                 pathfindingAgents.RemoveAt(0);

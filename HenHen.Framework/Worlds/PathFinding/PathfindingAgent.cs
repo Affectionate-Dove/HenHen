@@ -24,6 +24,7 @@ namespace HenHen.Framework.Worlds.PathFinding
 
         public PathfindingAgent(PathNode startNode, PathNode destination)
         {
+            VisitedNodes = new List<PathNode> { startNode };
             CurrentNode = startNode;
             Destination = destination;
         }
@@ -62,7 +63,7 @@ namespace HenHen.Framework.Worlds.PathFinding
         private void CreateAgent(PathNode connectedNode)
         {
             List<PathNode> visitedNodes = new(VisitedNodes.Count + 1);
-            visitedNodes.AddRange(visitedNodes);
+            visitedNodes.AddRange(VisitedNodes);
             visitedNodes.Add(connectedNode);
             var newAgent = new PathfindingAgent(visitedNodes, connectedNode, Destination);
             SignalAgentCreation(newAgent);
