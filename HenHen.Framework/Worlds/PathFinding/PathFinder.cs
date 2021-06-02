@@ -7,8 +7,8 @@ using System.Collections.Generic;
 namespace HenHen.Framework.Worlds.PathFinding
 {
     /// <summary>
-    /// Responsible for finding the shortest path
-    /// between two given points A and B.
+    ///     Responsible for finding the shortest path
+    ///     between two given points A and B.
     /// </summary>
     public class Pathfinder
     {
@@ -17,11 +17,11 @@ namespace HenHen.Framework.Worlds.PathFinding
         public PathfindingState State { get; protected set; } = PathfindingState.NotStarted;
 
         /// <summary>
-        /// The found requested path.
-        /// Directly connected points that lead from
-        /// <seealso cref="PathRequest.Start"/> point to
-        /// <see cref="PathRequest.End"/> point
-        /// of the <see cref="Request"/> property.
+        ///     The found requested path.
+        ///     Directly connected points that lead from
+        ///     <see cref="PathRequest.Start"/> point to
+        ///     <see cref="PathRequest.End"/> point
+        ///     of the <see cref="Request"/> property.
         /// </summary>
         public IReadOnlyList<PathNode> Result => (State == PathfindingState.Successful) ? result : null;
 
@@ -32,15 +32,19 @@ namespace HenHen.Framework.Worlds.PathFinding
             Request = request;
             State = PathfindingState.InProgress;
             var agent = new PathfindingAgent(Request.Start, Request.End);
-            Agent_AgentCreated(agent);
+            OnNewAgentCreated(agent);
         }
 
         /// <summary>
-        /// Performs a bit of pathfinding computations.
+        ///     Performs pathfinding computations.
         /// </summary>
-        public void Update(int limit)
+        /// <param name="limit">
+        ///     The maximum amount of iterations to perform.
+        ///     If 0 or less, there is no limit.
+        /// </param>
+        public void Update(int limit = 0)
         {
-            for (var i = 0; i < limit; i++)
+            for (var i = 0; limit <= 0 || i < limit; i++)
             {
                 var agent = pathfindingAgents[0];
                 agent.Run();
@@ -52,16 +56,16 @@ namespace HenHen.Framework.Worlds.PathFinding
                 State = PathfindingState.Failed;
         }
 
-        private void Agent_AgentCreated(PathfindingAgent obj)
+        private void OnNewAgentCreated(PathfindingAgent newAgent)
         {
-            obj.PathFound += Agent_PathFound;
-            obj.AgentCreated += Agent_AgentCreated;
-            pathfindingAgents.Add(obj);
+            newAgent.PathFound += OnPathFound;
+            newAgent.AgentCreated += OnNewAgentCreated;
+            pathfindingAgents.Add(newAgent);
         }
 
-        private void Agent_PathFound(List<PathNode> obj)
+        private void OnPathFound(List<PathNode> path)
         {
-            result = obj;
+            result = path;
             State = PathfindingState.Successful;
         }
     }

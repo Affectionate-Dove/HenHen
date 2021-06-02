@@ -8,9 +8,9 @@ using System.Collections.Generic;
 namespace HenHen.Framework.Worlds.PathFinding
 {
     /// <summary>
-    /// Finds a path to
-    /// the given <see cref="Destination"/> by visiting nodes
-    /// using a naive algorithm.
+    ///     Finds a path to
+    ///     the given <see cref="Destination"/> by visiting nodes
+    ///     using a naive algorithm.
     /// </summary>
     public class PathfindingAgent
     {
@@ -36,11 +36,11 @@ namespace HenHen.Framework.Worlds.PathFinding
         }
 
         /// <summary>
-        /// If <see cref="CurrentNode"/> is the <see cref="Destination"/>,
-        /// notifies that it's been found.
-        /// Otherwise, creates more agents and
-        /// places them in connected nodes that haven't been visited yet.
-        /// Raises the <see cref="AgentCreated"/> event on agent creation.
+        ///     If <see cref="CurrentNode"/> is the <see cref="Destination"/>,
+        ///     notifies that it's been found.
+        ///     Otherwise, creates more agents and
+        ///     places them in connected nodes that haven't been visited yet.
+        ///     Raises the <see cref="AgentCreated"/> event on agent creation.
         /// </summary>
         public void Run()
         {
