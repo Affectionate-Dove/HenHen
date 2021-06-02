@@ -31,7 +31,7 @@ namespace HenHen.Framework.Graphics2d
                 child.Parent = null;
         }
 
-        protected Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition + Padding.TopLeft;
+        protected Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderRect.TopLeft + Padding.TopLeft;
 
         protected Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize - Padding.Total;
 

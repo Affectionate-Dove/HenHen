@@ -2,12 +2,14 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Numerics;
 using HenHen.Framework.Worlds.Chunks;
 using HenHen.Framework.Worlds.Chunks.Simulation;
 using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace HenHen.Framework.Worlds
@@ -22,8 +24,9 @@ namespace HenHen.Framework.Worlds
 
         public IReadOnlyList<Node> Nodes => nodes;
 
-        public float ChunkSize => chunksManager.ChunkSize;
         public double SynchronizedTime => chunksSimulationManager.SynchronizedTime;
+
+        public Vector2 Size => chunksManager.ChunkCount * chunksManager.ChunkSize;
 
         public World() : this(new Vector2(100))
         {
@@ -54,6 +57,13 @@ namespace HenHen.Framework.Worlds
         }
 
         public void Simulate(double newTime) => chunksSimulationManager.Simulate(newTime);
+
+        /// <summary>
+        ///     Returns <see cref="Medium"/> mediums that
+        ///     are in chunks that are inside
+        ///     the specified <paramref name="area"/>.
+        /// </summary>
+        public IEnumerable<Medium> GetMediumsAroundArea(RectangleF area) => chunksManager.GetChunksForRectangle(area).SelectMany(chunk => chunk.Mediums);
 
         private void OnNodeEjected(Node node) => AddNode(node);
     }
