@@ -56,7 +56,7 @@ namespace HenHen.Framework.Tests.Worlds.PathFinding
 
             a.ConnectSymmetrically(b);
             b.ConnectSymmetrically(c);
-            c.DisconnectAsymmetrically(b);
+            b.DisconnectAsymmetrically(c);
             return new PathFindingTestCase(new PathRequest(a, c), PathfindingState.Failed, null);
         }
 
