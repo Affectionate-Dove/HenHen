@@ -16,15 +16,13 @@ namespace HenHen.Framework.Collisions
     {
         /// <summary>
         /// Checks all provided nodes for overlapping
-        /// <see cref="Node.CollisionBody"/>'s, and calls
-        /// <see cref="ICollisionHandler.OnCollision(Node, Node)"/>
-        /// if they collide.
+        /// <see cref="Node.CollisionBody"/>'s.
         /// </summary>
         /// <remarks>
-        /// <paramref name="handler"/> is only notified once about
-        /// a collision between a pair of nodes.
+        /// <paramref name="onCollision"/> is only called once per
+        /// a pair of <see cref="Node"/>s.
         /// </remarks>
-        public static void CheckNodeCollisions(IReadOnlyList<Node> nodes, ICollisionHandler handler)
+        public static void CheckNodeCollisions(IReadOnlyList<Node> nodes, Action<Node, Node> onCollision)
         {
             for (var i = 0; i < nodes.Count - 1; i++)
             {
@@ -44,9 +42,9 @@ namespace HenHen.Framework.Collisions
                     if (ElementaryCollisions.AreSpheresColliding(containingSphereA, containingSphereB))
                     {
                         if (a.CollisionBody.Spheres.Count is 1 && b.CollisionBody.Spheres.Count is 1)
-                            handler.OnCollision(a, b);
+                            onCollision(a, b);
                         else if (ThouroughlyCheckNodesForCollision(a, b))
-                            handler.OnCollision(a, b);
+                            onCollision(a, b);
                     }
                 }
             }

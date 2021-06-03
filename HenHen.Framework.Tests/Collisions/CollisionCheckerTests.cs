@@ -125,7 +125,7 @@ namespace HenHen.Framework.Tests.Collisions
             }
 
             var collisionHandler = new TestCollisionHandler();
-            CollisionChecker.CheckNodeCollisions(tc.Nodes, collisionHandler);
+            CollisionChecker.CheckNodeCollisions(tc.Nodes, collisionHandler.OnCollision);
             foreach (var (a, b) in tc.ExpectedCollisions)
             {
                 Assert.IsTrue(collisionHandler.DetectedCollisions.Contains((a, b)) || collisionHandler.DetectedCollisions.Contains((b, a)), $"Failed to detect an expected collision between two nodes.\nNode a: {a}\nNode b: {b}");
@@ -157,7 +157,7 @@ namespace HenHen.Framework.Tests.Collisions
             }
         }
 
-        private class TestCollisionHandler : ICollisionHandler
+        private class TestCollisionHandler
         {
             private readonly HashSet<(Node, Node)> detectedCollisions = new();
             public IReadOnlySet<(Node a, Node b)> DetectedCollisions => detectedCollisions;

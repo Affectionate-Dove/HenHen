@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using System;
 using System.Numerics;
 
 namespace HenHen.Framework.Numerics
@@ -72,6 +73,54 @@ namespace HenHen.Framework.Numerics
                 Bottom = value.Y;
                 Right = value.X;
             }
+        }
+
+        public RectangleF(float left, float right, float bottom, float top)
+        {
+            Left = left;
+            Right = right;
+            Bottom = bottom;
+            Top = top;
+        }
+
+        public static RectangleF operator +(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight + v,
+            TopLeft = rectangle.TopLeft + v
+        };
+
+        public static RectangleF operator -(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight - v,
+            TopLeft = rectangle.TopLeft - v
+        };
+
+        public static RectangleF operator *(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight * v,
+            TopLeft = rectangle.TopLeft * v
+        };
+
+        public static RectangleF operator /(RectangleF rectangle, Vector2 v) => new()
+        {
+            BottomRight = rectangle.BottomRight / v,
+            TopLeft = rectangle.TopLeft / v
+        };
+
+        public RectangleF? GetIntersection(RectangleF other)
+        {
+            if (Top >= Bottom && other.Top < other.Bottom)
+                throw new System.Exception("Coordinate systems don't match. One is Y-up, the other is Y-down");
+
+            var yUp = Top >= Bottom;
+
+            if (Left > other.Right || Right < other.Left || (yUp && (Bottom > other.Top || Top < other.Bottom)) || (!yUp && (Bottom < other.Top || Top > other.Bottom)))
+                return null;
+
+            if (yUp)
+                return new(Math.Max(Left, other.Left), Math.Min(Right, other.Right), Math.Max(Bottom, other.Bottom), Math.Min(Top, other.Top));
+            else
+                return new(Math.Max(Left, other.Left), Math.Min(Right, other.Right), Math.Min(Bottom, other.Bottom), Math.Max(Top, other.Top));
         }
 
         public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";

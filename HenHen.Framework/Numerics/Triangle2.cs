@@ -22,6 +22,34 @@ namespace HenHen.Framework.Numerics
             }
         }
 
+        public static Triangle2 operator +(Triangle2 triangle2, Vector2 v) => new()
+        {
+            A = triangle2.A + v,
+            B = triangle2.B + v,
+            C = triangle2.C + v
+        };
+
+        public static Triangle2 operator -(Triangle2 triangle2, Vector2 v) => new()
+        {
+            A = triangle2.A - v,
+            B = triangle2.B - v,
+            C = triangle2.C - v
+        };
+
+        public static Triangle2 operator *(Triangle2 triangle2, Vector2 v) => new()
+        {
+            A = triangle2.A * v,
+            B = triangle2.B * v,
+            C = triangle2.C * v
+        };
+
+        public static Triangle2 operator /(Triangle2 triangle2, Vector2 v) => new()
+        {
+            A = triangle2.A / v,
+            B = triangle2.B / v,
+            C = triangle2.C / v
+        };
+
         public override string ToString() => $"{{{nameof(A)}={A},{nameof(B)}={B},{nameof(C)}={C}}}";
     }
 }
