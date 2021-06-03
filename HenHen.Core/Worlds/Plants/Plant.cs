@@ -3,32 +3,32 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Worlds.Nodes;
-using System;
 using System.Collections.Generic;
 
 namespace HenHen.Core.Worlds.Plants
 {
     public abstract class Plant : Node
     {
-        public int TimeAlive { get; private set; }
+        public HenHenTime BirthDate { get; private init; }
 
         public string BreedName { get; protected init; }
 
-        public IReadOnlyList<int> GrowthStagesDuration { get; protected init; }
+        public IReadOnlyList<HenHenTime> GrowthStagesDuration { get; protected init; }
 
         public int GrowthStage
         {
             get
             {
                 var currentStage = 0;
-                var sum = 0;
+                var sum = new HenHenTime();
+                var timeAlive = HenHenTime.FromSeconds(SynchronizedTime) - BirthDate;
                 foreach (var stageDuration in GrowthStagesDuration)
                 {
                     sum += stageDuration;
-                    if (TimeAlive <= sum)
-                    {
+
+                    if (timeAlive <= sum)
                         return currentStage;
-                    }
+
                     currentStage++;
                 }
                 return currentStage;
@@ -38,19 +38,12 @@ namespace HenHen.Core.Worlds.Plants
         public Plant(PlantBreed breed)
         {
             BreedName = breed.Name;
-            var growthStagesDuration = new List<int>();
-            var random = new Random();
-            for (var i = 0; i < breed.GrowthStagesDuration.Count; i++)
+            var growthStagesDuration = new List<HenHenTime>();
+            for (var i = 0; i < breed.GrowthStagesDurations.Count; i++)
             {
-                growthStagesDuration[i] = (int)(breed.GrowthStagesDuration[i] + (random.NextDouble() * breed.GrowthStagesDurationVariance[i]));
+                growthStagesDuration[i] = breed.GrowthStagesDurations[i].GetRandom();
             }
             GrowthStagesDuration = growthStagesDuration;
-        }
-
-        protected override void Simulation(double duration)
-        {
-            base.Simulation(duration);
-            TimeAlive++;
         }
     }
 }
