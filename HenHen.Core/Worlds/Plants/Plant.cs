@@ -47,7 +47,7 @@ namespace HenHen.Core.Worlds.Plants
             GrowthStagesDuration = growthStagesDuration;
         }
 
-        protected override void Simulation(TimeSpan duration)
+        protected override void Simulation(double duration)
         {
             base.Simulation(duration);
             TimeAlive++;
