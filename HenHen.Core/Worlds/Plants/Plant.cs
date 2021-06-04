@@ -35,14 +35,15 @@ namespace HenHen.Core.Worlds.Plants
             }
         }
 
-        public Plant(PlantBreed breed)
+        public Plant(PlantBreed breed, HenHenTime birthDate)
         {
             BreedName = breed.Name;
+            BirthDate = birthDate;
+
             var growthStagesDuration = new List<HenHenTime>();
             for (var i = 0; i < breed.GrowthStagesDurations.Count; i++)
-            {
-                growthStagesDuration[i] = breed.GrowthStagesDurations[i].GetRandom();
-            }
+                growthStagesDuration.Add(breed.GrowthStagesDurations[i].GetRandom());
+
             GrowthStagesDuration = growthStagesDuration;
         }
     }

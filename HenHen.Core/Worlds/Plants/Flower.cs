@@ -13,6 +13,6 @@ namespace HenHen.Core.Worlds.Plants
 
         public bool Collectable => GrowthStage == GrowthStagesDuration.Count;
 
-        public Flower(FlowerBreed breed) : base(breed) => DropAmount = breed.DropAmount.GetRandom();
+        public Flower(FlowerBreed breed, HenHenTime birthDate) : base(breed, birthDate) => DropAmount = breed.DropAmount.GetRandom();
     }
 }

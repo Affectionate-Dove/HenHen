@@ -13,7 +13,7 @@ namespace HenHen.Core.Worlds.Plants
         public RandomHenHenTimeRange FruitGrowthDuration { get; }
         public IReadOnlyList<string> Seasons { get; }
 
-        public Tree(TreeBreed breed) : base(breed)
+        public Tree(TreeBreed breed, HenHenTime birthDate) : base(breed, birthDate)
         {
             MaxFruits = breed.MaxFruits;
             FruitGrowthDuration = breed.FruitGrowthDuration;

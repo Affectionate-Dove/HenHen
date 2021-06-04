@@ -7,6 +7,6 @@ using System.Collections.Generic;
 
 namespace HenHen.Core.Worlds.Plants
 {
-    public record PlantBreed(string Name,
+    public abstract record PlantBreed(string Name,
         IReadOnlyList<RandomHenHenTimeRange> GrowthStagesDurations);
 }
