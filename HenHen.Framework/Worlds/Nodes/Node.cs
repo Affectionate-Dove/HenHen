@@ -30,6 +30,8 @@ namespace HenHen.Framework.Worlds.Nodes
         /// </summary>
         public double SynchronizedTime { get; private set; }
 
+        public Action Interaction { get; protected set; }
+
         public virtual void OnCollision(Node other)
         {
         }
