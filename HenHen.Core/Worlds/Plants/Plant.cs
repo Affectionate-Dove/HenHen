@@ -3,6 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Worlds.Nodes;
+using System;
 using System.Collections.Generic;
 
 namespace HenHen.Core.Worlds.Plants
@@ -14,6 +15,8 @@ namespace HenHen.Core.Worlds.Plants
         public string BreedName { get; protected init; }
 
         public IReadOnlyList<HenHenTime> GrowthStagesDuration { get; protected init; }
+
+        public override Action Interaction => Collectable ? DropFruits : null;
 
         public int GrowthStage
         {
@@ -35,6 +38,13 @@ namespace HenHen.Core.Worlds.Plants
             }
         }
 
+        public abstract bool Collectable { get; }
+
+        /// <summary>
+        ///     The amount of fruits this <see cref="Plant"/> will drop upon interaction.
+        /// </summary>
+        public int DropAmount { get; protected set; }
+
         public Plant(PlantBreed breed, HenHenTime birthDate)
         {
             BreedName = breed.Name;
@@ -45,6 +55,19 @@ namespace HenHen.Core.Worlds.Plants
                 growthStagesDuration.Add(breed.GrowthStagesDurations[i].GetRandom());
 
             GrowthStagesDuration = growthStagesDuration;
+        }
+
+        protected virtual Fruit CreateFruit() => new(BreedName);
+
+        protected virtual void AfterFruitsDrop()
+        {
+        }
+
+        private void DropFruits()
+        {
+            for (var i = 0; i < DropAmount; i++)
+                EjectNode(CreateFruit());
+            AfterFruitsDrop();
         }
     }
 }

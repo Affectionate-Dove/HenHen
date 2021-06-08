@@ -89,6 +89,8 @@ namespace HenHen.Core.Tests.Worlds.Plants
 
             world.Simulate(10);
             Assert.IsFalse(world.Nodes.Contains(flower));
+            Assert.NotZero(flower.DropAmount);
+            Assert.True(world.Nodes.Count(node => node is Fruit fruit && fruit.Name == flower.BreedName) == flower.DropAmount);
         }
     }
 }

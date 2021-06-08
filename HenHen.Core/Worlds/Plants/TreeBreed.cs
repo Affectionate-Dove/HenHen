@@ -9,7 +9,7 @@ namespace HenHen.Core.Worlds.Plants
 {
     public record TreeBreed(string Name,
         IReadOnlyList<RandomHenHenTimeRange> GrowthStagesDurations,
-        int MaxFruits,
-        RandomHenHenTimeRange FruitGrowthDuration,
+        int FruitsAmount,
+        RandomHenHenTimeRange FruitsGrowthDuration,
         IReadOnlyList<string> Seasons) : PlantBreed(Name, GrowthStagesDurations);
 }

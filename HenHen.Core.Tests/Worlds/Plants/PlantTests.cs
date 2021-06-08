@@ -69,6 +69,8 @@ namespace HenHen.Core.Tests.Worlds.Plants
 
         private class TestPlant : Plant
         {
+            public override bool Collectable => throw new System.NotImplementedException();
+
             public TestPlant(TestPlantBreed breed, HenHenTime birthDate) : base(breed, birthDate)
             {
             }

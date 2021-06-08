@@ -6,13 +6,14 @@ namespace HenHen.Core.Worlds.Plants
 {
     public class Flower : Plant
     {
-        /// <summary>
-        ///     The amount of fruits this <see cref="Flower"/> will drop.
-        /// </summary>
-        public int DropAmount { get; }
-
-        public bool Collectable => GrowthStage == GrowthStagesDuration.Count;
+        public override bool Collectable => !Disappearing && GrowthStage == GrowthStagesDuration.Count;
 
         public Flower(FlowerBreed breed, HenHenTime birthDate) : base(breed, birthDate) => DropAmount = breed.DropAmount.GetRandom();
+
+        protected override void AfterFruitsDrop()
+        {
+            base.AfterFruitsDrop();
+            Disappear();
+        }
     }
 }

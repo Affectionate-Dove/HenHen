@@ -9,15 +9,24 @@ namespace HenHen.Core.Worlds.Plants
 {
     public class Tree : Plant
     {
-        public int MaxFruits { get; }
-        public RandomHenHenTimeRange FruitGrowthDuration { get; }
+        public RandomHenHenTimeRange FruitsGrowthDuration { get; }
         public IReadOnlyList<string> Seasons { get; }
+        public HenHenTime FruitsReadyDate { get; protected set; }
+
+        public override bool Collectable => HenHenTime.FromSeconds(SynchronizedTime) >= FruitsReadyDate;
 
         public Tree(TreeBreed breed, HenHenTime birthDate) : base(breed, birthDate)
         {
-            MaxFruits = breed.MaxFruits;
-            FruitGrowthDuration = breed.FruitGrowthDuration;
+            DropAmount = breed.FruitsAmount;
+            FruitsGrowthDuration = breed.FruitsGrowthDuration;
             Seasons = breed.Seasons;
+            FruitsReadyDate = birthDate + FruitsGrowthDuration.GetRandom();
+        }
+
+        protected override void AfterFruitsDrop()
+        {
+            base.AfterFruitsDrop();
+            FruitsReadyDate = HenHenTime.FromSeconds(SynchronizedTime) + FruitsGrowthDuration.GetRandom();
         }
     }
 }
