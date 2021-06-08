@@ -30,7 +30,15 @@ namespace HenHen.Framework.Worlds.Nodes
         /// </summary>
         public double SynchronizedTime { get; private set; }
 
-        public Action Interaction { get; protected set; }
+        public virtual Action Interaction { get; }
+
+        /// <summary>
+        ///     Whether this node is in the process
+        ///     of disappearing from a <see cref="World"/>.
+        ///     This means that after the next simulation step of a chunk,
+        ///     it will be removed from it.
+        /// </summary>
+        public bool Disappearing { get; private set; }
 
         public virtual void OnCollision(Node other)
         {
@@ -77,6 +85,13 @@ namespace HenHen.Framework.Worlds.Nodes
         ///     The node that should be ejected.
         /// </param>
         protected void EjectNode(Node node) => NodeEjected?.Invoke(node);
+
+        /// <summary>
+        ///     Sets the <see cref="Disappearing"/> property to true.
+        ///     This doesn't mean that this node is immediately gone
+        ///     from a <see cref="World"/>/<see cref="Chunks.Chunk"/>.
+        /// </summary>
+        protected void Disappear() => Disappearing = true;
 
         protected virtual void Simulation(double duration)
         {
