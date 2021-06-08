@@ -6,6 +6,7 @@ using HenHen.Framework.Numerics;
 using HenHen.Framework.Tests.Collisions;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Mediums;
+using HenHen.Framework.Worlds.Nodes;
 using NUnit.Framework;
 using System;
 using System.Linq;
@@ -48,6 +49,26 @@ namespace HenHen.Framework.Tests.Worlds
             var node1 = new TestCollisionNode(1, new Vector3(), new[] { new Sphere { Radius = 2 } });
             node.EjectNewNode(node1);
             Assert.IsTrue(world.Nodes.Contains(node1));
+        }
+
+        [Test]
+        public void NodeRemovalTest()
+        {
+            var world = new World();
+            var node = new TestNode();
+            world.AddNode(node);
+            Assert.IsTrue(world.Nodes.Contains(node));
+
+            node.Disappear();
+            Assert.IsTrue(world.Nodes.Contains(node));
+
+            world.Simulate(1);
+            Assert.IsFalse(world.Nodes.Contains(node));
+        }
+
+        private class TestNode : Node
+        {
+            public new void Disappear() => base.Disappear();
         }
     }
 }

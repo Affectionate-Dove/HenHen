@@ -4,6 +4,7 @@
 
 using HenHen.Framework.Worlds.Nodes;
 using NUnit.Framework;
+using System;
 
 namespace HenHen.Framework.Tests.Worlds.Nodes
 {
@@ -26,9 +27,13 @@ namespace HenHen.Framework.Tests.Worlds.Nodes
 
         private class TestNode : Node
         {
+            private Action interaction;
+
+            public override Action Interaction => interaction;
+
             public bool InteractedWith { get; private set; }
 
-            public void SetInteraction() => Interaction = () => InteractedWith = true;
+            public void SetInteraction() => interaction = () => InteractedWith = true;
         }
     }
 }
