@@ -6,7 +6,9 @@ using HenHen.Core.Random;
 using HenHen.Core.Worlds;
 using HenHen.Core.Worlds.Plants;
 using HenHen.Framework.Random;
+using HenHen.Framework.Worlds;
 using NUnit.Framework;
+using System.Linq;
 
 namespace HenHen.Core.Tests.Worlds.Plants
 {
@@ -69,6 +71,24 @@ namespace HenHen.Core.Tests.Worlds.Plants
 
             Assert.Greater(dropAmount2Count, 500);
             Assert.Less(dropAmount3Count, 500);
+        }
+
+        [Test]
+        public void InteractionTest()
+        {
+            var world = new World();
+            world.AddNode(flower);
+            world.Simulate(10);
+
+            Assert.IsTrue(flower.Collectable);
+            Assert.NotNull(flower.Interaction);
+            flower.Interaction();
+
+            Assert.IsFalse(flower.Collectable);
+            Assert.IsNull(flower.Interaction);
+
+            world.Simulate(10);
+            Assert.IsFalse(world.Nodes.Contains(flower));
         }
     }
 }
