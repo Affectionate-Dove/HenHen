@@ -127,6 +127,12 @@ namespace HenHen.Framework.Worlds.Chunks.Simulation
 
         private void RegisterNodeTransfers(Node node, Chunk origin)
         {
+            if (node.Disappearing)
+            {
+                nodeTransfers.Add(new NodeTransfer(node, NodeTransfer.TransferType.From, origin));
+                return;
+            }
+
             var stillInOrigin = false;
             foreach (var chunk in ChunksManager.GetChunksForNode(node))
             {

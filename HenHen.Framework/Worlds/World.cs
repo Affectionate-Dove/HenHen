@@ -16,13 +16,10 @@ namespace HenHen.Framework.Worlds
 {
     public class World
     {
-        private readonly List<Node> nodes = new();
-        private readonly List<Medium> mediums = new();
-
         private readonly ChunksManager chunksManager;
         private readonly ChunksSimulationManager chunksSimulationManager;
 
-        public IReadOnlyList<Node> Nodes => nodes;
+        public IEnumerable<Node> Nodes => chunksManager.Chunks.Values.SelectMany(chunk => chunk.Nodes).Distinct();
 
         public double SynchronizedTime => chunksSimulationManager.SynchronizedTime;
 
@@ -45,16 +42,11 @@ namespace HenHen.Framework.Worlds
 
         public void AddNode(Node node)
         {
-            nodes.Add(node);
             chunksManager.AddNode(node);
             node.NodeEjected += OnNodeEjected;
         }
 
-        public void AddMedium(Medium medium)
-        {
-            mediums.Add(medium);
-            chunksManager.AddMedium(medium);
-        }
+        public void AddMedium(Medium medium) => chunksManager.AddMedium(medium);
 
         public void Simulate(double newTime) => chunksSimulationManager.Simulate(newTime);
 
