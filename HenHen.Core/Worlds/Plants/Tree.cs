@@ -20,13 +20,25 @@ namespace HenHen.Core.Worlds.Plants
             DropAmount = breed.FruitsAmount;
             FruitsGrowthDuration = breed.FruitsGrowthDuration;
             Seasons = breed.Seasons;
-            FruitsReadyDate = birthDate + FruitsGrowthDuration.GetRandom();
+            FruitsReadyDate = GetInitialFruitsReadyDate(birthDate, GrowthStagesDuration, FruitsGrowthDuration);
         }
 
         protected override void AfterFruitsDrop()
         {
             base.AfterFruitsDrop();
             FruitsReadyDate = HenHenTime.FromSeconds(SynchronizedTime) + FruitsGrowthDuration.GetRandom();
+        }
+
+        private static HenHenTime GetInitialFruitsReadyDate(HenHenTime birthDate, IReadOnlyList<HenHenTime> growthStagesDuration, RandomHenHenTimeRange fruitsGrowthDuration)
+        {
+            var fruitsReadyDate = birthDate;
+
+            foreach (var growthStageDuration in growthStagesDuration)
+                fruitsReadyDate += growthStageDuration;
+
+            fruitsReadyDate += fruitsGrowthDuration.GetRandom();
+
+            return fruitsReadyDate;
         }
     }
 }
