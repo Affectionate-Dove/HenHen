@@ -45,6 +45,11 @@ namespace HenHen.Core.Tests.Worlds.Plants
             worldTime += tree.GrowthStagesDuration[1].Seconds;
             tree.Simulate(worldTime);
             Assert.AreEqual(2, tree.GrowthStage);
+            Assert.IsFalse(tree.Collectable);
+
+            worldTime = tree.FruitsReadyDate.Seconds;
+            tree.Simulate(worldTime);
+            Assert.AreEqual(2, tree.GrowthStage);
             Assert.IsTrue(tree.Collectable);
         }
 
