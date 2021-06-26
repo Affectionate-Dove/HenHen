@@ -42,6 +42,17 @@ namespace HenHen.Framework.VisualTests
             buttons = new List<TestSceneButton>();
             CreateAndAddButtons();
 
+            if (sceneTypes.Count is 0)
+            {
+                leftContainer.AddChild(new SpriteText
+                {
+                    Text = "No test scenes.",
+                    RelativeSizeAxes = Axes.Both,
+                    AlignMiddle = true
+                });
+                return;
+            }
+
             var rightContainer = new Container
             {
                 Padding = new MarginPadding { Left = 200 },
@@ -102,7 +113,7 @@ namespace HenHen.Framework.VisualTests
 
         private void CreateAndAddButtons()
         {
-            var visualTestSceneTypes = Assembly.GetExecutingAssembly().GetTypes()
+            var visualTestSceneTypes = Assembly.GetEntryAssembly().GetTypes()
                 .Where(type => type.IsSubclassOf(typeof(VisualTestScene)));
 
             foreach (var type in visualTestSceneTypes)
