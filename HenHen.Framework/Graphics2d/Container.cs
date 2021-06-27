@@ -74,7 +74,7 @@ namespace HenHen.Framework.Graphics2d
                 if (AutoSizeAxes.HasFlag(Axes.X) && !child.RelativeSizeAxes.HasFlag(Axes.X))
                     maxX = Math.Max(maxX, childLocalRect.Right * (1 - child.Anchor.X));
                 if (AutoSizeAxes.HasFlag(Axes.Y) && !child.RelativeSizeAxes.HasFlag(Axes.Y))
-                    maxY = Math.Max(maxY, childLocalRect.Height/* * (1 - child.Anchor.Y)*/);
+                    maxY = Math.Max(maxY, childLocalRect.Bottom * (1 - child.Anchor.Y));
             }
             if (AutoSizeAxes.HasFlag(Axes.X))
                 renSize.X = maxX + Padding.TotalHorizontal;
