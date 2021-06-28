@@ -2,8 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Worlds.Nodes;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace HenHen.Framework.Worlds.PathFinding
 {
@@ -11,11 +11,9 @@ namespace HenHen.Framework.Worlds.PathFinding
     /// Represents a point in 3D space that
     /// can be connected to other points.
     /// </summary>
-    public class PathNode // : Node
+    public class PathNode : Node
     {
         private readonly HashSet<PathNode> connections = new(4);
-
-        public Vector3 Position { get; set; }
 
         /// <remarks>Direct connections.</remarks>
         public IReadOnlySet<PathNode> Connections => connections;
