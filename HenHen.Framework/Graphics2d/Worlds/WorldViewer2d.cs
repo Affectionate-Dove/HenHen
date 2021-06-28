@@ -6,6 +6,7 @@ using HenHen.Framework.Extensions;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Mediums;
 using System;
+using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d.Worlds
 {
@@ -45,6 +46,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
             base.OnRender();
             DrawMediums();
             DrawGrid();
+            DrawNodes();
         }
 
         private static ColorInfo GetMediumColor(MediumType type) => type switch
@@ -115,6 +117,19 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 var renderingX = (int)Math.Round(LayoutInfo.RenderRect.Left + localRenderingX);
 
                 Raylib_cs.Raylib.DrawLine(renderingX, (int)LayoutInfo.RenderRect.Top, renderingX, (int)LayoutInfo.RenderRect.Bottom, new Raylib_cs.Color(255, 255, 255, 50));
+            }
+        }
+
+        private void DrawNodes()
+        {
+            var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
+            foreach (var node in World.GetNodesAroundArea(visibleArea))
+            {
+                var localRendering = camera.PositionToRenderingSpace(node.Position.ToTopDownPoint(), LayoutInfo.RenderSize);
+
+                var rendering = LayoutInfo.RenderRect.TopLeft + localRendering;
+
+                Raylib_cs.Raylib.DrawRectangleV(rendering, new Vector2(5), new Raylib_cs.Color(255, 255, 255, 255));
             }
         }
     }

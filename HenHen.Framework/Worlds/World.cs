@@ -57,6 +57,8 @@ namespace HenHen.Framework.Worlds
         /// </summary>
         public IEnumerable<Medium> GetMediumsAroundArea(RectangleF area) => chunksManager.GetChunksForRectangle(area).SelectMany(chunk => chunk.Mediums);
 
+        public IEnumerable<Node> GetNodesAroundArea(RectangleF area) => chunksManager.GetChunksForRectangle(area).SelectMany(chunk => chunk.Nodes);
+
         private void OnNodeEjected(Node node) => AddNode(node);
     }
 }
