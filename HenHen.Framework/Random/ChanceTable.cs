@@ -9,13 +9,11 @@ namespace HenHen.Framework.Random
 {
     public record ChanceTable<T>(IReadOnlyCollection<ChanceTableEntry<T>> Entries)
     {
-        private static readonly System.Random random = new();
-
         public T GetRandom()
         {
             var currentEndPoint = 0;
             var sum = Entries.Sum(entry => entry.Chance);
-            var randomPoint = random.NextDouble() * sum;
+            var randomPoint = RNG.GetIntBelow(sum);
 
             foreach (var entry in Entries)
             {

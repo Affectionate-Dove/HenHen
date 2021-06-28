@@ -2,12 +2,13 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Worlds.Nodes;
+using HenHen.Framework;
+using HenHen.Framework.VisualTests;
 
-namespace HenHen.Framework.Collisions
+namespace HenHen.Core.VisualTests
 {
-    public interface ICollisionHandler
+    internal class Program
     {
-        void OnCollision(Node a, Node b);
+        private static void Main() => Host.Run(new VisualTestsGame());
     }
 }
