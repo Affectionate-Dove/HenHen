@@ -5,13 +5,29 @@
 using HenHen.Framework.Extensions;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Mediums;
+using System;
 
 namespace HenHen.Framework.Graphics2d.Worlds
 {
     public class WorldViewer2d : Container
     {
         private readonly Camera2D camera = new();
+        private float gridDistance = 2;
         public World World { get; }
+
+        /// <summary>
+        ///     How many square units are there in each square
+        ///     defined by grid lines.
+        /// </summary>
+        /// <remarks>
+        ///     Values less than 0 are automatically rounded up to 0.
+        ///     If this is set to 0, grid will not be drawn.
+        /// </remarks>
+        public float GridDistance
+        {
+            get => gridDistance;
+            set => gridDistance = Math.Max(0, value);
+        }
 
         public WorldViewer2d(World world)
         {
@@ -28,6 +44,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         {
             base.OnRender();
             DrawMediums();
+            DrawGrid();
         }
 
         private static ColorInfo GetMediumColor(MediumType type) => type switch
@@ -64,6 +81,40 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 Raylib_cs.Raylib.DrawTriangleLines(triangle2d.A, triangle2d.B, triangle2d.C, borderColor);
                 var fillColor = new ColorInfo(borderColor.r, borderColor.g, borderColor.b, 10).ToRaylibColor();
                 Raylib_cs.Raylib.DrawTriangle(triangle2d.A, triangle2d.B, triangle2d.C, fillColor);
+            }
+        }
+
+        private void DrawGrid()
+        {
+            if (GridDistance == 0)
+                return;
+
+            var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
+
+            var startY = MathF.Ceiling(visibleArea.Bottom / gridDistance);
+            var stopY = MathF.Floor(visibleArea.Top / gridDistance);
+            for (var currentY = startY; currentY <= stopY; currentY++)
+            {
+                // Y inside the local space
+                var localRenderingY = camera.PositionToRenderingSpace(new(0, currentY * gridDistance), LayoutInfo.RenderSize).Y;
+
+                // Y on screen
+                var renderingY = (int)Math.Round(LayoutInfo.RenderRect.Top + localRenderingY);
+
+                Raylib_cs.Raylib.DrawLine((int)LayoutInfo.RenderRect.Left, renderingY, (int)LayoutInfo.RenderRect.Right, renderingY, new Raylib_cs.Color(255, 255, 255, 50));
+            }
+
+            var startX = MathF.Ceiling(visibleArea.Left / gridDistance);
+            var stopX = MathF.Floor(visibleArea.Right / gridDistance);
+            for (var currentX = startX; currentX <= stopX; currentX++)
+            {
+                // X inside the local space
+                var localRenderingX = camera.PositionToRenderingSpace(new(currentX * gridDistance, 0), LayoutInfo.RenderSize).X;
+
+                // X on screen
+                var renderingX = (int)Math.Round(LayoutInfo.RenderRect.Left + localRenderingX);
+
+                Raylib_cs.Raylib.DrawLine(renderingX, (int)LayoutInfo.RenderRect.Top, renderingX, (int)LayoutInfo.RenderRect.Bottom, new Raylib_cs.Color(255, 255, 255, 50));
             }
         }
     }
