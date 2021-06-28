@@ -4,6 +4,8 @@
 
 using HenHen.Framework.Graphics2d.Worlds;
 using HenHen.Framework.Numerics;
+using HenHen.Framework.UI;
+using HenHen.Framework.VisualTests.Input;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Mediums;
 using System.Collections.Generic;
@@ -13,6 +15,8 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
 {
     public class WorldViewer2dTestScene : VisualTestScene
     {
+        private readonly WorldViewer2d worldViewer2d;
+
         public WorldViewer2dTestScene()
         {
             var world = new World(new Vector2(10), 2);
@@ -20,13 +24,29 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
             {
                 world.AddMedium(medium);
             }
-            var worldViewer2d = new WorldViewer2d(world)
+            worldViewer2d = new WorldViewer2d(world)
             {
                 Size = new Vector2(200),
                 Anchor = new Vector2(0.5f),
                 Origin = new Vector2(0.5f)
             };
             AddChild(worldViewer2d);
+            AddChild(GenerateInfoText());
+        }
+
+        public override bool OnActionPressed(SceneControls action)
+        {
+            if (action == SceneControls.One)
+            {
+                worldViewer2d.GridDistance -= 0.5f;
+                return true;
+            }
+            else if (action == SceneControls.Two)
+            {
+                worldViewer2d.GridDistance += 0.5f;
+                return true;
+            }
+            return base.OnActionPressed(action);
         }
 
         private static IEnumerable<Medium> GetSampleMediums() => new Medium[]
@@ -72,5 +92,20 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
                 Type = MediumType.Ground
             },
         };
+
+        private static SpriteText GenerateInfoText()
+        {
+            var t =
+                "1 - decrease grid spacing by 0.5\n" +
+                "2 - increase grid spacing by 0.5";
+
+            return new()
+            {
+                Anchor = new(1, 1),
+                Origin = new(1, 1),
+                Size = new(300, 600),
+                Text = t
+            };
+        }
     }
 }
