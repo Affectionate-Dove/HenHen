@@ -8,6 +8,7 @@ using HenHen.Framework.UI;
 using HenHen.Framework.VisualTests.Input;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Mediums;
+using HenHen.Framework.Worlds.Nodes;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -19,11 +20,16 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
 
         public WorldViewer2dTestScene()
         {
+            var node = new TestNode()
+            {
+                Position = new Vector3(1, 0, 1)
+            };
             var world = new World(new Vector2(10), 2);
             foreach (var medium in GetSampleMediums())
             {
                 world.AddMedium(medium);
             }
+            world.AddNode(node);
             worldViewer2d = new WorldViewer2d(world)
             {
                 Size = new Vector2(200),
@@ -106,6 +112,10 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
                 Size = new(300, 600),
                 Text = t
             };
+        }
+
+        private class TestNode : Node
+        {
         }
     }
 }
