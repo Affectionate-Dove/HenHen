@@ -28,17 +28,18 @@ namespace HenHen.Framework.Input
                 triggeredListeners.Add(enumValue, null);
         }
 
-        public void OnActionPressed(TInputAction action)
+        public bool OnActionPressed(TInputAction action)
         {
             for (var i = Listeners.Count - 1; i >= 0; i--)
             {
                 if (Listeners[i].OnActionPressed(action))
                 {
                     triggeredListeners[action] = Listeners[i];
-                    return;
+                    return true;
                 }
             }
             triggeredListeners[action] = null;
+            return false;
         }
 
         public void OnActionReleased(TInputAction action)
