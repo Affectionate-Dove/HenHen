@@ -17,6 +17,15 @@ namespace HenHen.Framework.Graphics2d.Worlds
         public World World { get; }
 
         /// <summary>
+        ///     Defines the point at the center of this <see cref="WorldViewer2d"/>.
+        /// </summary>
+        public Vector2 Target
+        {
+            get => camera.Target;
+            set => camera.Target = value;
+        }
+
+        /// <summary>
         ///     How many square units are there in each square
         ///     defined by grid lines.
         /// </summary>

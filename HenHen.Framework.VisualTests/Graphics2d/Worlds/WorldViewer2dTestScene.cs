@@ -20,16 +20,12 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
 
         public WorldViewer2dTestScene()
         {
-            var node = new TestNode()
-            {
-                Position = new Vector3(1, 0, 1)
-            };
             var world = new World(new Vector2(10), 2);
+            AddNodes(world);
             foreach (var medium in GetSampleMediums())
             {
                 world.AddMedium(medium);
             }
-            world.AddNode(node);
             worldViewer2d = new WorldViewer2d(world)
             {
                 Size = new Vector2(200),
@@ -52,7 +48,46 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
                 worldViewer2d.GridDistance += 0.5f;
                 return true;
             }
+            else if (action == SceneControls.Up)
+            {
+                worldViewer2d.Target += new Vector2(0, 1);
+                return true;
+            }
+            else if (action == SceneControls.Down)
+            {
+                worldViewer2d.Target -= new Vector2(0, 1);
+                return true;
+            }
+            else if (action == SceneControls.Left)
+            {
+                worldViewer2d.Target -= new Vector2(1, 0);
+                return true;
+            }
+            else if (action == SceneControls.Right)
+            {
+                worldViewer2d.Target += new Vector2(1, 0);
+                return true;
+            }
             return base.OnActionPressed(action);
+        }
+
+        private static void AddNodes(World world)
+        {
+            var node1 = new TestNode()
+            {
+                Position = new Vector3(1, 0, 1)
+            };
+            var node2 = new TestNode()
+            {
+                Position = new Vector3(0, 4, 5)
+            };
+            var node3 = new TestNode()
+            {
+                Position = new Vector3(4, 2, 0)
+            };
+            world.AddNode(node1);
+            world.AddNode(node2);
+            world.AddNode(node3);
         }
 
         private static IEnumerable<Medium> GetSampleMediums() => new Medium[]
@@ -103,7 +138,8 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
         {
             var t =
                 "1 - decrease grid spacing by 0.5\n" +
-                "2 - increase grid spacing by 0.5";
+                "2 - increase grid spacing by 0.5\n" +
+                "↑/↓/←/→ - move view";
 
             return new()
             {
