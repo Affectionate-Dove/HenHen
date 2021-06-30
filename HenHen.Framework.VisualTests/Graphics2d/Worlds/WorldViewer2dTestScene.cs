@@ -17,11 +17,12 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
     public class WorldViewer2dTestScene : VisualTestScene
     {
         private readonly WorldViewer2d worldViewer2d;
+        private readonly World world;
 
         public WorldViewer2dTestScene()
         {
-            var world = new World(new Vector2(10), 2);
-            AddNodes(world);
+            world = new World(new Vector2(10), 2);
+            AddNodes();
             foreach (var medium in GetSampleMediums())
             {
                 world.AddMedium(medium);
@@ -38,56 +39,35 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
 
         public override bool OnActionPressed(SceneControls action)
         {
-            if (action == SceneControls.One)
+            switch (action)
             {
-                worldViewer2d.GridDistance -= 0.5f;
-                return true;
-            }
-            else if (action == SceneControls.Two)
-            {
-                worldViewer2d.GridDistance += 0.5f;
-                return true;
-            }
-            else if (action == SceneControls.Up)
-            {
-                worldViewer2d.Target += new Vector2(0, 1);
-                return true;
-            }
-            else if (action == SceneControls.Down)
-            {
-                worldViewer2d.Target -= new Vector2(0, 1);
-                return true;
-            }
-            else if (action == SceneControls.Left)
-            {
-                worldViewer2d.Target -= new Vector2(1, 0);
-                return true;
-            }
-            else if (action == SceneControls.Right)
-            {
-                worldViewer2d.Target += new Vector2(1, 0);
-                return true;
-            }
-            return base.OnActionPressed(action);
-        }
+                case SceneControls.One:
+                    worldViewer2d.GridDistance -= 0.5f;
+                    return true;
 
-        private static void AddNodes(World world)
-        {
-            var node1 = new TestNode()
-            {
-                Position = new Vector3(1, 0, 1)
-            };
-            var node2 = new TestNode()
-            {
-                Position = new Vector3(0, 4, 5)
-            };
-            var node3 = new TestNode()
-            {
-                Position = new Vector3(4, 2, 0)
-            };
-            world.AddNode(node1);
-            world.AddNode(node2);
-            world.AddNode(node3);
+                case SceneControls.Two:
+                    worldViewer2d.GridDistance += 0.5f;
+                    return true;
+
+                case SceneControls.Up:
+                    worldViewer2d.Target += new Vector2(0, 1);
+                    return true;
+
+                case SceneControls.Down:
+                    worldViewer2d.Target -= new Vector2(0, 1);
+                    return true;
+
+                case SceneControls.Left:
+                    worldViewer2d.Target -= new Vector2(1, 0);
+                    return true;
+
+                case SceneControls.Right:
+                    worldViewer2d.Target += new Vector2(1, 0);
+                    return true;
+
+                default:
+                    return base.OnActionPressed(action);
+            }
         }
 
         private static IEnumerable<Medium> GetSampleMediums() => new Medium[]
@@ -150,8 +130,16 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
             };
         }
 
+        private void AddNodes()
+        {
+            world.AddNode(new TestNode(new(1, 0, 1)));
+            world.AddNode(new TestNode(new(0, 4, 5)));
+            world.AddNode(new TestNode(new(4, 2, 0)));
+        }
+
         private class TestNode : Node
         {
+            public TestNode(Vector3 position) => Position = position;
         }
     }
 }

@@ -14,10 +14,12 @@ namespace HenHen.Framework.Graphics2d.Worlds
     {
         private readonly Camera2D camera = new();
         private float gridDistance = 2;
+
         public World World { get; }
 
         /// <summary>
-        ///     Defines the point at the center of this <see cref="WorldViewer2d"/>.
+        ///     Defines the point displayed
+        ///     at the center of this <see cref="WorldViewer2d"/>.
         /// </summary>
         public Vector2 Target
         {
