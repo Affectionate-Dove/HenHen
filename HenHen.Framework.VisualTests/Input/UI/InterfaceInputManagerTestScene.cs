@@ -103,7 +103,7 @@ namespace HenHen.Framework.VisualTests.Input.UI
                 Text = id.ToString();
             }
 
-            public override void OnFocus() => Color = new(v, 255, 255);
+            public override void OnFocus() => Color = new(0, v, v);
 
             public override void OnFocusLost() => Color = new(v, v, v);
         }

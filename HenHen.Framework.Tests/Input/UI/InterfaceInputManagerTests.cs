@@ -7,6 +7,8 @@ using HenHen.Framework.Input.UI;
 using HenHen.Framework.Screens;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HenHen.Framework.Tests.Input.UI
 {
@@ -18,7 +20,9 @@ namespace HenHen.Framework.Tests.Input.UI
         private TestComponent component1;
         private TestComponent component2;
         private TestComponent component3Nested;
-        private TestComponent component4Nested;
+        private TestComponent component6Nested;
+        private TestContainerComponent component4ContainerNested;
+        private TestComponent component5DoubleNested;
 
         [SetUp]
         public void SetUp()
@@ -29,7 +33,9 @@ namespace HenHen.Framework.Tests.Input.UI
             component2 = new TestComponent(2);
             var componentContainer = new Container();
             componentContainer.AddChild(component3Nested = new TestComponent(3));
-            componentContainer.AddChild(component4Nested = new TestComponent(4));
+            componentContainer.AddChild(component4ContainerNested = new TestContainerComponent(4));
+            component4ContainerNested.AddChild(component5DoubleNested = new TestComponent(5));
+            componentContainer.AddChild(component6Nested = new TestComponent(6));
             interfaceInputManager = new(screenStack);
             screen.AddChild(component1);
             screen.AddChild(component2);
@@ -43,9 +49,13 @@ namespace HenHen.Framework.Tests.Input.UI
             component1.AcceptsFocus = false;
             component2.AcceptsFocus = false;
             component3Nested.AcceptsFocus = false;
-            component4Nested.AcceptsFocus = false;
+            component4ContainerNested.AcceptsFocus = false;
+            component6Nested.AcceptsFocus = false;
             interfaceInputManager.FocusNextComponent();
-            Assert.IsNull(interfaceInputManager.CurrentlyFocusedComponent);
+
+            if (interfaceInputManager.FocusedComponents.Contains(component5DoubleNested))
+                Assert.Fail("The component 5 is inside a disabled container component and should not be reachable.");
+            Assert.IsEmpty(interfaceInputManager.FocusedComponents);
         }
 
         [Test]
@@ -54,13 +64,15 @@ namespace HenHen.Framework.Tests.Input.UI
             for (var i = 0; i < 3; i++)
             {
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component1, interfaceInputManager.CurrentlyFocusedComponent);
+                AssertContains(component1, interfaceInputManager.FocusedComponents);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component2, interfaceInputManager.CurrentlyFocusedComponent);
+                AssertContains(component2, interfaceInputManager.FocusedComponents);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
+                AssertContains(component3Nested, interfaceInputManager.FocusedComponents);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component4Nested, interfaceInputManager.CurrentlyFocusedComponent);
+                AssertContains(new IInterfaceComponent<TestAction>[] { component4ContainerNested, component5DoubleNested }, interfaceInputManager.FocusedComponents);
+                interfaceInputManager.FocusNextComponent();
+                AssertContains(component6Nested, interfaceInputManager.FocusedComponents);
             }
         }
 
@@ -71,11 +83,13 @@ namespace HenHen.Framework.Tests.Input.UI
             for (var i = 0; i < 3; i++)
             {
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component1, interfaceInputManager.CurrentlyFocusedComponent);
+                AssertContains(component1, interfaceInputManager.FocusedComponents);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreSame(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
+                AssertContains(component3Nested, interfaceInputManager.FocusedComponents);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component4Nested, interfaceInputManager.CurrentlyFocusedComponent);
+                AssertContains(new IInterfaceComponent<TestAction>[] { component4ContainerNested, component5DoubleNested }, interfaceInputManager.FocusedComponents);
+                interfaceInputManager.FocusNextComponent();
+                AssertContains(component6Nested, interfaceInputManager.FocusedComponents);
             }
         }
 
@@ -83,7 +97,7 @@ namespace HenHen.Framework.Tests.Input.UI
         public void GetNextComponentWithLayoutChangeTest()
         {
             interfaceInputManager.FocusNextComponent();
-            Assert.AreEqual(component1, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component1, interfaceInputManager.FocusedComponents);
             screen.RemoveChild(component2);
             Assert.DoesNotThrow(() => interfaceInputManager.FocusNextComponent());
         }
@@ -96,7 +110,7 @@ namespace HenHen.Framework.Tests.Input.UI
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
             interfaceInputManager.NextComponentAction = TestAction.Action1;
 
-            Assert.IsNull(interfaceInputManager.CurrentlyFocusedComponent);
+            Assert.IsEmpty(interfaceInputManager.FocusedComponents);
 
             inputManager.SimulateKeyPress(Framework.Input.KeyboardKey.KEY_A);
             inputActionHandler.Update();
@@ -106,40 +120,67 @@ namespace HenHen.Framework.Tests.Input.UI
             inputActionHandler.Update();
             inputManager.Update(1);
 
-            Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component1, interfaceInputManager.FocusedComponents);
         }
 
         [Test]
         public void UnfocusTest()
         {
             interfaceInputManager.FocusNextComponent();
-            Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component1, interfaceInputManager.FocusedComponents);
             interfaceInputManager.FocusNextComponent();
-            Assert.AreSame(component2, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component2, interfaceInputManager.FocusedComponents);
             interfaceInputManager.FocusNextComponent();
-            Assert.AreSame(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component3Nested, interfaceInputManager.FocusedComponents);
 
             interfaceInputManager.Unfocus();
-            Assert.IsNull(interfaceInputManager.CurrentlyFocusedComponent);
+            Assert.IsEmpty(interfaceInputManager.FocusedComponents);
 
             interfaceInputManager.FocusNextComponent();
-            Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component1, interfaceInputManager.FocusedComponents);
         }
 
         [Test]
         public void FocusComponentTest()
         {
             interfaceInputManager.FocusComponent(component3Nested);
-            Assert.AreSame(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component3Nested, interfaceInputManager.FocusedComponents);
 
             interfaceInputManager.FocusNextComponent();
-            Assert.AreSame(component4Nested, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(new IInterfaceComponent<TestAction>[] { component5DoubleNested, component4ContainerNested }, interfaceInputManager.FocusedComponents);
 
             interfaceInputManager.FocusComponent(component2);
-            Assert.AreSame(component2, interfaceInputManager.CurrentlyFocusedComponent);
+            AssertContains(component2, interfaceInputManager.FocusedComponents);
 
             var outsideComponent = new TestComponent(5);
             Assert.Throws<InvalidOperationException>(() => interfaceInputManager.FocusComponent(outsideComponent));
+        }
+
+        private static void AssertContains<T>(T expected, IEnumerable<T> actual) => Assert.IsTrue(actual.Contains(expected));
+
+        private static void AssertContains<T>(IEnumerable<T> expected, IEnumerable<T> actual) => Assert.IsTrue(actual.Intersect(expected).Count() == actual.Count());
+
+        private class TestContainerComponent : Container, IInterfaceComponent<TestAction>
+        {
+            private readonly int id;
+
+            public bool AcceptsFocus { get; set; } = true;
+
+            public TestContainerComponent(int id) => this.id = id;
+
+            public override string ToString() => id.ToString();
+
+            public void OnFocus()
+            {
+            }
+
+            public void OnFocusLost()
+            {
+            }
+
+            public bool OnActionPressed(TestAction action) => throw new NotImplementedException();
+
+            public void OnActionReleased(TestAction action) => throw new NotImplementedException();
         }
 
         private class TestComponent : Drawable, IInterfaceComponent<TestAction>
@@ -160,9 +201,9 @@ namespace HenHen.Framework.Tests.Input.UI
             {
             }
 
-            public bool OnActionPressed(TestAction action) => throw new System.NotImplementedException();
+            public bool OnActionPressed(TestAction action) => throw new NotImplementedException();
 
-            public void OnActionReleased(TestAction action) => throw new System.NotImplementedException();
+            public void OnActionReleased(TestAction action) => throw new NotImplementedException();
         }
     }
 }
