@@ -52,9 +52,14 @@ namespace HenHen.Framework.VisualTests.Input.UI
             base.PreUpdate();
         }
 
-        private class TestFillFlowContainer : Container
+        private class TestFillFlowContainer : Container, IInterfaceComponent<TestAction>
         {
+            private readonly Rectangle background;
+            private readonly byte v;
+
             public FillFlowContainer FillFlowContainer { get; }
+
+            public bool AcceptsFocus => true;
 
             public TestFillFlowContainer(float brightness, int height, int buttonAmount)
             {
@@ -67,14 +72,22 @@ namespace HenHen.Framework.VisualTests.Input.UI
                     Spacing = 10
                 };
                 RelativeSizeAxes = Axes.X;
-                var v = (byte)(brightness * 255);
-                AddChild(new Rectangle { RelativeSizeAxes = Axes.Both, Color = new(v, v, v) });
+                v = (byte)(brightness * 255);
+                AddChild(background = new Rectangle { RelativeSizeAxes = Axes.Both, Color = new(v, v, v) });
                 AddChild(FillFlowContainer);
                 for (var i = 0; i < buttonAmount; i++)
                     FillFlowContainer.AddChild(new TestButton(i + 1, brightness - 0.1f));
             }
 
             public void AddChildToFlowContainer(Drawable drawable) => FillFlowContainer.AddChild(drawable);
+
+            public void OnFocus() => background.Color = new(v, v, 0);
+
+            public void OnFocusLost() => background.Color = new(v, v, v);
+
+            public bool OnActionPressed(TestAction action) => false;
+
+            public void OnActionReleased(TestAction action) => throw new System.NotImplementedException();
         }
 
         private class TestButton : Button<TestAction>

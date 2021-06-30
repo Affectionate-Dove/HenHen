@@ -44,7 +44,7 @@ namespace HenHen.Framework.Tests.Input.UI
             component3Nested.AcceptsFocus = false;
             component4Nested.AcceptsFocus = false;
             interfaceInputManager.FocusNextComponent();
-            Assert.IsNull(interfaceInputManager.CurrentComponent);
+            Assert.IsNull(interfaceInputManager.CurrentlyFocusedComponent);
         }
 
         [Test]
@@ -53,13 +53,13 @@ namespace HenHen.Framework.Tests.Input.UI
             for (var i = 0; i < 3; i++)
             {
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component1, interfaceInputManager.CurrentComponent);
+                Assert.AreEqual(component1, interfaceInputManager.CurrentlyFocusedComponent);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component2, interfaceInputManager.CurrentComponent);
+                Assert.AreEqual(component2, interfaceInputManager.CurrentlyFocusedComponent);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component3Nested, interfaceInputManager.CurrentComponent);
+                Assert.AreEqual(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component4Nested, interfaceInputManager.CurrentComponent);
+                Assert.AreEqual(component4Nested, interfaceInputManager.CurrentlyFocusedComponent);
             }
         }
 
@@ -70,11 +70,11 @@ namespace HenHen.Framework.Tests.Input.UI
             for (var i = 0; i < 3; i++)
             {
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component1, interfaceInputManager.CurrentComponent);
+                Assert.AreEqual(component1, interfaceInputManager.CurrentlyFocusedComponent);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreSame(component3Nested, interfaceInputManager.CurrentComponent);
+                Assert.AreSame(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
                 interfaceInputManager.FocusNextComponent();
-                Assert.AreEqual(component4Nested, interfaceInputManager.CurrentComponent);
+                Assert.AreEqual(component4Nested, interfaceInputManager.CurrentlyFocusedComponent);
             }
         }
 
@@ -82,9 +82,30 @@ namespace HenHen.Framework.Tests.Input.UI
         public void GetNextComponentWithLayoutChangeTest()
         {
             interfaceInputManager.FocusNextComponent();
-            Assert.AreEqual(component1, interfaceInputManager.CurrentComponent);
+            Assert.AreEqual(component1, interfaceInputManager.CurrentlyFocusedComponent);
             screen.RemoveChild(component2);
             Assert.DoesNotThrow(() => interfaceInputManager.FocusNextComponent());
+        }
+
+        [Test]
+        public void NextComponentActionTest()
+        {
+            var inputManager = new TestInputManager();
+            var inputActionHandler = new TestInputActionHandler(inputManager);
+            inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
+            interfaceInputManager.NextComponentAction = TestAction.Action1;
+
+            Assert.IsNull(interfaceInputManager.CurrentlyFocusedComponent);
+
+            inputManager.SimulateKeyPress(Framework.Input.KeyboardKey.KEY_A);
+            inputActionHandler.Update();
+            inputManager.Update(1);
+
+            inputManager.SimulateKeyRelease(Framework.Input.KeyboardKey.KEY_A);
+            inputActionHandler.Update();
+            inputManager.Update(1);
+
+            Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
         }
 
         private class TestComponent : Drawable, IInterfaceComponent<TestAction>

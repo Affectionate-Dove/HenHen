@@ -8,27 +8,69 @@ using System.Collections.Generic;
 
 namespace HenHen.Framework.Input.UI
 {
-    public class InterfaceInputManager<TInputAction> : IInputListener<TInputAction> where TInputAction : System.Enum
+    /// <summary>
+    ///     Handles user interface components'
+    ///     (<seealso cref="IInterfaceComponent{TInputAction}"/>)
+    ///     focus and input.
+    /// </summary>
+    public class InterfaceInputManager<TInputAction> : IInputListener<TInputAction> where TInputAction : struct, System.Enum
     {
         private readonly Stack<ContainerAndEnumerator> stack = new();
         private readonly InputPropagator<TInputAction> inputPropagator;
 
+        /// <summary>
+        ///     The <see cref="Screens.ScreenStack"/>, inside
+        ///     of which all handled interface components are.
+        /// </summary>
         public ScreenStack ScreenStack { get; }
-        public IInterfaceComponent<TInputAction> CurrentComponent { get; private set; }
-        public TInputAction NextComponentAction { get; set; }
 
-        public InterfaceInputManager(ScreenStack screenStack) => ScreenStack = screenStack;
+        /// <summary>
+        ///     The <seealso cref="IInterfaceComponent{TInputAction}"/>
+        ///     that currently has focus.
+        /// </summary>
+        // TODO: On each get, validate whether the component
+        // is still available in the drawable tree.
+        public IInterfaceComponent<TInputAction> CurrentlyFocusedComponent { get; private set; }
 
-        public InterfaceInputManager(ScreenStack screenStack, TInputAction nextComponentAction) : this(screenStack)
+        /// <summary>
+        ///     The <typeparamref name="TInputAction"/> that
+        ///     triggers the <see cref="FocusNextComponent"/> function.
+        /// </summary>
+        public TInputAction? NextComponentAction { get; set; }
+
+        public InterfaceInputManager(ScreenStack screenStack)
         {
-            NextComponentAction = nextComponentAction;
+            ScreenStack = screenStack;
             inputPropagator = new();
             inputPropagator.Listeners.Add(new NextComponentActionListener(this));
         }
 
+        public InterfaceInputManager(ScreenStack screenStack, TInputAction nextComponentAction) : this(screenStack) => NextComponentAction = nextComponentAction;
+
+        /// <summary>
+        ///     Finds the next <see cref="IInterfaceComponent{TInputAction}"/>
+        ///     in the <see cref="Drawable"/> tree inside of <see cref="ScreenStack"/>
+        ///     and focuses it.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///         Sets <seealso cref="CurrentlyFocusedComponent"/> to the found component,
+        ///         calls its <see cref="IInterfaceComponent{TInputAction}.OnFocus"/> function,
+        ///         and, if it exists, calls previously focused component's
+        ///         <see cref="IInterfaceComponent{TInputAction}.OnFocusLost"/>.
+        ///     </para>
+        ///     <para>
+        ///         When a <see cref="Container"/> of interface components is also
+        ///         a <see cref="IInterfaceComponent{TInputAction}"/> itself,
+        ///         the container gets focused first, without focusing any children.
+        ///         Then, when it loses focus, the focus goes to its children one by one.
+        ///         After all children lost focus, the next
+        ///         component after the container gets the focus.
+        ///     </para>
+        /// </remarks>
         public void FocusNextComponent()
         {
-            var previouslyFocusedComponent = CurrentComponent;
+            var previouslyFocusedComponent = CurrentlyFocusedComponent;
 
             var restartCount = 0;
             while (true)
@@ -38,40 +80,70 @@ namespace HenHen.Framework.Input.UI
                 if (restartCount == 2)
                     return;
 
-                var enumerator = stack.Peek().Enumerator;
-                if (HandleEnumerator(enumerator))
+                if (HandleEnumerator())
                 {
                     inputPropagator?.Listeners.Remove(previouslyFocusedComponent);
                     previouslyFocusedComponent?.OnFocusLost();
 
-                    inputPropagator?.Listeners.Add(CurrentComponent);
-                    CurrentComponent.OnFocus();
+                    inputPropagator?.Listeners.Add(CurrentlyFocusedComponent);
+                    CurrentlyFocusedComponent.OnFocus();
 
                     return;
                 }
             };
         }
 
+        /// <summary>
+        ///     Propagates the <paramref name="action"/> press
+        ///     to the <see cref="CurrentlyFocusedComponent"/>.
+        /// </summary>
+        /// <remarks>
+        ///     If the <paramref name="action"/> is equal to <see cref="NextComponentAction"/>,
+        ///     and the <see cref="CurrentlyFocusedComponent"/> didn't handle it,
+        ///     this <see cref="InterfaceInputManager{TInputAction}"/> will handle this press,
+        ///     and on <paramref name="action"/> release,
+        ///     the <see cref="FocusNextComponent"/> function will be called.
+        /// </remarks>
+        /// <returns>
+        ///     Whether the <see cref="CurrentlyFocusedComponent"/> or
+        ///     this <see cref="InterfaceInputManager{TInputAction}"/>
+        ///     handled the <paramref name="action"/>.
+        /// </returns>
         public bool OnActionPressed(TInputAction action) => inputPropagator.OnActionPressed(action);
 
+        /// <summary>
+        ///     Propagates the <paramref name="action"/> release
+        ///     to the <see cref="CurrentlyFocusedComponent"/>,
+        ///     or calls the <see cref="FocusNextComponent"/> function.
+        /// </summary>
         public void OnActionReleased(TInputAction action) => inputPropagator.OnActionReleased(action);
 
-        private bool HandleEnumerator(IEnumerator<Drawable> enumerator)
+        /// <summary>
+        ///     Advances the <see cref="IEnumerator{Drawable}"/>
+        ///     at the top of the <see cref="stack"/> to the next <see cref="Drawable"/>.
+        ///     If that's successful, calls and returns
+        ///     the return value of <see cref="HandleDrawable(Drawable)"/>.
+        ///     If not, pops the <see cref="stack"/> and returns false.
+        /// </summary>
+        /// <param name="enumerator"></param>
+        /// <returns>
+        ///     Whether advancing the <see cref="IEnumerator{Drawable}"/>
+        ///     at the top of the <see cref="stack"/> resulted in finding
+        ///     a <see cref="IInterfaceComponent{TInputAction}"/>.
+        /// </returns>
+        private bool HandleEnumerator()
         {
+            var enumerator = stack.Peek().Enumerator;
             try
             {
                 if (enumerator.MoveNext())
-                {
-                    if (HandleDrawable(enumerator.Current))
-                        return true;
-                }
-                else
-                    stack.Pop();
+                    return HandleDrawable(enumerator.Current);
             }
             catch (System.InvalidOperationException)
             {
-                stack.Pop();
             }
+
+            stack.Pop();
             return false;
         }
 
@@ -86,16 +158,29 @@ namespace HenHen.Framework.Input.UI
             return false;
         }
 
+        /// <summary>
+        ///     <para>
+        ///         If the <paramref name="drawable"/> is a <see cref="Container"/>,
+        ///         pushes it to the <see cref="stack"/>.
+        ///     </para>
+        ///     <para>
+        ///         If the <paramref name="drawable"/>
+        ///         is a <see cref="IInterfaceComponent{TInputAction}"/>
+        ///         and it <see cref="IInterfaceComponent{TInputAction}.AcceptsFocus"/>,
+        ///         sets <see cref="CurrentlyFocusedComponent"/> to it.
+        ///     </para>
+        /// </summary>
+        /// <returns>
+        ///     Whether a new <see cref="IInterfaceComponent{TInputAction}"/>
+        ///     was set as <see cref="CurrentlyFocusedComponent"/>.
+        /// </returns>
         private bool HandleDrawable(Drawable drawable)
         {
             if (drawable is Container container)
                 stack.Push(new(container));
-            if (drawable is IInterfaceComponent<TInputAction> component)
+            if (drawable is IInterfaceComponent<TInputAction> component && component.AcceptsFocus)
             {
-                if (!component.AcceptsFocus)
-                    return false;
-
-                CurrentComponent = component;
+                CurrentlyFocusedComponent = component;
                 return true;
             }
             return false;
@@ -119,7 +204,7 @@ namespace HenHen.Framework.Input.UI
 
             public NextComponentActionListener(InterfaceInputManager<TInputAction> interfaceInputManager) => this.interfaceInputManager = interfaceInputManager;
 
-            public bool OnActionPressed(TInputAction action) => true;
+            public bool OnActionPressed(TInputAction action) => action.Equals(interfaceInputManager.NextComponentAction);
 
             public void OnActionReleased(TInputAction action) => interfaceInputManager.FocusNextComponent();
         }
