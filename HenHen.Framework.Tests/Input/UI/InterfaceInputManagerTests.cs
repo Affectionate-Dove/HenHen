@@ -6,6 +6,7 @@ using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Input.UI;
 using HenHen.Framework.Screens;
 using NUnit.Framework;
+using System;
 
 namespace HenHen.Framework.Tests.Input.UI
 {
@@ -123,6 +124,22 @@ namespace HenHen.Framework.Tests.Input.UI
 
             interfaceInputManager.FocusNextComponent();
             Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
+        }
+
+        [Test]
+        public void FocusComponentTest()
+        {
+            interfaceInputManager.FocusComponent(component3Nested);
+            Assert.AreSame(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
+
+            interfaceInputManager.FocusNextComponent();
+            Assert.AreSame(component4Nested, interfaceInputManager.CurrentlyFocusedComponent);
+
+            interfaceInputManager.FocusComponent(component2);
+            Assert.AreSame(component2, interfaceInputManager.CurrentlyFocusedComponent);
+
+            var outsideComponent = new TestComponent(5);
+            Assert.Throws<InvalidOperationException>(() => interfaceInputManager.FocusComponent(outsideComponent));
         }
 
         private class TestComponent : Drawable, IInterfaceComponent<TestAction>

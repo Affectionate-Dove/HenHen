@@ -4,6 +4,7 @@
 
 using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
+using System;
 using System.Collections.Generic;
 
 namespace HenHen.Framework.Input.UI
@@ -68,26 +69,7 @@ namespace HenHen.Framework.Input.UI
         ///         component after the container gets the focus.
         ///     </para>
         /// </remarks>
-        public void FocusNextComponent()
-        {
-            var previouslyFocusedComponent = CurrentlyFocusedComponent;
-
-            var restartCount = 0;
-            while (true)
-            {
-                if (RestartStackIfNeeded())
-                    restartCount++;
-                if (restartCount == 2)
-                    return;
-
-                if (HandleEnumerator())
-                {
-                    UnfocusComponent(previouslyFocusedComponent);
-                    FocusComponent(CurrentlyFocusedComponent);
-                    return;
-                }
-            };
-        }
+        public void FocusNextComponent() => FocusNextComponent(null);
 
         /// <summary>
         ///     Removes focus from <see cref="CurrentlyFocusedComponent"/>.
@@ -99,9 +81,33 @@ namespace HenHen.Framework.Input.UI
         public void Unfocus()
         {
             stack.Clear();
-            UnfocusComponent(CurrentlyFocusedComponent);
+            DoUnfocusTasks(CurrentlyFocusedComponent);
             CurrentlyFocusedComponent = null;
             inputPropagator?.Listeners.RemoveAll(listener => listener is not NextComponentActionListener);
+        }
+
+        /// <summary>
+        ///     Focuses the <paramref name="component"/>.
+        /// </summary>
+        /// <remarks>
+        ///     Internally calls <see cref="FocusNextComponent"/>
+        ///     until it finds the <paramref name="component"/>.
+        /// </remarks>
+        /// <param name="component">
+        ///     The component to focus.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        ///     Thrown if the <paramref name="component"/> isn't inside the
+        ///     <see cref="ScreenStack"/>'s <see cref="Drawable"/> tree.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        ///     Thrown if the <paramref name="component"/> is null.
+        /// </exception>
+        public void FocusComponent(IInterfaceComponent<TInputAction> component)
+        {
+            if (component is null)
+                throw new ArgumentNullException(nameof(component));
+            FocusNextComponent(component);
         }
 
         /// <summary>
@@ -129,13 +135,40 @@ namespace HenHen.Framework.Input.UI
         /// </summary>
         public void OnActionReleased(TInputAction action) => inputPropagator.OnActionReleased(action);
 
-        private void UnfocusComponent(IInterfaceComponent<TInputAction> previouslyFocusedComponent)
+        private void FocusNextComponent(IInterfaceComponent<TInputAction> componentToFocus)
+        {
+            var previouslyFocusedComponent = CurrentlyFocusedComponent;
+
+            var restartCount = 0;
+            while (true)
+            {
+                if (RestartStackIfNeeded())
+                    restartCount++;
+                if (restartCount == 2)
+                    break;
+
+                if (HandleEnumerator())
+                {
+                    if (componentToFocus is null || componentToFocus == CurrentlyFocusedComponent)
+                    {
+                        DoUnfocusTasks(previouslyFocusedComponent);
+                        DoFocusTasks(CurrentlyFocusedComponent);
+                        return;
+                    }
+                }
+            };
+
+            if (componentToFocus is not null)
+                throw new InvalidOperationException($"The requested {nameof(componentToFocus)} is not inside the {nameof(Drawable)} tree of the {nameof(ScreenStack)}.");
+        }
+
+        private void DoUnfocusTasks(IInterfaceComponent<TInputAction> previouslyFocusedComponent)
         {
             inputPropagator?.Listeners.Remove(previouslyFocusedComponent);
             previouslyFocusedComponent?.OnFocusLost();
         }
 
-        private void FocusComponent(IInterfaceComponent<TInputAction> component)
+        private void DoFocusTasks(IInterfaceComponent<TInputAction> component)
         {
             inputPropagator?.Listeners.Add(component);
             component.OnFocus();
