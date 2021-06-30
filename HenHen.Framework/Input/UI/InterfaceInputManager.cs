@@ -48,6 +48,8 @@ namespace HenHen.Framework.Input.UI
         public InterfaceInputManager(ScreenStack screenStack)
         {
             ScreenStack = screenStack;
+            screenStack.ScreenPushed += OnScreenStackPushOrPop;
+            screenStack.ScreenPopped += OnScreenStackPushOrPop;
             inputPropagator = new();
             inputPropagator.Listeners.Add(new NextComponentActionListener(this));
         }
@@ -81,8 +83,6 @@ namespace HenHen.Framework.Input.UI
             containersStack.Clear();
             foreach (var component in FocusedComponents.ToList())
                 DoUnfocusTasks(component);
-            focusedComponents.Clear();
-            inputPropagator?.Listeners.RemoveAll(listener => listener is not NextComponentActionListener);
         }
 
         /// <summary>
@@ -135,6 +135,10 @@ namespace HenHen.Framework.Input.UI
         /// </summary>
         public void OnActionReleased(TInputAction action) => inputPropagator.OnActionReleased(action);
 
+        // TODO: remember the focused component for each screen,
+        // and refocus that component when coming back to a screen.
+        private void OnScreenStackPushOrPop(Screen screen) => Unfocus();
+
         private void FocusNextComponent(IInterfaceComponent<TInputAction> componentToFocus)
         {
             var restartCount = 0;
@@ -158,10 +162,18 @@ namespace HenHen.Framework.Input.UI
 
             if (componentToFocus is not null)
                 throw new InvalidOperationException($"The requested {nameof(componentToFocus)} is not inside the {nameof(Drawable)} tree of the {nameof(ScreenStack)}.");
+
+            ChangeFocus(null);
         }
 
         private void ChangeFocus(IInterfaceComponent<TInputAction> newlyFocusedComponent)
         {
+            if (newlyFocusedComponent is null)
+            {
+                Unfocus();
+                return;
+            }
+
             var containerComponents = containersStack.Select(ce => ce.Container).OfType<IInterfaceComponent<TInputAction>>();
 
             var componentsToUnfocus = focusedComponents

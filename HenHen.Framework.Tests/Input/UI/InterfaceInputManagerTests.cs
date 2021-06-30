@@ -156,6 +156,27 @@ namespace HenHen.Framework.Tests.Input.UI
             Assert.Throws<InvalidOperationException>(() => interfaceInputManager.FocusComponent(outsideComponent));
         }
 
+        [Test]
+        public void FocusFromComponentToNothingTest()
+        {
+            interfaceInputManager.FocusNextComponent();
+            AssertContains(component1, interfaceInputManager.FocusedComponents);
+
+            screen.Children.Clear();
+            interfaceInputManager.FocusNextComponent();
+            Assert.IsEmpty(interfaceInputManager.FocusedComponents);
+        }
+
+        [Test]
+        public void UnfocusOnScreenChange()
+        {
+            interfaceInputManager.FocusNextComponent();
+            Assert.IsNotEmpty(interfaceInputManager.FocusedComponents);
+
+            screen.Push(new Screen());
+            Assert.IsEmpty(interfaceInputManager.FocusedComponents);
+        }
+
         private static void AssertContains<T>(T expected, IEnumerable<T> actual) => Assert.IsTrue(actual.Contains(expected));
 
         private static void AssertContains<T>(IEnumerable<T> expected, IEnumerable<T> actual) => Assert.IsTrue(actual.Intersect(expected).Count() == actual.Count());

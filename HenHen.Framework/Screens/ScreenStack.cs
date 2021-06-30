@@ -14,6 +14,10 @@ namespace HenHen.Framework.Screens
     {
         private readonly List<Screen> screens = new();
 
+        public event Action<Screen> ScreenPushed;
+
+        public event Action<Screen> ScreenPopped;
+
         public Screen CurrentScreen => screens.Count == 0 ? null : screens[^1];
 
         public IEnumerable<Screen> Children => screens;
@@ -26,6 +30,7 @@ namespace HenHen.Framework.Screens
             screen.Parent = this;
             screens.Add(screen);
             RewireEventObserving(prev);
+            ScreenPushed?.Invoke(screen);
         }
 
         public void Pop()
@@ -36,6 +41,7 @@ namespace HenHen.Framework.Screens
             CurrentScreen.Parent = null;
             screens.Remove(CurrentScreen);
             RewireEventObserving(prev);
+            ScreenPopped?.Invoke(prev);
         }
 
         protected override void PostUpdate()
