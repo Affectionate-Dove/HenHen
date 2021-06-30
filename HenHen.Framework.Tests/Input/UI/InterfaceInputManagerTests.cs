@@ -108,6 +108,23 @@ namespace HenHen.Framework.Tests.Input.UI
             Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
         }
 
+        [Test]
+        public void UnfocusTest()
+        {
+            interfaceInputManager.FocusNextComponent();
+            Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
+            interfaceInputManager.FocusNextComponent();
+            Assert.AreSame(component2, interfaceInputManager.CurrentlyFocusedComponent);
+            interfaceInputManager.FocusNextComponent();
+            Assert.AreSame(component3Nested, interfaceInputManager.CurrentlyFocusedComponent);
+
+            interfaceInputManager.Unfocus();
+            Assert.IsNull(interfaceInputManager.CurrentlyFocusedComponent);
+
+            interfaceInputManager.FocusNextComponent();
+            Assert.AreSame(component1, interfaceInputManager.CurrentlyFocusedComponent);
+        }
+
         private class TestComponent : Drawable, IInterfaceComponent<TestAction>
         {
             private readonly int id;

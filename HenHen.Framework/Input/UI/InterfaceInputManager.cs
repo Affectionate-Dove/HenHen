@@ -82,15 +82,26 @@ namespace HenHen.Framework.Input.UI
 
                 if (HandleEnumerator())
                 {
-                    inputPropagator?.Listeners.Remove(previouslyFocusedComponent);
-                    previouslyFocusedComponent?.OnFocusLost();
-
-                    inputPropagator?.Listeners.Add(CurrentlyFocusedComponent);
-                    CurrentlyFocusedComponent.OnFocus();
-
+                    UnfocusComponent(previouslyFocusedComponent);
+                    FocusComponent(CurrentlyFocusedComponent);
                     return;
                 }
             };
+        }
+
+        /// <summary>
+        ///     Removes focus from <see cref="CurrentlyFocusedComponent"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The <see cref="FocusNextComponent"/> function will begin
+        ///     seeking from the beginning the next time it's called.
+        /// </remarks>
+        public void Unfocus()
+        {
+            stack.Clear();
+            UnfocusComponent(CurrentlyFocusedComponent);
+            CurrentlyFocusedComponent = null;
+            inputPropagator?.Listeners.RemoveAll(listener => listener is not NextComponentActionListener);
         }
 
         /// <summary>
@@ -117,6 +128,18 @@ namespace HenHen.Framework.Input.UI
         ///     or calls the <see cref="FocusNextComponent"/> function.
         /// </summary>
         public void OnActionReleased(TInputAction action) => inputPropagator.OnActionReleased(action);
+
+        private void UnfocusComponent(IInterfaceComponent<TInputAction> previouslyFocusedComponent)
+        {
+            inputPropagator?.Listeners.Remove(previouslyFocusedComponent);
+            previouslyFocusedComponent?.OnFocusLost();
+        }
+
+        private void FocusComponent(IInterfaceComponent<TInputAction> component)
+        {
+            inputPropagator?.Listeners.Add(component);
+            component.OnFocus();
+        }
 
         /// <summary>
         ///     Advances the <see cref="IEnumerator{Drawable}"/>
