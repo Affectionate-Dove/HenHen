@@ -14,7 +14,7 @@ namespace HenHen.Framework.Input.UI
     ///     (<seealso cref="IInterfaceComponent{TInputAction}"/>)
     ///     focus and input.
     /// </summary>
-    public class InterfaceInputManager<TInputAction> : IInputListener<TInputAction> where TInputAction : struct, System.Enum
+    public class InterfaceInputManager<TInputAction> : IInputListener<TInputAction> where TInputAction : struct, Enum
     {
         private readonly Stack<ContainerAndEnumerator> stack = new();
         private readonly InputPropagator<TInputAction> inputPropagator;
@@ -195,7 +195,7 @@ namespace HenHen.Framework.Input.UI
                 if (enumerator.MoveNext())
                     return HandleDrawable(enumerator.Current);
             }
-            catch (System.InvalidOperationException)
+            catch (InvalidOperationException)
             {
             }
 
