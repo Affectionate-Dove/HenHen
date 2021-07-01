@@ -45,9 +45,22 @@ namespace HenHen.Framework.Graphics2d
             base.RemoveChild(container);
         }
 
-        protected override void PreUpdate()
+        protected override void OnUpdate()
         {
-            base.PreUpdate();
+            base.OnUpdate();
+
+            foreach (var child in Children)
+                child.UpdateLayout();
+
+            // TODO: call this after layout change or children layout change
+            UpdateChildrenPositions();
+
+            foreach (var child in Children)
+                child.UpdateLayout();
+        }
+
+        private void UpdateChildrenPositions()
+        {
             var maxPos = 0f;
             foreach (var child in Children)
             {
