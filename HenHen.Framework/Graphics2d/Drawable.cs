@@ -9,25 +9,135 @@ namespace HenHen.Framework.Graphics2d
 {
     public abstract class Drawable
     {
-        public IContainer Parent;
-        public Vector2 Offset { get; set; }
-        public Axes RelativePositionAxes { get; set; }
+        private IContainer parent;
+        private Vector2 offset;
+        private Axes relativePositionAxes;
+        private Vector2 size = Vector2.One;
+        private Axes relativeSizeAxes;
+        private Vector2 anchor;
+        private Vector2 origin;
 
-        public Vector2 Size { get; set; } = Vector2.One;
-        public Axes RelativeSizeAxes { get; set; }
+        public IContainer Parent
+        {
+            get => parent;
+            set
+            {
+                if (parent == value)
+                    return;
 
-        public Vector2 Anchor { get; set; }
-        public Vector2 Origin { get; set; }
+                LayoutValid = false;
+                parent = value;
+            }
+        }
+
+        public Vector2 Offset
+        {
+            get => offset;
+            set
+            {
+                if (offset == value)
+                    return;
+
+                offset = value;
+                LayoutValid = false;
+            }
+        }
+
+        public Axes RelativePositionAxes
+        {
+            get => relativePositionAxes;
+            set
+            {
+                if (relativePositionAxes == value)
+                    return;
+
+                relativePositionAxes = value;
+                LayoutValid = false;
+            }
+        }
+
+        public Vector2 Size
+        {
+            get => size;
+            set
+            {
+                if (size == value)
+                    return;
+
+                size = value;
+                LayoutValid = false;
+            }
+        }
+
+        public Axes RelativeSizeAxes
+        {
+            get => relativeSizeAxes;
+            set
+            {
+                if (relativeSizeAxes == value)
+                    return;
+
+                relativeSizeAxes = value;
+                LayoutValid = false;
+            }
+        }
+
+        public Vector2 Anchor
+        {
+            get => anchor;
+            set
+            {
+                if (anchor == value)
+                    return;
+
+                anchor = value;
+                LayoutValid = false;
+            }
+        }
+
+        public Vector2 Origin
+        {
+            get => origin;
+            set
+            {
+                if (origin == value)
+                    return;
+
+                origin = value;
+                LayoutValid = false;
+            }
+        }
+
         public DrawableLayoutInfo LayoutInfo { get; private set; }
+        public bool LayoutValid { get; protected set; }
 
         public void Update()
         {
-            PreUpdate();
-            UpdateLayout();
-            PostUpdate();
+            if (!LayoutValid)
+                UpdateLayout();
+
+            OnUpdate();
+
+            if (!LayoutValid)
+                UpdateLayout();
         }
 
         public void Render() => OnRender();
+
+        public void UpdateLayout()
+        {
+            var localPos = ComputeLocalPosition();
+            LayoutInfo = new DrawableLayoutInfo
+            {
+                Origin = Origin,
+                LocalPosition = localPos,
+                RenderPosition = ComputeRenderPosition(localPos),
+                RenderSize = ComputeRenderSize()
+            };
+            LayoutValid = true;
+
+            OnLayoutUpdate();
+        }
 
         protected virtual Vector2 ComputeRenderSize()
         {
@@ -43,11 +153,11 @@ namespace HenHen.Framework.Graphics2d
             return size;
         }
 
-        protected virtual void PreUpdate()
+        protected virtual void OnUpdate()
         {
         }
 
-        protected virtual void PostUpdate()
+        protected virtual void OnLayoutUpdate()
         {
         }
 
@@ -76,18 +186,6 @@ namespace HenHen.Framework.Graphics2d
             if (Parent != null)
                 pos += Parent.ContainerLayoutInfo.ChildrenRenderPosition;
             return pos;
-        }
-
-        private void UpdateLayout()
-        {
-            var localPos = ComputeLocalPosition();
-            LayoutInfo = new DrawableLayoutInfo
-            {
-                Origin = Origin,
-                LocalPosition = localPos,
-                RenderPosition = ComputeRenderPosition(localPos),
-                RenderSize = ComputeRenderSize()
-            };
         }
     }
 

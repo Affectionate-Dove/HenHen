@@ -38,14 +38,14 @@ namespace HenHen.Framework.Screens
             RewireEventObserving(prev);
         }
 
-        protected override void PostUpdate()
+        protected override void OnUpdate()
         {
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
                 ChildrenRenderPosition = ComputeChildrenRenderPosition(),
                 ChildrenRenderSize = ComputeChildrenRenderSize()
             };
-            base.PostUpdate();
+            base.OnUpdate();
             CurrentScreen?.Update();
         }
 

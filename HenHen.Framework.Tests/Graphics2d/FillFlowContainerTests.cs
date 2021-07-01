@@ -73,7 +73,6 @@ namespace HenHen.Framework.Tests.Graphics2d
             buttonList.AddChild(button3);
 
             screen.Update();
-            screen.Update();
 
             Assert.AreEqual(new RectangleF { BottomRight = new Vector2(300, 40) },
                 button1.LayoutInfo.RenderRect);
