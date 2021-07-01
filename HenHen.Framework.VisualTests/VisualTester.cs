@@ -83,9 +83,9 @@ namespace HenHen.Framework.VisualTests
         {
         }
 
-        protected override void PostUpdate()
+        protected override void OnUpdate()
         {
-            base.PostUpdate();
+            base.OnUpdate();
             if (sceneIndex < sceneTypes.Count - 1 && (scenesContainer.CurrentScreen as VisualTestScene).IsSceneDone)
             {
                 sceneIndex++;

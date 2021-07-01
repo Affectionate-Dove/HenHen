@@ -11,13 +11,40 @@ namespace HenHen.Framework.Graphics2d
 {
     public class Container : Drawable, IContainer<Drawable>
     {
-        public MarginPadding Padding;
-        public Axes AutoSizeAxes { get; set; }
+        private MarginPadding padding;
+        private Axes autoSizeAxes;
+
+        public MarginPadding Padding
+        {
+            get => padding;
+            set
+            {
+                if (padding.Equals(value))
+                    return;
+
+                padding = value;
+                ContainerLayoutValid = false;
+            }
+        }
+
+        public Axes AutoSizeAxes
+        {
+            get => autoSizeAxes;
+            set
+            {
+                if (autoSizeAxes.Equals(value))
+                    return;
+
+                autoSizeAxes = value;
+                LayoutValid = false;
+            }
+        }
 
         public List<Drawable> Children { get; } = new List<Drawable>();
         IEnumerable<Drawable> IContainer<Drawable>.Children => Children;
 
         public ContainerLayoutInfo ContainerLayoutInfo { get; protected set; }
+        protected bool ContainerLayoutValid { get; set; }
 
         public virtual void AddChild(Drawable child)
         {
@@ -35,22 +62,27 @@ namespace HenHen.Framework.Graphics2d
 
         protected Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize - Padding.Total;
 
-        protected override void PreUpdate()
+        protected override void OnUpdate()
         {
-            base.PreUpdate();
-            UpdateContainerLayoutInfo();
+            base.OnUpdate();
+
+            if (!ContainerLayoutValid)
+                UpdateContainerLayout();
+
             foreach (var child in Children)
                 child.Update();
-            UpdateContainerLayoutInfo();
         }
 
-        protected override void PostUpdate()
+        protected override void OnLayoutUpdate()
         {
-            base.PostUpdate();
-            UpdateContainerLayoutInfo();
+            base.OnLayoutUpdate();
+            UpdateContainerLayout();
             foreach (var child in Children)
-                child.Update();
-            UpdateContainerLayoutInfo();
+            {
+                if (AutoSizeAxes != Axes.None && !child.LayoutValid)
+                    LayoutValid = false;
+                child.UpdateLayout();
+            }
         }
 
         protected override void OnRender()
@@ -83,10 +115,14 @@ namespace HenHen.Framework.Graphics2d
             return renSize;
         }
 
-        private void UpdateContainerLayoutInfo() => ContainerLayoutInfo = new ContainerLayoutInfo
+        private void UpdateContainerLayout()
         {
-            ChildrenRenderPosition = ComputeChildrenRenderPosition(),
-            ChildrenRenderSize = ComputeChildrenRenderSize()
-        };
+            ContainerLayoutInfo = new ContainerLayoutInfo
+            {
+                ChildrenRenderPosition = ComputeChildrenRenderPosition(),
+                ChildrenRenderSize = ComputeChildrenRenderSize()
+            };
+            ContainerLayoutValid = true;
+        }
     }
 }
