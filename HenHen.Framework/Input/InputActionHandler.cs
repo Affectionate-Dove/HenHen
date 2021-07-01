@@ -42,7 +42,7 @@ namespace HenHen.Framework.Input
         /// </summary>
         private readonly List<TInputAction> activeInputActions = new();
 
-        public InputManager InputManager { get; set; }
+        public Inputs Inputs { get; set; }
 
         public InputPropagator<TInputAction> Propagator { get; }
 
@@ -59,10 +59,10 @@ namespace HenHen.Framework.Input
         /// </summary>
         public IReadOnlyList<TInputAction> ActiveInputActions => activeInputActions;
 
-        public InputActionHandler(InputManager inputManager)
+        public InputActionHandler(Inputs inputs)
         {
             SetKeyBindings(CreateDefaultKeybindings());
-            InputManager = inputManager;
+            Inputs = inputs;
             Propagator = CreatePropagator();
         }
 
@@ -94,7 +94,7 @@ namespace HenHen.Framework.Input
         {
             foreach (var key in ActionKeyBindings[action])
             {
-                if (!InputManager.IsKeyDown(key))
+                if (!Inputs.IsKeyDown(key))
                     return false;
             }
             return true;
@@ -122,7 +122,7 @@ namespace HenHen.Framework.Input
         {
             foreach (var (monitoredKey, possibleActions) in keysToMonitor)
             {
-                if (InputManager.IsKeyPressed(monitoredKey))
+                if (Inputs.IsKeyPressed(monitoredKey))
                 {
                     foreach (var possibleAction in possibleActions)
                     {

@@ -9,7 +9,7 @@ namespace HenHen.Framework.VisualTests.Input
 {
     public class SceneInputActionHandler : InputActionHandler<SceneControls>
     {
-        public SceneInputActionHandler(InputManager inputManager) : base(inputManager)
+        public SceneInputActionHandler(Inputs inputs) : base(inputs)
         {
         }
 

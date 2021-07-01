@@ -6,34 +6,15 @@ using System.Numerics;
 
 namespace HenHen.Framework.Input
 {
-    public class InputManager
+    public class Inputs
     {
-        private Vector2? mousePosition;
-
         public static float MouseWheelDelta => Raylib_cs.Raylib.GetMouseWheelMove();
-        public virtual Vector2? LastMousePosition { get; protected set; }
 
         public virtual Vector2 MousePosition
         {
-            get
-            {
-                if (mousePosition.HasValue)
-                    return mousePosition.Value;
-                return (mousePosition = Raylib_cs.Raylib.GetMousePosition()).Value;
-            }
-            set
-            {
-                mousePosition = value;
-                Raylib_cs.Raylib.SetMousePosition((int)value.X, (int)value.Y);
-            }
+            get => Raylib_cs.Raylib.GetMousePosition();
+            set => Raylib_cs.Raylib.SetMousePosition((int)value.X, (int)value.Y);
         }
-
-        /// <summary>
-        /// Returns Vector2.Zero if there is no delta.
-        /// </summary>
-        public Vector2 MousePositionDelta => (MousePosition - LastMousePosition).GetValueOrDefault();
-
-        public float TimeDelta { get; protected set; }
 
         public virtual bool IsKeyDown(KeyboardKey key) => Raylib_cs.Raylib.IsKeyDown(key.ToRaylibKey());
 
@@ -50,12 +31,5 @@ namespace HenHen.Framework.Input
         public virtual bool IsMouseButtonPressed(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonPressed(button.ToRaylibMouseButton());
 
         public virtual bool IsMouseButtonReleased(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonReleased(button.ToRaylibMouseButton());
-
-        public virtual void Update(float timeDelta)
-        {
-            LastMousePosition = mousePosition;
-            mousePosition = Raylib_cs.Raylib.GetMousePosition();
-            TimeDelta = timeDelta;
-        }
     }
 }
