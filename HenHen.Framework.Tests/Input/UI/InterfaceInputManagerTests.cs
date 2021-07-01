@@ -105,20 +105,18 @@ namespace HenHen.Framework.Tests.Input.UI
         [Test]
         public void NextComponentActionTest()
         {
-            var inputManager = new TestInputManager();
-            var inputActionHandler = new TestInputActionHandler(inputManager);
+            var inputs = new TestInputs();
+            var inputActionHandler = new TestInputActionHandler(inputs);
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
             interfaceInputManager.NextComponentAction = TestAction.Action1;
 
             Assert.IsEmpty(interfaceInputManager.FocusedComponents);
 
-            inputManager.SimulateKeyPress(Framework.Input.KeyboardKey.KEY_A);
+            inputs.SimulateKeyPress(Framework.Input.KeyboardKey.KEY_A);
             inputActionHandler.Update();
-            inputManager.Update(1);
 
-            inputManager.SimulateKeyRelease(Framework.Input.KeyboardKey.KEY_A);
+            inputs.SimulateKeyRelease(Framework.Input.KeyboardKey.KEY_A);
             inputActionHandler.Update();
-            inputManager.Update(1);
 
             AssertContains(component1, interfaceInputManager.FocusedComponents);
         }

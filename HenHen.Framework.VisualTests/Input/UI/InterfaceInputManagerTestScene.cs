@@ -19,7 +19,7 @@ namespace HenHen.Framework.VisualTests.Input.UI
 
         public InterfaceInputManagerTestScene()
         {
-            inputActionHandler = new TestInputActionHandler(Game.InputManager);
+            inputActionHandler = new TestInputActionHandler(Game.Inputs);
             var screenStack = new ScreenStack
             {
                 Size = new Vector2(500, 400),
@@ -110,7 +110,7 @@ namespace HenHen.Framework.VisualTests.Input.UI
 
         private class TestInputActionHandler : InputActionHandler<TestAction>
         {
-            public TestInputActionHandler(InputManager inputManager) : base(inputManager)
+            public TestInputActionHandler(Inputs inputs) : base(inputs)
             {
             }
 

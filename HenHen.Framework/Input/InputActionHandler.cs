@@ -3,6 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HenHen.Framework.Input
 {
@@ -34,7 +35,7 @@ namespace HenHen.Framework.Input
         /// for input at every game update, so this list stores
         /// only the keys that can trigger a <see cref="TInputAction"/>.
         /// </summary>
-        private readonly Dictionary<KeyboardKey, List<TInputAction>> keysToMonitor = new();
+        private readonly List<KeyInfo> keysToMonitor = new();
 
         /// <summary>
         /// A list of <see cref="TInputAction"/>s that were
@@ -42,7 +43,7 @@ namespace HenHen.Framework.Input
         /// </summary>
         private readonly List<TInputAction> activeInputActions = new();
 
-        public InputManager InputManager { get; set; }
+        public Inputs Inputs { get; set; }
 
         public InputPropagator<TInputAction> Propagator { get; }
 
@@ -59,10 +60,10 @@ namespace HenHen.Framework.Input
         /// </summary>
         public IReadOnlyList<TInputAction> ActiveInputActions => activeInputActions;
 
-        public InputActionHandler(InputManager inputManager)
+        public InputActionHandler(Inputs inputs)
         {
             SetKeyBindings(CreateDefaultKeybindings());
-            InputManager = inputManager;
+            Inputs = inputs;
             Propagator = CreatePropagator();
         }
 
@@ -94,7 +95,7 @@ namespace HenHen.Framework.Input
         {
             foreach (var key in ActionKeyBindings[action])
             {
-                if (!InputManager.IsKeyDown(key))
+                if (!Inputs.IsKeyDown(key))
                     return false;
             }
             return true;
@@ -120,11 +121,15 @@ namespace HenHen.Framework.Input
 
         private void HandleMonitoredKeysPresses()
         {
-            foreach (var (monitoredKey, possibleActions) in keysToMonitor)
+            foreach (var monitoredKeyInfo in keysToMonitor)
             {
-                if (InputManager.IsKeyPressed(monitoredKey))
+                var isPressed = Inputs.IsKeyDown(monitoredKeyInfo.Key);
+                var justPressed = isPressed && !monitoredKeyInfo.Pressed;
+                monitoredKeyInfo.Pressed = isPressed;
+
+                if (justPressed)
                 {
-                    foreach (var possibleAction in possibleActions)
+                    foreach (var possibleAction in monitoredKeyInfo.RelatedActions)
                     {
                         // if an action is already active, don't want to trigger it again
                         if (activeInputActions.Contains(possibleAction))
@@ -175,11 +180,24 @@ namespace HenHen.Framework.Input
             {
                 foreach (var key in keys)
                 {
-                    if (!keysToMonitor.ContainsKey(key))
-                        keysToMonitor.Add(key, new List<TInputAction>());
-                    keysToMonitor[key].Add(action);
+                    var keyInfo = keysToMonitor.FirstOrDefault(ki => ki.Key == key);
+                    if (keyInfo is null)
+                    {
+                        keyInfo = new KeyInfo(key);
+                        keysToMonitor.Add(keyInfo);
+                    }
+                    keyInfo.RelatedActions.Add(action);
                 }
             }
+        }
+
+        private class KeyInfo
+        {
+            public KeyboardKey Key { get; }
+            public bool Pressed { get; set; }
+            public List<TInputAction> RelatedActions { get; } = new();
+
+            public KeyInfo(KeyboardKey key) => Key = key;
         }
     }
 }

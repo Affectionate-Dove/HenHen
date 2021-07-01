@@ -13,11 +13,11 @@ namespace HenHen.Framework
     public class Game
     {
         private static TextureStore textureStore;
-        private static InputManager inputManager;
+        private static Inputs inputs;
         private static ModelStore modelStore;
 
         public static TextureStore TextureStore => textureStore;
-        public static InputManager InputManager => inputManager;
+        public static Inputs Inputs => inputs;
         public static ModelStore ModelStore => modelStore;
 
         public Window Window { get; }
@@ -26,20 +26,19 @@ namespace HenHen.Framework
         public Game()
         {
             Window = new Window(new Vector2(1280, 680), "HenHen");
-            inputManager = CreateInputManager();
+            inputs = CreateInputs();
             ScreenStack = new ScreenStack();
             textureStore = new TextureStore();
             modelStore = new ModelStore();
         }
 
-        /// <param name="timeDelta">In seconds.</param>
-        public void Loop(float timeDelta)
+        public void Loop()
         {
-            Update(timeDelta);
+            Update();
             Draw();
         }
 
-        protected virtual InputManager CreateInputManager() => new();
+        protected virtual Inputs CreateInputs() => new();
 
         protected virtual void OnUpdate()
         {
@@ -58,12 +57,10 @@ namespace HenHen.Framework
             EndDrawing();
         }
 
-        /// <param name="timeDelta">In seconds.</param>
-        private void Update(float timeDelta)
+        private void Update()
         {
             ScreenStack.Size = Window.Size;
             ScreenStack.Update();
-            InputManager.Update(timeDelta);
             OnUpdate();
         }
     }
