@@ -3,12 +3,13 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Graphics2d;
+using HenHen.Framework.Input.UI;
 using System;
 using System.Numerics;
 
 namespace HenHen.Framework.UI
 {
-    public class Button : Container, IHasColor
+    public class Button<TInputAction> : Container, IHasColor, IInterfaceComponent<TInputAction>
     {
         private readonly Rectangle background;
         private readonly SpriteText spriteText;
@@ -16,6 +17,8 @@ namespace HenHen.Framework.UI
         public ColorInfo Color { get => background.Color; set => background.Color = value; }
         public string Text { get => spriteText.Text; set => spriteText.Text = value; }
         public Action Action { get; set; }
+
+        public virtual bool AcceptsFocus => true;
 
         public Button()
         {
@@ -30,6 +33,20 @@ namespace HenHen.Framework.UI
                 RelativeSizeAxes = Axes.Both,
                 AlignMiddle = true
             });
+        }
+
+        public virtual void OnFocus()
+        {
+        }
+
+        public virtual void OnFocusLost()
+        {
+        }
+
+        public virtual bool OnActionPressed(TInputAction action) => false;
+
+        public virtual void OnActionReleased(TInputAction action)
+        {
         }
     }
 }

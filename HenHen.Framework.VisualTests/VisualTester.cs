@@ -175,7 +175,7 @@ namespace HenHen.Framework.VisualTests
             }
         }
 
-        private class TestSceneButton : Button
+        private class TestSceneButton : Button<VisualTesterControls>
         {
             private static readonly ColorInfo highlightColor = new(100, 100, 100);
             private static readonly ColorInfo defaultColor = new(60, 60, 60);
