@@ -20,16 +20,8 @@ namespace HenHen.Framework.Input
 
         public virtual bool IsKeyUp(KeyboardKey key) => Raylib_cs.Raylib.IsKeyUp(key.ToRaylibKey());
 
-        public virtual bool IsKeyPressed(KeyboardKey key) => Raylib_cs.Raylib.IsKeyPressed(key.ToRaylibKey());
-
-        public virtual bool IsKeyReleased(KeyboardKey key) => Raylib_cs.Raylib.IsKeyReleased(key.ToRaylibKey());
-
         public virtual bool IsMouseButtonDown(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonDown(button.ToRaylibMouseButton());
 
         public virtual bool IsMouseButtonUp(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonUp(button.ToRaylibMouseButton());
-
-        public virtual bool IsMouseButtonPressed(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonPressed(button.ToRaylibMouseButton());
-
-        public virtual bool IsMouseButtonReleased(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonReleased(button.ToRaylibMouseButton());
     }
 }
