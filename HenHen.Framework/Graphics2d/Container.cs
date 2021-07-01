@@ -44,7 +44,7 @@ namespace HenHen.Framework.Graphics2d
         IEnumerable<Drawable> IContainer<Drawable>.Children => Children;
 
         public ContainerLayoutInfo ContainerLayoutInfo { get; protected set; }
-        protected bool ContainerLayoutValid { get; set; }
+        public bool ContainerLayoutValid { get; protected set; }
 
         public virtual void AddChild(Drawable child)
         {

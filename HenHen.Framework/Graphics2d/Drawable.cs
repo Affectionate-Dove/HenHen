@@ -109,7 +109,7 @@ namespace HenHen.Framework.Graphics2d
         }
 
         public DrawableLayoutInfo LayoutInfo { get; private set; }
-        public bool LayoutValid { get; protected set; } = false;
+        public bool LayoutValid { get; protected set; }
 
         public void Update()
         {
