@@ -46,10 +46,10 @@ namespace HenHen.Framework.VisualTests.Input.UI
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
         }
 
-        protected override void PreUpdate()
+        protected override void OnUpdate()
         {
             inputActionHandler.Update();
-            base.PreUpdate();
+            base.OnUpdate();
         }
 
         private class TestFillFlowContainer : Container, IInterfaceComponent<TestAction>
