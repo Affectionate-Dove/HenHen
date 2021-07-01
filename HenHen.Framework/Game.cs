@@ -55,6 +55,7 @@ namespace HenHen.Framework
             ClearBackground(Raylib_cs.Color.BLACK);
             ScreenStack.Render();
             OnRender();
+            EndScissorMode();
             EndDrawing();
         }
 

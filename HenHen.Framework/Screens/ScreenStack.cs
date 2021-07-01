@@ -46,12 +46,13 @@ namespace HenHen.Framework.Screens
 
         protected override void OnUpdate()
         {
+            base.OnUpdate();
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
                 ChildrenRenderPosition = ComputeChildrenRenderPosition(),
-                ChildrenRenderSize = ComputeChildrenRenderSize()
+                ChildrenRenderSize = ComputeChildrenRenderSize(),
+                MaskArea = LayoutInfo.MaskArea
             };
-            base.OnUpdate();
             CurrentScreen?.Update();
         }
 

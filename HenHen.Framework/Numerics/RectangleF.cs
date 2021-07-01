@@ -107,7 +107,11 @@ namespace HenHen.Framework.Numerics
             TopLeft = rectangle.TopLeft / v
         };
 
-        public RectangleF? GetIntersection(RectangleF other)
+        public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
+
+        public RectangleF? GetIntersection(RectangleF? other) => other.HasValue ? GetIntersectionNonNullableParameter(other.Value) : null;
+
+        private RectangleF? GetIntersectionNonNullableParameter(RectangleF other)
         {
             if (Top >= Bottom && other.Top < other.Bottom)
                 throw new System.Exception("Coordinate systems don't match. One is Y-up, the other is Y-down");
@@ -122,7 +126,5 @@ namespace HenHen.Framework.Numerics
             else
                 return new(Math.Max(Left, other.Left), Math.Min(Right, other.Right), Math.Min(Bottom, other.Bottom), Math.Max(Top, other.Top));
         }
-
-        public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
     }
 }

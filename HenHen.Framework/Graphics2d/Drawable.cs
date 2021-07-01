@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenHen.Framework.Numerics;
 using System;
 using System.Numerics;
 
@@ -108,6 +109,17 @@ namespace HenHen.Framework.Graphics2d
             }
         }
 
+        /// <summary>
+        ///     Whether anything outside
+        ///     the <see cref="DrawableLayoutInfo.RenderRect"/>
+        ///     is hidden.
+        /// </summary>
+        /// <remarks>
+        ///     This doesn't have an effect if this is a top-level Drawable,
+        ///     in that case masking is always on.
+        /// </remarks>
+        public bool Mask { get; set; }
+
         public DrawableLayoutInfo LayoutInfo { get; private set; }
         public bool LayoutValid { get; protected set; }
 
@@ -122,17 +134,32 @@ namespace HenHen.Framework.Graphics2d
                 UpdateLayout();
         }
 
-        public void Render() => OnRender();
+        public void Render()
+        {
+            var _mask = LayoutInfo.MaskArea;
+            if (_mask is null)
+                return;
+
+            var mask = _mask.Value;
+            Raylib_cs.Raylib.BeginScissorMode((int)mask.Left, (int)mask.Top, (int)mask.Width, (int)mask.Height);
+
+            OnRender();
+        }
 
         public void UpdateLayout()
         {
             var localPos = ComputeLocalPosition();
+            var renderPos = ComputeRenderPosition(localPos);
+            var renderSize = ComputeRenderSize();
+            var renderRect = DrawableLayoutInfo.ComputeRenderRect(renderPos, renderSize, Origin);
+
             LayoutInfo = new DrawableLayoutInfo
             {
                 Origin = Origin,
                 LocalPosition = localPos,
-                RenderPosition = ComputeRenderPosition(localPos),
-                RenderSize = ComputeRenderSize()
+                RenderPosition = renderPos,
+                RenderSize = renderSize,
+                MaskArea = ComputeMaskArea(renderRect)
             };
             LayoutValid = true;
 
@@ -163,6 +190,19 @@ namespace HenHen.Framework.Graphics2d
 
         protected virtual void OnRender()
         {
+        }
+
+        protected RectangleF? ComputeMaskArea(RectangleF renderArea)
+        {
+            if (Parent is null) // top level Drawable
+                return renderArea;
+
+            var maskArea = Parent.ContainerLayoutInfo.MaskArea;
+
+            if (!Mask)
+                return maskArea;
+
+            return maskArea?.GetIntersection(renderArea);
         }
 
         private Vector2 ComputeLocalPosition()

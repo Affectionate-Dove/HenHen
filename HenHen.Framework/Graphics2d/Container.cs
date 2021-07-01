@@ -3,6 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Graphics2d.Layouts;
+using HenHen.Framework.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -117,10 +118,20 @@ namespace HenHen.Framework.Graphics2d
 
         private void UpdateContainerLayout()
         {
+            var childrenRenderPosition = ComputeChildrenRenderPosition();
+            var childrenRenderSize = ComputeChildrenRenderSize();
+            var childrenArea = new RectangleF
+            {
+                TopLeft = childrenRenderPosition,
+                Size = childrenRenderSize
+            };
+            var maskArea = ComputeMaskArea(childrenArea);
+
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
-                ChildrenRenderPosition = ComputeChildrenRenderPosition(),
-                ChildrenRenderSize = ComputeChildrenRenderSize()
+                ChildrenRenderPosition = childrenRenderPosition,
+                ChildrenRenderSize = childrenRenderSize,
+                MaskArea = maskArea
             };
             ContainerLayoutValid = true;
         }

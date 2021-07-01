@@ -50,6 +50,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 RelativeSizeAxes = Axes.Both
             });
             World = world;
+            Mask = true;
         }
 
         protected override void OnRender()
