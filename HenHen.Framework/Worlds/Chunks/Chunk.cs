@@ -51,7 +51,7 @@ namespace HenHen.Framework.Worlds.Chunks
         public Chunk(Vector2 index, float size)
         {
             Index = index;
-            Coordinates = new RectangleF(index.X * size, (index.X * size) + size, index.Y * size, (index.Y * size) + size);
+            Coordinates = RectangleF.FromPositionAndSize(index * size, new(size), CoordinateSystem2d.YUp);
         }
 
         /// <summary>
