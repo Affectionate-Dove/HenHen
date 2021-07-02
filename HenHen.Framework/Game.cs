@@ -13,20 +13,18 @@ namespace HenHen.Framework
     public class Game
     {
         private static TextureStore textureStore;
-        private static Inputs inputs;
         private static ModelStore modelStore;
 
         public static TextureStore TextureStore => textureStore;
-        public static Inputs Inputs => inputs;
         public static ModelStore ModelStore => modelStore;
-
+        public Inputs Inputs { get; }
         public Window Window { get; }
         public ScreenStack ScreenStack { get; }
 
         public Game()
         {
             Window = new Window(new Vector2(1280, 680), "HenHen");
-            inputs = CreateInputs();
+            Inputs = CreateInputs();
             ScreenStack = new ScreenStack();
             textureStore = new TextureStore();
             modelStore = new ModelStore();
