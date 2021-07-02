@@ -22,13 +22,19 @@ namespace HenHen.Framework.Input.UI
 
         private readonly List<IPositionalInterfaceComponent> hoveredComponents = new();
 
+        public Inputs Inputs { get; }
+
         /// <summary>
         ///     The <see cref="Screens.ScreenStack"/>, inside
         ///     of which all handled <see cref="IPositionalInterfaceComponent"/> are.
         /// </summary>
         public ScreenStack ScreenStack { get; }
 
-        public PositionalInterfaceInputManager(ScreenStack screenStack) => ScreenStack = screenStack;
+        public PositionalInterfaceInputManager(Inputs inputs, ScreenStack screenStack)
+        {
+            Inputs = inputs;
+            ScreenStack = screenStack;
+        }
 
         /// <summary>
         ///     Checks for events and propagates them.
@@ -36,7 +42,7 @@ namespace HenHen.Framework.Input.UI
         public void Update()
         {
             foreach (var buttonInfo in buttonsInfos)
-                buttonInfo.Pressed = Game.Inputs.IsMouseButtonDown(buttonInfo.MouseButton);
+                buttonInfo.Pressed = Inputs.IsMouseButtonDown(buttonInfo.MouseButton);
 
             if (ScreenStack.CurrentScreen is not null)
                 HandleDrawable(ScreenStack.CurrentScreen);
@@ -54,7 +60,7 @@ namespace HenHen.Framework.Input.UI
 
         private void HandleDrawable(Drawable drawable)
         {
-            if (!ElementaryCollisions.IsPointInRectangle(Game.Inputs.MousePosition, drawable.LayoutInfo.RenderRect))
+            if (!ElementaryCollisions.IsPointInRectangle(Inputs.MousePosition, drawable.LayoutInfo.RenderRect))
                 return;
 
             if (drawable is IContainer<Drawable> container)
@@ -99,7 +105,7 @@ namespace HenHen.Framework.Input.UI
         /// </returns>
         private bool TryDoHoverLostTasks(IPositionalInterfaceComponent component)
         {
-            if (ElementaryCollisions.IsPointInRectangle(Game.Inputs.MousePosition, component.LayoutInfo.RenderRect))
+            if (ElementaryCollisions.IsPointInRectangle(Inputs.MousePosition, component.LayoutInfo.RenderRect))
                 return false;
 
             component.OnHoverLost();

@@ -46,7 +46,7 @@ namespace HenHen.Framework.VisualTests.Input.UI
             interfaceInputManager = new InterfaceInputManager<TestAction>(screenStack, TestAction.Next);
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
 
-            positionalInterfaceInputManager = new PositionalInterfaceInputManager(screenStack);
+            positionalInterfaceInputManager = new PositionalInterfaceInputManager(new RaylibInputs(), screenStack);
         }
 
         protected override void OnUpdate()
