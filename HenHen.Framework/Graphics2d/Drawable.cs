@@ -118,7 +118,7 @@ namespace HenHen.Framework.Graphics2d
         ///     This doesn't have an effect if this is a top-level Drawable,
         ///     in that case masking is always on.
         /// </remarks>
-        public bool Mask { get; set; }
+        public bool Masking { get; set; }
 
         public DrawableLayoutInfo LayoutInfo { get; private set; }
         public bool LayoutValid { get; protected set; }
@@ -136,7 +136,7 @@ namespace HenHen.Framework.Graphics2d
 
         public void Render()
         {
-            var _mask = LayoutInfo.MaskArea;
+            var _mask = LayoutInfo.Mask;
             if (_mask is null)
                 return;
 
@@ -159,7 +159,7 @@ namespace HenHen.Framework.Graphics2d
                 LocalPosition = localPos,
                 RenderPosition = renderPos,
                 RenderSize = renderSize,
-                MaskArea = ComputeMaskArea(renderRect)
+                Mask = ComputeMaskArea(renderRect)
             };
             LayoutValid = true;
 
@@ -173,9 +173,9 @@ namespace HenHen.Framework.Graphics2d
                 return size;
 
             if (RelativeSizeAxes.HasFlag(Axes.X))
-                size.X *= Parent.ContainerLayoutInfo.ChildrenRenderSize.X;
+                size.X *= Parent.ContainerLayoutInfo.ChildrenRenderArea.Size.X;
             if (RelativeSizeAxes.HasFlag(Axes.Y))
-                size.Y *= Parent.ContainerLayoutInfo.ChildrenRenderSize.Y;
+                size.Y *= Parent.ContainerLayoutInfo.ChildrenRenderArea.Size.Y;
 
             return size;
         }
@@ -199,7 +199,7 @@ namespace HenHen.Framework.Graphics2d
 
             var maskArea = Parent.ContainerLayoutInfo.MaskArea;
 
-            if (!Mask)
+            if (!Masking)
                 return maskArea;
 
             return maskArea?.GetIntersection(renderArea);
@@ -212,10 +212,10 @@ namespace HenHen.Framework.Graphics2d
                 return pos;
 
             if (RelativePositionAxes.HasFlag(Axes.X))
-                pos.X *= Parent.ContainerLayoutInfo.ChildrenRenderSize.X;
+                pos.X *= Parent.ContainerLayoutInfo.ChildrenRenderArea.Size.X;
             if (RelativePositionAxes.HasFlag(Axes.Y))
-                pos.Y *= Parent.ContainerLayoutInfo.ChildrenRenderSize.Y;
-            pos += Anchor * Parent.ContainerLayoutInfo.ChildrenRenderSize;
+                pos.Y *= Parent.ContainerLayoutInfo.ChildrenRenderArea.Size.Y;
+            pos += Anchor * Parent.ContainerLayoutInfo.ChildrenRenderArea.Size;
 
             return pos;
         }
@@ -224,7 +224,8 @@ namespace HenHen.Framework.Graphics2d
         {
             var pos = localPosition;
             if (Parent != null)
-                pos += Parent.ContainerLayoutInfo.ChildrenRenderPosition;
+                // TODO: check if this is correct
+                pos += Parent.ContainerLayoutInfo.ChildrenRenderArea.TopLeft;
             return pos;
         }
     }

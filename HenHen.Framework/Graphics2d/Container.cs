@@ -59,9 +59,7 @@ namespace HenHen.Framework.Graphics2d
                 child.Parent = null;
         }
 
-        protected Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderRect.TopLeft + Padding.TopLeft;
-
-        protected Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize - Padding.Total;
+        protected RectangleF ComputeChildrenRenderRect() => new(LayoutInfo.RenderRect.Left + Padding.Left, LayoutInfo.RenderRect.Right - Padding.Right, LayoutInfo.RenderRect.Bottom - Padding.Bottom, LayoutInfo.RenderRect.Top + Padding.Top);
 
         protected override void OnUpdate()
         {
@@ -118,19 +116,12 @@ namespace HenHen.Framework.Graphics2d
 
         private void UpdateContainerLayout()
         {
-            var childrenRenderPosition = ComputeChildrenRenderPosition();
-            var childrenRenderSize = ComputeChildrenRenderSize();
-            var childrenArea = new RectangleF
-            {
-                TopLeft = childrenRenderPosition,
-                Size = childrenRenderSize
-            };
-            var maskArea = ComputeMaskArea(childrenArea);
+            var childrenRenderRect = ComputeChildrenRenderRect();
+            var maskArea = ComputeMaskArea(childrenRenderRect);
 
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
-                ChildrenRenderPosition = childrenRenderPosition,
-                ChildrenRenderSize = childrenRenderSize,
+                ChildrenRenderArea = childrenRenderRect,
                 MaskArea = maskArea
             };
             ContainerLayoutValid = true;

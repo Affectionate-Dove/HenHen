@@ -36,7 +36,7 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             container.AutoSizeAxes = Axes.Both;
             container.Update();
-            Assert.AreEqual(new Vector2(230, 400), container.ContainerLayoutInfo.ChildrenRenderSize);
+            Assert.AreEqual(new Vector2(230, 400), container.ContainerLayoutInfo.ChildrenRenderArea.Size);
             Assert.AreEqual(new RectangleF
             {
                 Left = 150,
