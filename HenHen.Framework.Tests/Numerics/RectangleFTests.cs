@@ -16,65 +16,34 @@ namespace HenHen.Framework.Tests.Numerics
         [Test]
         public void Test()
         {
-            rect = new RectangleF
-            {
-                TopLeft = new Vector2(2, 2),
-                BottomRight = new Vector2(4, 4)
-            };
+            rect = new RectangleF(2, 4, 4, 2);
 
             Assert.AreEqual(new Vector2(2, 2), rect.Size);
             Assert.AreEqual(new Vector2(3), rect.Center);
             Assert.AreEqual(4, rect.Area);
+            Assert.AreEqual(CoordinateSystem2d.YDown, rect.CoordinateSystem);
         }
 
         [Test]
         public void Test2()
         {
-            rect = new RectangleF
-            {
-                Top = -2,
-                Left = -4,
-                Bottom = 3,
-                Right = -6
-            };
+            rect = new RectangleF(-4, -6, 3, -2);
 
             Assert.AreEqual(-2, rect.Width);
             Assert.AreEqual(5, rect.Height);
             Assert.AreEqual(10, rect.Area);
+            Assert.AreEqual(CoordinateSystem2d.YDown, rect.CoordinateSystem);
         }
 
         [Test]
         public void Test3()
         {
-            rect = new RectangleF
-            {
-                Top = -4,
-                Left = 3,
-                Bottom = -6,
-                Right = -2
-            };
+            rect = new RectangleF(3, -2, -6, -4);
 
             Assert.AreEqual(-5, rect.Width);
-            Assert.AreEqual(-2, rect.Height);
+            Assert.AreEqual(2, rect.Height);
             Assert.AreEqual(10, rect.Area);
-        }
-
-        [Test]
-        public void Test4()
-        {
-            rect = new RectangleF
-            {
-                Top = -2,
-                Left = -4,
-                Height = 5,
-                Width = -2
-            };
-
-            Assert.AreEqual(-2, rect.Width);
-            Assert.AreEqual(5, rect.Height);
-            Assert.AreEqual(10, rect.Area);
-            Assert.AreEqual(3, rect.Bottom);
-            Assert.AreEqual(-6, rect.Right);
+            Assert.AreEqual(CoordinateSystem2d.YUp, rect.CoordinateSystem);
         }
 
         [Test]
@@ -86,10 +55,10 @@ namespace HenHen.Framework.Tests.Numerics
             var rect2YD = new RectangleF(1.5f, 2.5f, 2.5f, 1.5f);
             var rect3 = new RectangleF(3, 4, 3, 4);
 
-            Assert.Throws<Exception>(() => rect1.GetIntersection(rect1YD));
-            Assert.Throws<Exception>(() => rect1.GetIntersection(rect2YD));
-            Assert.Throws<Exception>(() => rect2.GetIntersection(rect1YD));
-            Assert.Throws<Exception>(() => rect2.GetIntersection(rect2YD));
+            Assert.Throws<ArgumentException>(() => rect1.GetIntersection(rect1YD));
+            Assert.Throws<ArgumentException>(() => rect1.GetIntersection(rect2YD));
+            Assert.Throws<ArgumentException>(() => rect2.GetIntersection(rect1YD));
+            Assert.Throws<ArgumentException>(() => rect2.GetIntersection(rect2YD));
 
             RectangleF? expected = new RectangleF(1.5f, 2, 1.5f, 2);
             Assert.AreEqual(expected, rect1.GetIntersection(rect2));
@@ -102,6 +71,19 @@ namespace HenHen.Framework.Tests.Numerics
             expected = null;
             Assert.AreEqual(expected, rect1.GetIntersection(rect3));
             Assert.AreEqual(expected, rect3.GetIntersection(rect1));
+        }
+
+        [Test]
+        public void FromPositionAndSizeTest()
+        {
+            var rect = RectangleF.FromPositionAndSize(new(0), new(10), CoordinateSystem2d.YDown);
+            Assert.AreEqual(new RectangleF(0, 10, 10, 0), rect);
+
+            rect = RectangleF.FromPositionAndSize(new(0), new(10), CoordinateSystem2d.YUp);
+            Assert.AreEqual(new RectangleF(0, 10, 0, 10), rect);
+
+            rect = RectangleF.FromPositionAndSize(new(0), new(10), new(0.5f), CoordinateSystem2d.YUp);
+            Assert.AreEqual(new RectangleF(-5, 5, -5, 5), rect);
         }
     }
 }
