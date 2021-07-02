@@ -24,12 +24,12 @@ namespace HenHen.Framework.VisualTests
         private readonly SceneInputActionHandler sceneInputActionHandler;
         private int sceneIndex;
 
-        public VisualTester()
+        public VisualTester(Inputs inputs)
         {
-            inputActionHandler = new VisualTesterInputActionHandler(Game.Inputs);
+            inputActionHandler = new VisualTesterInputActionHandler(inputs);
             inputActionHandler.Propagator.Listeners.Add(this);
 
-            sceneInputActionHandler = new SceneInputActionHandler(Game.Inputs);
+            sceneInputActionHandler = new SceneInputActionHandler(inputs);
 
             RelativeSizeAxes = Axes.Both;
 
