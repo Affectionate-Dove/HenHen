@@ -4,9 +4,9 @@
 
 using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Graphics2d.Layouts;
+using HenHen.Framework.Numerics;
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace HenHen.Framework.Screens
 {
@@ -46,12 +46,12 @@ namespace HenHen.Framework.Screens
 
         protected override void OnUpdate()
         {
+            base.OnUpdate();
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
-                ChildrenRenderPosition = ComputeChildrenRenderPosition(),
-                ChildrenRenderSize = ComputeChildrenRenderSize()
+                ChildrenRenderArea = ComputeChildrenRenderArea(),
+                MaskArea = LayoutInfo.Mask
             };
-            base.OnUpdate();
             CurrentScreen?.Update();
         }
 
@@ -61,9 +61,7 @@ namespace HenHen.Framework.Screens
             CurrentScreen?.Render();
         }
 
-        private Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderPosition;
-
-        private Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize;
+        private RectangleF ComputeChildrenRenderArea() => LayoutInfo.RenderRect;
 
         private void RewireEventObserving(Screen previous)
         {

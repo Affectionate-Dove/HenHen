@@ -14,11 +14,7 @@ namespace HenHen.Framework.Tests.Screens
         public void TestEmptyScreenStack()
         {
             var screenStack = new ScreenStack();
-            Assert.DoesNotThrow(() =>
-            {
-                screenStack.Update();
-                screenStack.Render();
-            });
+            Assert.DoesNotThrow(() => screenStack.Update());
         }
 
         [Test]
@@ -29,11 +25,9 @@ namespace HenHen.Framework.Tests.Screens
             var screen = new Screen();
             ss.Push(screen);
             ss.Update();
-            ss.Render();
             Assert.AreSame(screen, ss.CurrentScreen);
             ss.Pop();
             ss.Update();
-            ss.Render();
             Assert.AreEqual(null, ss.CurrentScreen);
         }
 
@@ -47,22 +41,18 @@ namespace HenHen.Framework.Tests.Screens
 
             ss.Push(screen1);
             ss.Update();
-            ss.Render();
             Assert.AreSame(screen1, ss.CurrentScreen);
 
             screen1.Push(screen2);
             ss.Update();
-            ss.Render();
             Assert.AreSame(screen2, ss.CurrentScreen);
 
             ss.Pop();
             ss.Update();
-            ss.Render();
             Assert.AreSame(screen1, ss.CurrentScreen);
 
             ss.Pop();
             ss.Update();
-            ss.Render();
             Assert.AreEqual(null, ss.CurrentScreen);
 
             Assert.Throws<InvalidOperationException>(ss.Pop);

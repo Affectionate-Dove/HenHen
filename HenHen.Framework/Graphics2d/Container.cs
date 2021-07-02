@@ -3,6 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Graphics2d.Layouts;
+using HenHen.Framework.Numerics;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -58,9 +59,7 @@ namespace HenHen.Framework.Graphics2d
                 child.Parent = null;
         }
 
-        protected Vector2 ComputeChildrenRenderPosition() => LayoutInfo.RenderRect.TopLeft + Padding.TopLeft;
-
-        protected Vector2 ComputeChildrenRenderSize() => LayoutInfo.RenderSize - Padding.Total;
+        protected RectangleF ComputeChildrenRenderRect() => new(LayoutInfo.RenderRect.Left + Padding.Left, LayoutInfo.RenderRect.Right - Padding.Right, LayoutInfo.RenderRect.Bottom - Padding.Bottom, LayoutInfo.RenderRect.Top + Padding.Top);
 
         protected override void OnUpdate()
         {
@@ -117,10 +116,13 @@ namespace HenHen.Framework.Graphics2d
 
         private void UpdateContainerLayout()
         {
+            var childrenRenderRect = ComputeChildrenRenderRect();
+            var maskArea = ComputeMaskArea(childrenRenderRect);
+
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
-                ChildrenRenderPosition = ComputeChildrenRenderPosition(),
-                ChildrenRenderSize = ComputeChildrenRenderSize()
+                ChildrenRenderArea = childrenRenderRect,
+                MaskArea = maskArea
             };
             ContainerLayoutValid = true;
         }

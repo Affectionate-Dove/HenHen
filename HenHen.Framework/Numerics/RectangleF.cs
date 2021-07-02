@@ -83,7 +83,11 @@ namespace HenHen.Framework.Numerics
             return rect;
         }
 
-        public RectangleF? GetIntersection(RectangleF other)
+        public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
+
+        public RectangleF? GetIntersection(RectangleF? other) => other.HasValue ? GetIntersectionNonNullableParameter(other.Value) : null;
+
+        private RectangleF? GetIntersectionNonNullableParameter(RectangleF other)
         {
             if (CoordinateSystem != other.CoordinateSystem)
                 throw new ArgumentException($"Coordinate system doesn't match. {nameof(other)}'s {nameof(CoordinateSystem)} is {other.CoordinateSystem}, while this {nameof(RectangleF)}'s is {CoordinateSystem}.", nameof(other));
@@ -96,7 +100,5 @@ namespace HenHen.Framework.Numerics
             else
                 return new(Math.Max(Left, other.Left), Math.Min(Right, other.Right), Math.Min(Bottom, other.Bottom), Math.Max(Top, other.Top));
         }
-
-        public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
     }
 }
