@@ -151,7 +151,7 @@ namespace HenHen.Framework.Graphics2d
             var localPos = ComputeLocalPosition();
             var renderPos = ComputeRenderPosition(localPos);
             var renderSize = ComputeRenderSize();
-            var renderRect = DrawableLayoutInfo.ComputeRenderRect(renderPos, renderSize, Origin);
+            var renderRect = RectangleF.FromPositionAndSize(renderPos, renderSize, Origin, CoordinateSystem2d.YDown);
 
             LayoutInfo = new DrawableLayoutInfo
             {
