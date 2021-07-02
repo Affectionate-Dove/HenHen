@@ -39,7 +39,7 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
             {
                 chunksManager.AddNode(node);
                 AddChild(new TestNodeDisplay(node, i));
-                node.Position = new Vector3(0, 0, 0);
+                node.Position = new Vector3(center, 0, center);
                 i++;
             }
             AddChild(new SpriteText
