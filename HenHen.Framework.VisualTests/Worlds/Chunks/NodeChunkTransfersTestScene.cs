@@ -10,6 +10,7 @@ using HenHen.Framework.VisualTests.Input;
 using HenHen.Framework.Worlds.Chunks;
 using HenHen.Framework.Worlds.Chunks.Simulation;
 using HenHen.Framework.Worlds.Nodes;
+using System;
 using System.Numerics;
 
 namespace HenHen.Framework.VisualTests.Worlds.Chunks
@@ -128,7 +129,7 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
 
             public TestNodeDisplay(TestNode node, int i)
             {
-                Size = node.CollisionBody.BoundingBox.ToTopDownRectangle().Size * new Vector2(1, -1);
+                Size = node.CollisionBody.BoundingBox.ToTopDownRectangle().Size;
                 Anchor = new Vector2(0, 1);
                 Origin = new Vector2(0.5f, 0.5f);
                 this.node = node;
@@ -145,6 +146,7 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
             {
                 base.OnUpdate();
                 Offset = node.Position.ToTopDownPoint() * new Vector2(1, -1);
+                Console.WriteLine(node.Position);
             }
         }
 
@@ -178,10 +180,12 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
             public ChunkDrawable(Chunk chunk)
             {
                 this.chunk = chunk;
+                var coordinates = chunk.Coordinates;
+                coordinates = new(coordinates.Left, coordinates.Right, -coordinates.Top, -coordinates.Bottom);
                 Anchor = new Vector2(0, 1);
                 Origin = new Vector2(0, 1);
-                Offset = new Vector2(chunk.Coordinates.Left, -chunk.Coordinates.Bottom);
-                Size = chunk.Coordinates.Size * new Vector2(1, -1);
+                Offset = new Vector2(coordinates.Left, coordinates.Top);
+                Size = chunk.Coordinates.Size;
             }
 
             protected override void OnUpdate()
