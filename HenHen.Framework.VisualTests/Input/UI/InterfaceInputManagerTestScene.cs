@@ -19,7 +19,7 @@ namespace HenHen.Framework.VisualTests.Input.UI
 
         public InterfaceInputManagerTestScene()
         {
-            inputActionHandler = new TestInputActionHandler(Game.Inputs);
+            inputActionHandler = new TestInputActionHandler(new RaylibInputs());
             var screenStack = new ScreenStack
             {
                 Size = new Vector2(500, 400),
