@@ -6,22 +6,17 @@ using System.Numerics;
 
 namespace HenHen.Framework.Input
 {
-    public class Inputs
+    public abstract class Inputs
     {
-        public static float MouseWheelDelta => Raylib_cs.Raylib.GetMouseWheelMove();
+        public abstract float MouseWheelDelta { get; }
+        public abstract Vector2 MousePosition { get; set; }
 
-        public virtual Vector2 MousePosition
-        {
-            get => Raylib_cs.Raylib.GetMousePosition();
-            set => Raylib_cs.Raylib.SetMousePosition((int)value.X, (int)value.Y);
-        }
+        public abstract bool IsKeyDown(KeyboardKey key);
 
-        public virtual bool IsKeyDown(KeyboardKey key) => Raylib_cs.Raylib.IsKeyDown(key.ToRaylibKey());
+        public abstract bool IsKeyUp(KeyboardKey key);
 
-        public virtual bool IsKeyUp(KeyboardKey key) => Raylib_cs.Raylib.IsKeyUp(key.ToRaylibKey());
+        public abstract bool IsMouseButtonDown(MouseButton button);
 
-        public virtual bool IsMouseButtonDown(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonDown(button.ToRaylibMouseButton());
-
-        public virtual bool IsMouseButtonUp(MouseButton button) => Raylib_cs.Raylib.IsMouseButtonUp(button.ToRaylibMouseButton());
+        public abstract bool IsMouseButtonUp(MouseButton button);
     }
 }

@@ -38,7 +38,7 @@ namespace HenHen.Framework
             Draw();
         }
 
-        protected virtual Inputs CreateInputs() => new();
+        protected virtual Inputs CreateInputs() => new RaylibInputs();
 
         protected virtual void OnUpdate()
         {

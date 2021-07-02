@@ -9,13 +9,13 @@ namespace HenHen.Framework.Tests.Input
 {
     public class InputPropagatorTests
     {
-        private TestInputs inputs;
+        private FakeInputs inputs;
         private TestInputActionHandler inputActionHandler;
 
         [SetUp]
         public void SetUp()
         {
-            inputs = new TestInputs();
+            inputs = new FakeInputs();
             inputActionHandler = new TestInputActionHandler(inputs);
         }
 
@@ -27,13 +27,13 @@ namespace HenHen.Framework.Tests.Input
 
             SimulateFewSteps();
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_A);
+            inputs.PushKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsTrue(listener.ReceivedPress);
             Assert.IsFalse(listener.ReceivedRelease);
 
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_A);
+            inputs.ReleaseKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsFalse(listener.ReceivedRelease);
@@ -41,12 +41,12 @@ namespace HenHen.Framework.Tests.Input
 
             listener.HandledActions.Add(TestAction.Action1);
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_A);
+            inputs.PushKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsFalse(listener.ReceivedRelease);
 
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_A);
+            inputs.ReleaseKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsTrue(listener.ReceivedRelease);
@@ -67,13 +67,13 @@ namespace HenHen.Framework.Tests.Input
 
             SimulateFewSteps();
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_LEFT_CONTROL);
+            inputs.PushKey(KeyboardKey.KEY_LEFT_CONTROL);
             SimulateFewSteps();
-            inputs.SimulateKeyPress(KeyboardKey.KEY_S);
+            inputs.PushKey(KeyboardKey.KEY_S);
             SimulateFewSteps();
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_S);
+            inputs.ReleaseKey(KeyboardKey.KEY_S);
             SimulateFewSteps();
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_LEFT_CONTROL);
+            inputs.ReleaseKey(KeyboardKey.KEY_LEFT_CONTROL);
             SimulateFewSteps();
 
             Assert.IsTrue(foregroundListener.ReceivedPress);
@@ -83,9 +83,9 @@ namespace HenHen.Framework.Tests.Input
             backgroundListener.ResetFlags();
             foregroundListener.ResetFlags();
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_A);
+            inputs.PushKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_A);
+            inputs.ReleaseKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsTrue(foregroundListener.ReceivedPress);
@@ -107,20 +107,20 @@ namespace HenHen.Framework.Tests.Input
 
             SimulateFewSteps();
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_A);
+            inputs.PushKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsTrue(listener.ReceivedPress);
             Assert.IsFalse(listener.ReceivedRelease);
             listener.ResetFlags();
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_A);
+            inputs.PushKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsFalse(listener.ReceivedPress);
             Assert.IsFalse(listener.ReceivedRelease);
 
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_A);
+            inputs.ReleaseKey(KeyboardKey.KEY_A);
             SimulateFewSteps();
 
             Assert.IsFalse(listener.ReceivedPress);
