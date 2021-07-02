@@ -3,13 +3,14 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Graphics2d;
+using HenHen.Framework.Input;
 using HenHen.Framework.Input.UI;
 using System;
 using System.Numerics;
 
 namespace HenHen.Framework.UI
 {
-    public class Button<TInputAction> : Container, IHasColor, IInterfaceComponent<TInputAction>
+    public class Button<TInputAction> : Container, IHasColor, IInterfaceComponent<TInputAction>, IPositionalInterfaceComponent
     {
         private readonly Rectangle background;
         private readonly SpriteText spriteText;
@@ -19,6 +20,8 @@ namespace HenHen.Framework.UI
         public Action Action { get; set; }
 
         public virtual bool AcceptsFocus => true;
+
+        public virtual bool AcceptsPositionalInput => true;
 
         public Button()
         {
@@ -46,6 +49,28 @@ namespace HenHen.Framework.UI
         public virtual bool OnActionPressed(TInputAction action) => false;
 
         public virtual void OnActionReleased(TInputAction action)
+        {
+        }
+
+        public virtual bool AcceptsPositionalButton(MouseButton button) => button == MouseButton.Left;
+
+        public virtual void OnHover()
+        {
+        }
+
+        public virtual void OnHoverLost()
+        {
+        }
+
+        public virtual void OnMousePress(MouseButton button)
+        {
+        }
+
+        public virtual void OnMouseRelease(MouseButton button)
+        {
+        }
+
+        public virtual void OnClick(MouseButton button)
         {
         }
     }
