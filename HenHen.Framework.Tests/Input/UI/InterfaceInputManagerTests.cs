@@ -3,6 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Graphics2d;
+using HenHen.Framework.Input;
 using HenHen.Framework.Input.UI;
 using HenHen.Framework.Screens;
 using NUnit.Framework;
@@ -105,17 +106,17 @@ namespace HenHen.Framework.Tests.Input.UI
         [Test]
         public void NextComponentActionTest()
         {
-            var inputs = new TestInputs();
+            var inputs = new FakeInputs();
             var inputActionHandler = new TestInputActionHandler(inputs);
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
             interfaceInputManager.NextComponentAction = TestAction.Action1;
 
             Assert.IsEmpty(interfaceInputManager.FocusedComponents);
 
-            inputs.SimulateKeyPress(Framework.Input.KeyboardKey.KEY_A);
+            inputs.PushKey(KeyboardKey.KEY_A);
             inputActionHandler.Update();
 
-            inputs.SimulateKeyRelease(Framework.Input.KeyboardKey.KEY_A);
+            inputs.ReleaseKey(KeyboardKey.KEY_A);
             inputActionHandler.Update();
 
             AssertContains(component1, interfaceInputManager.FocusedComponents);

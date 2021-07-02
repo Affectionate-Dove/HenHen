@@ -9,13 +9,13 @@ namespace HenHen.Framework.Tests.Input
 {
     public class InputActionHandlerTests
     {
-        private TestInputs inputs;
+        private FakeInputs inputs;
         private TestInputActionHandler actionHandler;
 
         [SetUp]
         public void Setup()
         {
-            inputs = new TestInputs();
+            inputs = new FakeInputs();
             actionHandler = new TestInputActionHandler(inputs);
         }
 
@@ -28,31 +28,31 @@ namespace HenHen.Framework.Tests.Input
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action1));
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action2));
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_A);
+            inputs.PushKey(KeyboardKey.KEY_A);
             actionHandler.Update();
             Assert.IsTrue(actionHandler.AreAllKeysPressedForAction(TestAction.Action1));
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action2));
             Assert.AreEqual(1, actionHandler.ActiveInputActions.Count);
 
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_A);
+            inputs.ReleaseKey(KeyboardKey.KEY_A);
             actionHandler.Update();
             Assert.AreEqual(0, actionHandler.ActiveInputActions.Count);
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action1));
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action2));
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_LEFT_CONTROL);
+            inputs.PushKey(KeyboardKey.KEY_LEFT_CONTROL);
             actionHandler.Update();
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action1));
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action2));
             Assert.AreEqual(0, actionHandler.ActiveInputActions.Count);
 
-            inputs.SimulateKeyPress(KeyboardKey.KEY_S);
+            inputs.PushKey(KeyboardKey.KEY_S);
             actionHandler.Update();
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action1));
             Assert.IsTrue(actionHandler.AreAllKeysPressedForAction(TestAction.Action2));
             Assert.AreEqual(1, actionHandler.ActiveInputActions.Count);
 
-            inputs.SimulateKeyRelease(KeyboardKey.KEY_LEFT_CONTROL);
+            inputs.ReleaseKey(KeyboardKey.KEY_LEFT_CONTROL);
             actionHandler.Update();
             Assert.AreEqual(0, actionHandler.ActiveInputActions.Count);
             Assert.IsFalse(actionHandler.AreAllKeysPressedForAction(TestAction.Action1));
