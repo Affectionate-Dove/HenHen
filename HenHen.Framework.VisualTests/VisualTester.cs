@@ -26,10 +26,10 @@ namespace HenHen.Framework.VisualTests
 
         public VisualTester()
         {
-            inputActionHandler = new VisualTesterInputActionHandler(Game.InputManager);
+            inputActionHandler = new VisualTesterInputActionHandler(Game.Inputs);
             inputActionHandler.Propagator.Listeners.Add(this);
 
-            sceneInputActionHandler = new SceneInputActionHandler(Game.InputManager);
+            sceneInputActionHandler = new SceneInputActionHandler(Game.Inputs);
 
             RelativeSizeAxes = Axes.Both;
 

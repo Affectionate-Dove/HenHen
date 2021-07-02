@@ -9,7 +9,7 @@ namespace HenHen.Framework.VisualTests.Input
 {
     public class VisualTesterInputActionHandler : InputActionHandler<VisualTesterControls>
     {
-        public VisualTesterInputActionHandler(InputManager inputManager) : base(inputManager)
+        public VisualTesterInputActionHandler(Inputs inputs) : base(inputs)
         {
         }
 

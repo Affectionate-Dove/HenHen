@@ -31,7 +31,7 @@ namespace HenHen.Framework.UI
             if (AlignMiddle && size.X <= containingSize.X)
             {
                 var halfDiff = (containingSize - size) * 0.5f;
-                r.TopLeft += halfDiff;
+                r = new(r.Left + halfDiff.X, r.Right, r.Bottom, r.Top + halfDiff.Y);
             }
 
             Raylib_cs.Raylib.DrawTextRec(Font, Text, new Raylib_cs.Rectangle(r.Left, r.Top, r.Width, r.Height), FontSize, Spacing, size.X > Size.X, Color.ToRaylibColor());

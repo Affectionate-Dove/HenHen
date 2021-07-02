@@ -70,21 +70,15 @@ namespace HenHen.Framework.Graphics2d
         ///     </list>
         /// </remarks>
         public Vector2 Origin { get; init; }
-
+      
         /// <summary>
         ///     The boundaries inside a parent container, in pixels.
         /// </summary>
-        public RectangleF LocalRect => ComputeRenderRect(LocalPosition, RenderSize, Origin);
+        public RectangleF LocalRect => RectangleF.FromPositionAndSize(LocalPosition, RenderSize, Origin, CoordinateSystem2d.YDown);
 
         /// <summary>
         ///     The boundaries on screen, in pixels.
         /// </summary>
-        public RectangleF RenderRect => ComputeRenderRect(RenderPosition, RenderSize, Origin);
-
-        public static RectangleF ComputeRenderRect(Vector2 renderPosition, Vector2 renderSize, Vector2 origin)
-        {
-            var renderPos = renderPosition - (renderSize * origin);
-            return new RectangleF { TopLeft = renderPos, Size = renderSize };
-        }
+        public RectangleF RenderRect => RectangleF.FromPositionAndSize(RenderPosition, RenderSize, Origin, CoordinateSystem2d.YDown);
     }
 }

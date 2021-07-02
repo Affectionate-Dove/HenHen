@@ -48,9 +48,9 @@ namespace HenHen.Framework.Tests.Collisions
 
         private static IEnumerable<(Vector2 point, RectangleF rect, bool expected)> PointRectTestCases => new[]
         {
-            (new Vector2(), new RectangleF { TopLeft = new Vector2(-1, 1), BottomRight = new Vector2(1, -1) }, true),
-            (new Vector2(2), new RectangleF { TopLeft = new Vector2(-1, 1), BottomRight = new Vector2(1, -1) }, false),
-            (new Vector2(1), new RectangleF { TopLeft = new Vector2(-1, 1), BottomRight = new Vector2(1, -1) }, true),
+            (new Vector2(), new RectangleF(-1, 1, -1, 1), true),
+            (new Vector2(2), new RectangleF(-1, 1, 1, -1), false),
+            (new Vector2(1), new RectangleF(-1, 1, -1, 1), true),
         };
 
         private static IEnumerable<(Circle a, Circle b, bool expected)> CirclesTestCases => new[]

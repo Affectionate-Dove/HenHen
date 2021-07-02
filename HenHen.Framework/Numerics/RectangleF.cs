@@ -7,15 +7,28 @@ using System.Numerics;
 
 namespace HenHen.Framework.Numerics
 {
-    public struct RectangleF
+    /// <summary>
+    ///     Represents a rectangle shape.
+    /// </summary>
+    /// <remarks>
+    ///     If <see cref="Top"/> is greater than or equal to <see cref="Bottom"/>,
+    ///     the coordinate space is considered to be y-up, otherwise y-down.
+    /// </remarks>
+    public readonly struct RectangleF
     {
-        public float Left { get; set; }
-        public float Right { get; set; }
-        public float Top { get; set; }
-        public float Bottom { get; set; }
+        public float Left { get; }
+        public float Right { get; }
+        public float Top { get; }
+        public float Bottom { get; }
 
-        public float Area => System.Math.Abs(Width * Height);
-        public Vector2 Center => TopLeft + (Size / 2);
+        public float Area => Math.Abs(Width * Height);
+        public Vector2 Center => new((Left + Right) * 0.5f, (Top + Bottom) * 0.5f);
+
+        /// <value>
+        ///     <see cref="CoordinateSystem2d.YUp"/> if <see cref="Top"/>
+        ///     >= <see cref="Bottom"/>, otherwise <see cref="CoordinateSystem2d.YDown"/>.
+        /// </value>
+        public CoordinateSystem2d CoordinateSystem => Top >= Bottom ? CoordinateSystem2d.YUp : CoordinateSystem2d.YDown;
 
         /// <summary>
         /// If <see cref="Left"/> is greater than <see cref="Right"/>,
@@ -23,11 +36,7 @@ namespace HenHen.Framework.Numerics
         /// Setter: sets <see cref="Right"/> to be
         /// equal to <see cref="Left"/> + <see cref="Width"/>.
         /// </summary>
-        public float Width
-        {
-            get => Right - Left;
-            set => Right = Left + value;
-        }
+        public float Width => Right - Left;
 
         /// <summary>
         /// If <see cref="Top"/> is greater than <see cref="Bottom"/>,
@@ -35,45 +44,18 @@ namespace HenHen.Framework.Numerics
         /// Setter: sets <see cref="Bottom"/> to be
         /// equal to <see cref="Top"/> + <see cref="Height"/>.
         /// </summary>
-        public float Height
-        {
-            get => Bottom - Top;
-            set => Bottom = Top + value;
-        }
+        public float Height => Math.Abs(Bottom - Top);
 
         /// <summary>
         /// Shorthand for <see cref="Width"/>
         /// and <see cref="Height"/>.
         /// </summary>
-        public Vector2 Size
-        {
-            get => new(Width, Height);
-            set
-            {
-                Width = value.X;
-                Height = value.Y;
-            }
-        }
+        public Vector2 Size => new(Width, Height);
 
-        public Vector2 TopLeft
-        {
-            get => new(Left, Top);
-            set
-            {
-                Top = value.Y;
-                Left = value.X;
-            }
-        }
-
-        public Vector2 BottomRight
-        {
-            get => new(Right, Bottom);
-            set
-            {
-                Bottom = value.Y;
-                Right = value.X;
-            }
-        }
+        public Vector2 TopLeft => new(Left, Top);
+        public Vector2 TopRight => new(Right, Top);
+        public Vector2 BottomLeft => new(Left, Bottom);
+        public Vector2 BottomRight => new(Right, Bottom);
 
         public RectangleF(float left, float right, float bottom, float top)
         {
@@ -83,29 +65,23 @@ namespace HenHen.Framework.Numerics
             Top = top;
         }
 
-        public static RectangleF operator +(RectangleF rectangle, Vector2 v) => new()
-        {
-            BottomRight = rectangle.BottomRight + v,
-            TopLeft = rectangle.TopLeft + v
-        };
+        public static RectangleF operator +(RectangleF rectangle, Vector2 v) => new(rectangle.Left + v.X, rectangle.Right + v.X, rectangle.Bottom + v.Y, rectangle.Top + v.Y);
 
-        public static RectangleF operator -(RectangleF rectangle, Vector2 v) => new()
-        {
-            BottomRight = rectangle.BottomRight - v,
-            TopLeft = rectangle.TopLeft - v
-        };
+        public static RectangleF operator -(RectangleF rectangle, Vector2 v) => new(rectangle.Left - v.X, rectangle.Right - v.X, rectangle.Bottom - v.Y, rectangle.Top - v.Y);
 
-        public static RectangleF operator *(RectangleF rectangle, Vector2 v) => new()
-        {
-            BottomRight = rectangle.BottomRight * v,
-            TopLeft = rectangle.TopLeft * v
-        };
+        public static RectangleF operator *(RectangleF rectangle, Vector2 v) => new(rectangle.Left * v.X, rectangle.Right * v.X, rectangle.Bottom * v.Y, rectangle.Top * v.Y);
 
-        public static RectangleF operator /(RectangleF rectangle, Vector2 v) => new()
+        public static RectangleF operator /(RectangleF rectangle, Vector2 v) => new(rectangle.Left / v.X, rectangle.Right / v.X, rectangle.Bottom / v.Y, rectangle.Top / v.Y);
+
+        public static RectangleF FromPositionAndSize(Vector2 position, Vector2 size, Vector2 origin, CoordinateSystem2d coordinateSystem) => FromPositionAndSize(position, size, coordinateSystem) - (size * origin);
+
+        public static RectangleF FromPositionAndSize(Vector2 position, Vector2 size, CoordinateSystem2d coordinateSystem)
         {
-            BottomRight = rectangle.BottomRight / v,
-            TopLeft = rectangle.TopLeft / v
-        };
+            var rect = new RectangleF(position.X, position.X + size.X, position.Y, position.Y + size.Y);
+            if (coordinateSystem == CoordinateSystem2d.YDown)
+                rect = new(rect.Left, rect.Right, rect.Top, rect.Bottom);
+            return rect;
+        }
 
         public override string ToString() => $"{{{nameof(Left)}={Left},{nameof(Top)}={Top},{nameof(Right)}={Right},{nameof(Bottom)}={Bottom}";
 
@@ -113,15 +89,13 @@ namespace HenHen.Framework.Numerics
 
         private RectangleF? GetIntersectionNonNullableParameter(RectangleF other)
         {
-            if (Top >= Bottom && other.Top < other.Bottom)
-                throw new System.Exception("Coordinate systems don't match. One is Y-up, the other is Y-down");
+            if (CoordinateSystem != other.CoordinateSystem)
+                throw new ArgumentException($"Coordinate system doesn't match. {nameof(other)}'s {nameof(CoordinateSystem)} is {other.CoordinateSystem}, while this {nameof(RectangleF)}'s is {CoordinateSystem}.", nameof(other));
 
-            var yUp = Top >= Bottom;
-
-            if (Left > other.Right || Right < other.Left || (yUp && (Bottom > other.Top || Top < other.Bottom)) || (!yUp && (Bottom < other.Top || Top > other.Bottom)))
+            if (Left > other.Right || Right < other.Left || (CoordinateSystem == CoordinateSystem2d.YUp && (Bottom > other.Top || Top < other.Bottom)) || (CoordinateSystem == CoordinateSystem2d.YDown && (Bottom < other.Top || Top > other.Bottom)))
                 return null;
 
-            if (yUp)
+            if (CoordinateSystem == CoordinateSystem2d.YUp)
                 return new(Math.Max(Left, other.Left), Math.Min(Right, other.Right), Math.Max(Bottom, other.Bottom), Math.Min(Top, other.Top));
             else
                 return new(Math.Max(Left, other.Left), Math.Min(Right, other.Right), Math.Min(Bottom, other.Bottom), Math.Max(Top, other.Top));

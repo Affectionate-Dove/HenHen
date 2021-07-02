@@ -9,7 +9,7 @@ namespace HenHen.Framework.Tests.Input
 {
     public class TestInputActionHandler : InputActionHandler<TestAction>
     {
-        public TestInputActionHandler(InputManager inputManager) : base(inputManager)
+        public TestInputActionHandler(Inputs inputs) : base(inputs)
         {
         }
 

@@ -74,12 +74,9 @@ namespace HenHen.Framework.Tests.Graphics2d
 
             screen.Update();
 
-            Assert.AreEqual(new RectangleF { BottomRight = new Vector2(300, 40) },
-                button1.LayoutInfo.RenderRect);
-            Assert.AreEqual(new RectangleF { TopLeft = new Vector2(0, 50), BottomRight = new Vector2(300, 90) },
-                button2.LayoutInfo.RenderRect);
-            Assert.AreEqual(new RectangleF { TopLeft = new Vector2(0, 100), BottomRight = new Vector2(300, 140) },
-                button3.LayoutInfo.RenderRect);
+            Assert.AreEqual(new RectangleF(0, 300, 40, 0), button1.LayoutInfo.RenderRect);
+            Assert.AreEqual(new RectangleF(0, 300, 90, 50), button2.LayoutInfo.RenderRect);
+            Assert.AreEqual(new RectangleF(0, 300, 140, 100), button3.LayoutInfo.RenderRect);
         }
     }
 }

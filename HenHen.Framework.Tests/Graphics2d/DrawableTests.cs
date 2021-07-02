@@ -95,13 +95,7 @@ namespace HenHen.Framework.Tests.Graphics2d
             container.Update();
             var absChildRenRect = absoluteChild.LayoutInfo.RenderRect;
             Assert.AreEqual(new Vector2(800), absoluteChild.LayoutInfo.RenderPosition);
-            Assert.AreEqual(new RectangleF
-            {
-                Left = 700,
-                Top = 700,
-                Width = 200,
-                Height = 200
-            }, absChildRenRect);
+            Assert.AreEqual(RectangleF.FromPositionAndSize(new(700), new(200), CoordinateSystem2d.YDown), absChildRenRect);
         }
     }
 }
