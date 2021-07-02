@@ -22,13 +22,7 @@ namespace HenHen.Framework.Tests.Worlds.Chunks
         {
             var index = new Vector2(4, 2);
             var chunkSize = 64;
-            var expectedRect = new RectangleF
-            {
-                Left = 256,
-                Right = 256 + chunkSize,
-                Bottom = 128,
-                Top = 128 + chunkSize
-            };
+            var expectedRect = new RectangleF(256, 256 + chunkSize, 128, 128 + chunkSize);
             var chunk = new Chunk(index, chunkSize);
             Assert.AreEqual(index, chunk.Index);
             Assert.AreEqual(expectedRect, chunk.Coordinates);
