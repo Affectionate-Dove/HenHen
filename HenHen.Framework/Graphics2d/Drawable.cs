@@ -17,6 +17,7 @@ namespace HenHen.Framework.Graphics2d
         private Axes relativeSizeAxes;
         private Vector2 anchor;
         private Vector2 origin;
+        private bool masking;
 
         public IContainer Parent
         {
@@ -118,7 +119,18 @@ namespace HenHen.Framework.Graphics2d
         ///     This doesn't have an effect if this is a top-level Drawable,
         ///     in that case masking is always on.
         /// </remarks>
-        public bool Masking { get; set; }
+        public bool Masking
+        {
+            get => masking;
+            set
+            {
+                if (masking == value)
+                    return;
+
+                masking = value;
+                LayoutValid = false;
+            }
+        }
 
         public DrawableLayoutInfo LayoutInfo { get; private set; }
         public bool LayoutValid { get; protected set; }
