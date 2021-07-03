@@ -21,8 +21,10 @@ namespace HenHen.Framework.Input
 
         public override bool IsKeyUp(KeyboardKey key) => Raylib.IsKeyUp(key.ToRaylibKey());
 
-        public override bool IsMouseButtonDown(MouseButton button) => Raylib.IsMouseButtonDown(button.ToRaylibMouseButton());
+        // TODO: Raylib somewhat doesn't support backwards and forwards and does at the same time
+        public override bool IsMouseButtonDown(MouseButton button) => (int)button <= 2 && Raylib.IsMouseButtonDown(button.ToRaylibMouseButton());
 
-        public override bool IsMouseButtonUp(MouseButton button) => Raylib.IsMouseButtonUp(button.ToRaylibMouseButton());
+        // TODO: like above
+        public override bool IsMouseButtonUp(MouseButton button) => (int)button <= 2 && Raylib.IsMouseButtonUp(button.ToRaylibMouseButton());
     }
 }

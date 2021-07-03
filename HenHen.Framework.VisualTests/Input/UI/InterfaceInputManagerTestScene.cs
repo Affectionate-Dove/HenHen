@@ -16,6 +16,7 @@ namespace HenHen.Framework.VisualTests.Input.UI
     {
         private readonly InterfaceInputManager<TestAction> interfaceInputManager;
         private readonly TestInputActionHandler inputActionHandler;
+        private readonly PositionalInterfaceInputManager positionalInterfaceInputManager;
 
         public InterfaceInputManagerTestScene()
         {
@@ -44,11 +45,14 @@ namespace HenHen.Framework.VisualTests.Input.UI
 
             interfaceInputManager = new InterfaceInputManager<TestAction>(screenStack, TestAction.Next);
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
+
+            positionalInterfaceInputManager = new PositionalInterfaceInputManager(new RaylibInputs(), screenStack);
         }
 
         protected override void OnUpdate()
         {
             inputActionHandler.Update();
+            positionalInterfaceInputManager.Update();
             base.OnUpdate();
         }
 
@@ -87,25 +91,111 @@ namespace HenHen.Framework.VisualTests.Input.UI
 
             public bool OnActionPressed(TestAction action) => false;
 
-            public void OnActionReleased(TestAction action) => throw new System.NotImplementedException();
+            public void OnActionReleased(TestAction action)
+            {
+            }
         }
 
-        private class TestButton : Button<TestAction>
+        private class TestButton : Button<TestAction>, IPositionalInterfaceComponent
         {
             private readonly byte v;
+
+            private readonly ColorInfo focusedColor;
+
+            private readonly ColorInfo hoveredColor;
+
+            private readonly ColorInfo pressedColor;
+
+            private readonly ColorInfo defaultColor;
+            private int counter;
+            private bool pressed;
+
+            private bool hovered;
+
+            private bool focused;
+
+            public bool RequestsFocus { get; protected set; }
+
+            private bool Focused
+            {
+                get => focused;
+                set
+                {
+                    focused = value;
+                    OnStateChange();
+                }
+            }
+
+            private bool Hovered
+            {
+                get => hovered;
+                set
+                {
+                    hovered = value;
+                    OnStateChange();
+                }
+            }
+
+            private bool Pressed
+            {
+                get => pressed;
+                set
+                {
+                    pressed = value;
+                    OnStateChange();
+                }
+            }
 
             public TestButton(int id, float brightness)
             {
                 v = (byte)(brightness * 255);
-                Color = new(v, v, v);
                 RelativeSizeAxes = Axes.X;
                 Size = new(1, 20);
-                Text = id.ToString();
+
+                focusedColor = new ColorInfo(0, v, v);
+                var h = (byte)((brightness + 0.2) * 255);
+                hoveredColor = new ColorInfo(h, h, h);
+                var p = (byte)((brightness - 0.1) * 255);
+                pressedColor = new ColorInfo(p, p, p);
+                defaultColor = new ColorInfo(v, v, v);
+                counter = id;
+
+                OnStateChange();
             }
 
-            public override void OnFocus() => Color = new(0, v, v);
+            public override bool AcceptsPositionalButton(MouseButton button) => button is MouseButton.Left or MouseButton.Right;
 
-            public override void OnFocusLost() => Color = new(v, v, v);
+            public override void OnHover() => Hovered = true;
+
+            public override void OnHoverLost() => Hovered = false;
+
+            public override void OnMousePress(MouseButton button) => Pressed = true;
+
+            public override void OnMouseRelease(MouseButton button) => Pressed = false;
+
+            public override void OnClick(MouseButton button)
+            {
+                RequestsFocus = true;
+                counter += button == MouseButton.Left ? 1 : -1;
+                OnStateChange();
+            }
+
+            public override void OnFocus() => Focused = true;
+
+            public override void OnFocusLost() => Focused = false;
+
+            private void OnStateChange()
+            {
+                if (Focused)
+                    Color = focusedColor;
+                else if (Pressed)
+                    Color = pressedColor;
+                else if (Hovered)
+                    Color = hoveredColor;
+                else
+                    Color = defaultColor;
+                Text = counter.ToString();
+            }
         }
 
         private class TestInputActionHandler : InputActionHandler<TestAction>

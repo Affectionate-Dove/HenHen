@@ -33,7 +33,13 @@ namespace HenHen.Framework.Collisions
         }
 
         /// <remarks>A point on the edge of a rectangle is considered to be in it.</remarks>
-        public static bool IsPointInRectangle(Vector2 p, RectangleF r) => r.Left <= p.X && p.X <= r.Right && r.Top >= p.Y && p.Y >= r.Bottom;
+        public static bool IsPointInRectangle(Vector2 p, RectangleF r)
+        {
+            if (r.CoordinateSystem == CoordinateSystem2d.YUp)
+                return r.Left <= p.X && p.X <= r.Right && r.Top >= p.Y && p.Y >= r.Bottom;
+            else
+                return r.Left <= p.X && p.X <= r.Right && r.Top <= p.Y && p.Y <= r.Bottom;
+        }
 
         /// <remarks>Touching edges are considered to be a collision.</remarks>
         public static bool AreCirclesColliding(Circle a, Circle b) => (a.CenterPosition - b.CenterPosition).Length() <= a.Radius + b.Radius;
