@@ -46,7 +46,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
             camera.FovY = world.Size.Y;
             AddChild(new Rectangle
             {
-                Color = new ColorInfo(20, 20, 20),
+                Color = new ColorInfo(0, 0, 0),
                 RelativeSizeAxes = Axes.Both
             });
             World = world;
@@ -56,6 +56,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         protected override void OnRender()
         {
             base.OnRender();
+            DrawChunksFill();
             DrawMediums();
             DrawGrid();
             DrawNodes();
@@ -142,6 +143,17 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 var rendering = LayoutInfo.RenderRect.TopLeft + localRendering;
 
                 Raylib_cs.Raylib.DrawRectangleV(rendering, new Vector2(5), new Raylib_cs.Color(255, 255, 255, 255));
+            }
+        }
+
+        private void DrawChunksFill()
+        {
+            var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
+            foreach (var chunk in World.GetChunksAroundArea(visibleArea))
+            {
+                var localRenderingArea = camera.AreaToRenderingSpace(chunk.Coordinates, LayoutInfo.RenderSize);
+                var screenRenderingArea = localRenderingArea + LayoutInfo.RenderRect.TopLeft;
+                Raylib_cs.Raylib.DrawRectangleV(screenRenderingArea.TopLeft, screenRenderingArea.Size, new Raylib_cs.Color(30, 30, 30, 255));
             }
         }
     }
