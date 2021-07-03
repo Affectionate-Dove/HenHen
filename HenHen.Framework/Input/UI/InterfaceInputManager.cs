@@ -20,6 +20,7 @@ namespace HenHen.Framework.Input.UI
         private readonly Stack<ContainerAndEnumerator> containersStack = new();
         private readonly InputPropagator<TInputAction> inputPropagator;
         private readonly List<IInterfaceComponent<TInputAction>> focusedComponents = new();
+        private readonly List<IInterfaceComponent<TInputAction>> subscribedTo = new();
 
         /// <summary>
         ///     The <see cref="Screens.ScreenStack"/>, inside
@@ -134,6 +135,43 @@ namespace HenHen.Framework.Input.UI
         ///     or calls the <see cref="FocusNextComponent"/> function.
         /// </summary>
         public void OnActionReleased(TInputAction action) => inputPropagator.OnActionReleased(action);
+
+        /// <summary>
+        ///     Looks through the whole <see cref="Drawable"/> tree, and gives focus
+        ///     to the first found <see cref="IInterfaceComponent{TInputAction}"/>
+        ///     with <see cref="IInterfaceComponent{TInputAction}.RequestsFocus"/>
+        ///     set to <see langword="true"/>.
+        /// </summary>
+        // TODO: This suboptimal, should be addressed when
+        // there will be a way to know when a Drawable
+        // tree is modified.
+        // Then, we can automatically update what's needed
+        // instead of looking through everything, manually.
+        public void UpdateFocusRequestedSubscriptions()
+        {
+            foreach (var component in subscribedTo)
+                component.FocusRequested -= OnFocusRequested;
+            subscribedTo.Clear();
+
+            if (ScreenStack.CurrentScreen is null)
+                return;
+
+            SubscribeToComponents(ScreenStack.CurrentScreen);
+        }
+
+        private void OnFocusRequested(IInterfaceComponent<TInputAction> component) => FocusComponent(component);
+
+        private void SubscribeToComponents(Drawable drawable)
+        {
+            if (drawable is Container container)
+            {
+                foreach (var child in container.Children.AsEnumerable().Reverse())
+                    SubscribeToComponents(child);
+            }
+
+            if (drawable is IInterfaceComponent<TInputAction> component)
+                component.FocusRequested += OnFocusRequested;
+        }
 
         // TODO: remember the focused component for each screen,
         // and refocus that component when coming back to a screen.
