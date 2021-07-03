@@ -15,13 +15,15 @@ namespace HenHen.Framework.UI
         private readonly Rectangle background;
         private readonly SpriteText spriteText;
 
+        public event Action<IInterfaceComponent<TInputAction>> FocusRequested;
+
         public ColorInfo Color { get => background.Color; set => background.Color = value; }
         public string Text { get => spriteText.Text; set => spriteText.Text = value; }
         public Action Action { get; set; }
 
-        public virtual bool AcceptsFocus => true;
+        public virtual bool AcceptsFocus => Action is not null;
 
-        public virtual bool AcceptsPositionalInput => true;
+        public virtual bool AcceptsPositionalInput => Action is not null;
 
         public Button()
         {
@@ -72,6 +74,10 @@ namespace HenHen.Framework.UI
 
         public virtual void OnClick(MouseButton button)
         {
+            FocusRequested?.Invoke(this);
+            Action();
         }
+
+        protected void RequestFocus() => FocusRequested?.Invoke(this);
     }
 }

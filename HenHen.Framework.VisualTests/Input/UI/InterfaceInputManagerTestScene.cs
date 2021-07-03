@@ -47,6 +47,7 @@ namespace HenHen.Framework.VisualTests.Input.UI
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
 
             positionalInterfaceInputManager = new PositionalInterfaceInputManager(new RaylibInputs(), screenStack);
+            interfaceInputManager.UpdateFocusRequestedSubscriptions();
         }
 
         protected override void OnUpdate()
@@ -60,6 +61,12 @@ namespace HenHen.Framework.VisualTests.Input.UI
         {
             private readonly Rectangle background;
             private readonly byte v;
+
+            public virtual event System.Action<IInterfaceComponent<TestAction>> FocusRequested
+            {
+                add { }
+                remove { }
+            }
 
             public FillFlowContainer FillFlowContainer { get; }
 
@@ -99,22 +106,19 @@ namespace HenHen.Framework.VisualTests.Input.UI
         private class TestButton : Button<TestAction>, IPositionalInterfaceComponent
         {
             private readonly byte v;
-
             private readonly ColorInfo focusedColor;
-
             private readonly ColorInfo hoveredColor;
-
             private readonly ColorInfo pressedColor;
-
             private readonly ColorInfo defaultColor;
+
             private int counter;
             private bool pressed;
-
             private bool hovered;
-
             private bool focused;
 
-            public bool RequestsFocus { get; protected set; }
+            public override bool AcceptsFocus => true;
+
+            public override bool AcceptsPositionalInput => true;
 
             private bool Focused
             {
@@ -175,14 +179,31 @@ namespace HenHen.Framework.VisualTests.Input.UI
 
             public override void OnClick(MouseButton button)
             {
-                RequestsFocus = true;
                 counter += button == MouseButton.Left ? 1 : -1;
                 OnStateChange();
+                RequestFocus();
             }
 
             public override void OnFocus() => Focused = true;
 
             public override void OnFocusLost() => Focused = false;
+
+            public override bool OnActionPressed(TestAction action)
+            {
+                if (action is TestAction.Up)
+                {
+                    counter++;
+                    OnStateChange();
+                    return true;
+                }
+                else if (action is TestAction.Down)
+                {
+                    counter--;
+                    OnStateChange();
+                    return true;
+                }
+                return base.OnActionPressed(action);
+            }
 
             private void OnStateChange()
             {

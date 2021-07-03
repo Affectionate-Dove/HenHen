@@ -2,6 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using System;
+
 namespace HenHen.Framework.Input.UI
 {
     /// <summary>
@@ -9,6 +11,8 @@ namespace HenHen.Framework.Input.UI
     /// </summary>
     public interface IInterfaceComponent<TInputAction> : IInputListener<TInputAction>
     {
+        event Action<IInterfaceComponent<TInputAction>> FocusRequested;
+
         /// <summary>
         ///     Whether this component can be focused.
         /// </summary>

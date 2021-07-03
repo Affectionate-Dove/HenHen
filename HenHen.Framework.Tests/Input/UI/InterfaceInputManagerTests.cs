@@ -167,13 +167,24 @@ namespace HenHen.Framework.Tests.Input.UI
         }
 
         [Test]
-        public void UnfocusOnScreenChange()
+        public void UnfocusOnScreenChangeTest()
         {
             interfaceInputManager.FocusNextComponent();
             Assert.IsNotEmpty(interfaceInputManager.FocusedComponents);
 
             screen.Push(new Screen());
             Assert.IsEmpty(interfaceInputManager.FocusedComponents);
+        }
+
+        [Test]
+        public void RequestFocusTest()
+        {
+            interfaceInputManager.UpdateFocusRequestedSubscriptions();
+            Assert.IsEmpty(interfaceInputManager.FocusedComponents);
+
+            component2.RequestFocus();
+            AssertContains(component2, interfaceInputManager.FocusedComponents);
+            Assert.AreEqual(1, interfaceInputManager.FocusedComponents.Count);
         }
 
         private static void AssertContains<T>(T expected, IEnumerable<T> actual) => Assert.IsTrue(actual.Contains(expected));
@@ -183,6 +194,12 @@ namespace HenHen.Framework.Tests.Input.UI
         private class TestContainerComponent : Container, IInterfaceComponent<TestAction>
         {
             private readonly int id;
+
+            public event Action<IInterfaceComponent<TestAction>> FocusRequested
+            {
+                add { }
+                remove { }
+            }
 
             public bool AcceptsFocus { get; set; } = true;
 
@@ -207,6 +224,8 @@ namespace HenHen.Framework.Tests.Input.UI
         {
             private readonly int id;
 
+            public event Action<IInterfaceComponent<TestAction>> FocusRequested;
+
             public bool AcceptsFocus { get; set; } = true;
 
             public TestComponent(int id) => this.id = id;
@@ -220,6 +239,8 @@ namespace HenHen.Framework.Tests.Input.UI
             public void OnFocusLost()
             {
             }
+
+            public void RequestFocus() => FocusRequested?.Invoke(this);
 
             public bool OnActionPressed(TestAction action) => throw new NotImplementedException();
 
