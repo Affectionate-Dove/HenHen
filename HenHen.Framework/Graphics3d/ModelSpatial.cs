@@ -2,7 +2,6 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Extensions;
 using HenHen.Framework.Graphics2d;
 
 namespace HenHen.Framework.Graphics3d
@@ -18,7 +17,7 @@ namespace HenHen.Framework.Graphics3d
         protected override void OnRender()
         {
             base.OnRender();
-            Raylib_cs.Raylib.DrawModel(model, Position, 1, Color.ToRaylibColor());
+            Raylib_cs.Raylib.DrawModel(model, Position, 1, Color);
         }
     }
 }
