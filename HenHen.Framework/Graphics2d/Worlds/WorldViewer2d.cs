@@ -58,6 +58,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         {
             base.OnRender();
             DrawChunksFill();
+            DrawChunksBorders();
             DrawMediums();
             DrawGrid();
             DrawNodes();
@@ -155,6 +156,17 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 var localRenderingArea = camera.AreaToRenderingSpace(chunk.Coordinates, LayoutInfo.RenderSize);
                 var screenRenderingArea = localRenderingArea + LayoutInfo.RenderRect.TopLeft;
                 Raylib_cs.Raylib.DrawRectangleV(screenRenderingArea.TopLeft, screenRenderingArea.Size, new Raylib_cs.Color(30, 30, 30, 255));
+            }
+        }
+
+        private void DrawChunksBorders()
+        {
+            var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
+            foreach (var chunk in World.GetChunksAroundArea(visibleArea))
+            {
+                var localRenderingArea = camera.AreaToRenderingSpace(chunk.Coordinates, LayoutInfo.RenderSize);
+                var screenRenderingArea = localRenderingArea + LayoutInfo.RenderRect.TopLeft;
+                Raylib_cs.Raylib.DrawRectangleLines((int)screenRenderingArea.Left, (int)screenRenderingArea.Top, (int)screenRenderingArea.Width + 1, (int)screenRenderingArea.Height + 1, new Raylib_cs.Color(255, 255, 255, 100));
             }
         }
     }
