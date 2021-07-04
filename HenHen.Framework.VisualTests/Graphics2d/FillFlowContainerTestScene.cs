@@ -54,9 +54,9 @@ namespace HenHen.Framework.VisualTests.Graphics2d
                 Color = color;
             }
 
-            protected override void OnUpdate()
+            protected override void OnUpdate(float elapsed)
             {
-                base.OnUpdate();
+                base.OnUpdate(elapsed);
                 Size = fillFlowContainer.Size;
                 Offset = fillFlowContainer.Offset;
             }

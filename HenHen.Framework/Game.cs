@@ -30,9 +30,9 @@ namespace HenHen.Framework
             modelStore = new ModelStore();
         }
 
-        public void Loop()
+        public void Loop(float elapsed)
         {
-            Update();
+            Update(elapsed);
             Draw();
         }
 
@@ -56,10 +56,10 @@ namespace HenHen.Framework
             EndDrawing();
         }
 
-        private void Update()
+        private void Update(float elapsed)
         {
             ScreenStack.Size = Window.Size;
-            ScreenStack.Update();
+            ScreenStack.Update(elapsed);
             OnUpdate();
         }
     }

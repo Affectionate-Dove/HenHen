@@ -110,11 +110,11 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
             }
         }
 
-        protected override void OnUpdate()
+        protected override void OnUpdate(float elapsed)
         {
             time++;
             simulationManager.Simulate(time);
-            base.OnUpdate();
+            base.OnUpdate(elapsed);
         }
 
         private void CreateChunkDrawables()
@@ -142,9 +142,9 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
                 };
             }
 
-            protected override void OnUpdate()
+            protected override void OnUpdate(float elapsed)
             {
-                base.OnUpdate();
+                base.OnUpdate(elapsed);
                 Offset = node.Position.ToTopDownPoint() * new Vector2(1, -1);
                 Console.WriteLine(node.Position);
             }
@@ -188,9 +188,9 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
                 Size = chunk.Coordinates.Size;
             }
 
-            protected override void OnUpdate()
+            protected override void OnUpdate(float elapsed)
             {
-                base.OnUpdate();
+                base.OnUpdate(elapsed);
                 Color = chunk.Nodes.Count switch
                 {
                     3 => new ColorInfo(120, 0, 0),
