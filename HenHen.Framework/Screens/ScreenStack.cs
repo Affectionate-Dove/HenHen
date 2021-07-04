@@ -44,15 +44,15 @@ namespace HenHen.Framework.Screens
             ScreenPopped?.Invoke(prev);
         }
 
-        protected override void OnUpdate()
+        protected override void OnUpdate(float elapsed)
         {
-            base.OnUpdate();
+            base.OnUpdate(elapsed);
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
                 ChildrenRenderArea = ComputeChildrenRenderArea(),
                 MaskArea = LayoutInfo.Mask
             };
-            CurrentScreen?.Update();
+            CurrentScreen?.Update(elapsed);
         }
 
         protected override void OnRender()

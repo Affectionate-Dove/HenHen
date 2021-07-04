@@ -135,12 +135,12 @@ namespace HenHen.Framework.Graphics2d
         public DrawableLayoutInfo LayoutInfo { get; private set; }
         public bool LayoutValid { get; protected set; }
 
-        public void Update()
+        public void Update(float elapsed)
         {
             if (!LayoutValid)
                 UpdateLayout();
 
-            OnUpdate();
+            OnUpdate(elapsed);
 
             if (!LayoutValid)
                 UpdateLayout();
@@ -192,7 +192,7 @@ namespace HenHen.Framework.Graphics2d
             return size;
         }
 
-        protected virtual void OnUpdate()
+        protected virtual void OnUpdate(float elapsed)
         {
         }
 

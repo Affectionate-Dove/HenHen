@@ -26,12 +26,12 @@ namespace HenHen.Framework.Tests.Graphics2d
         [Test]
         public void ChildrenPositionsTest()
         {
-            fillFlowContainer.Update();
+            fillFlowContainer.Update(0);
             Assert.AreEqual(new Vector2(0, 0), child1.LayoutInfo.RenderPosition);
             Assert.AreEqual(new Vector2(230, 0), child2.LayoutInfo.RenderPosition);
 
             fillFlowContainer.Direction = Direction.Vertical;
-            fillFlowContainer.Update();
+            fillFlowContainer.Update(0);
             Assert.AreEqual(new Vector2(0, 0), child1.LayoutInfo.RenderPosition);
             Assert.AreEqual(new Vector2(0, 230), child2.LayoutInfo.RenderPosition);
         }
@@ -72,7 +72,7 @@ namespace HenHen.Framework.Tests.Graphics2d
             buttonList.AddChild(button2);
             buttonList.AddChild(button3);
 
-            screen.Update();
+            screen.Update(0);
 
             Assert.AreEqual(new RectangleF(0, 300, 40, 0), button1.LayoutInfo.RenderRect);
             Assert.AreEqual(new RectangleF(0, 300, 90, 50), button2.LayoutInfo.RenderRect);

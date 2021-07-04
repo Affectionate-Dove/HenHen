@@ -45,9 +45,9 @@ namespace HenHen.Framework.Graphics2d
             base.RemoveChild(container);
         }
 
-        protected override void OnUpdate()
+        protected override void OnUpdate(float elapsed)
         {
-            base.OnUpdate();
+            base.OnUpdate(elapsed);
 
             foreach (var child in Children)
                 child.UpdateLayout();

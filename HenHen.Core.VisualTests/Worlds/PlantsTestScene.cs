@@ -93,7 +93,7 @@ namespace HenHen.Core.VisualTests.Worlds
             });
         }
 
-        protected override void OnUpdate()
+        protected override void OnUpdate(float elapsed)
         {
             var newTime = nodes[0].SynchronizedTime + 0.005f;
 
@@ -101,7 +101,7 @@ namespace HenHen.Core.VisualTests.Worlds
                 node.Simulate(newTime);
 
             timeText.Text = newTime.ToString("0");
-            base.OnUpdate();
+            base.OnUpdate(elapsed);
 
             if (nodes.All(node => node.Interaction is not null))
                 InteractAll();
@@ -197,13 +197,13 @@ namespace HenHen.Core.VisualTests.Worlds
                 }
             }
 
-            protected override void OnUpdate()
+            protected override void OnUpdate(float elapsed)
             {
                 var stemHeight = 0.2f + (0.8f * Flower.GrowthStage / Breed.GrowthStagesDurations.Count);
                 stem.Size = new Vector2(0.2f, stemHeight);
                 fruit.Color = Flower.Collectable ? new(255, 180, 0) : new(0, 100, 0);
                 fruitContainer.Size = Flower.Collectable ? new(1, Size.X / Size.Y) : Vector2.Zero;
-                base.OnUpdate();
+                base.OnUpdate(elapsed);
             }
         }
 
@@ -258,9 +258,9 @@ namespace HenHen.Core.VisualTests.Worlds
                 }
             }
 
-            protected override void OnUpdate()
+            protected override void OnUpdate(float elapsed)
             {
-                base.OnUpdate();
+                base.OnUpdate(elapsed);
                 trunk.Size = CalculateTrunkSize();
                 var leavesWidth = CalculateLeavesRadius() * 2;
                 fruitsContainer.Size = leaves.Size = new(leavesWidth, leavesWidth * (Size.X / Size.Y));

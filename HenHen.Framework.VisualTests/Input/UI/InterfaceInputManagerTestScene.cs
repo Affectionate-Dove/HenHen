@@ -50,11 +50,11 @@ namespace HenHen.Framework.VisualTests.Input.UI
             interfaceInputManager.UpdateFocusRequestedSubscriptions();
         }
 
-        protected override void OnUpdate()
+        protected override void OnUpdate(float elapsed)
         {
             inputActionHandler.Update();
             positionalInterfaceInputManager.Update();
-            base.OnUpdate();
+            base.OnUpdate(elapsed);
         }
 
         private class TestFillFlowContainer : Container, IInterfaceComponent<TestAction>

@@ -42,7 +42,7 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             absoluteChild.Anchor = Vector2.Zero;
             absoluteChild.Origin = Vector2.Zero;
-            container.Update();
+            container.Update(0);
             var absChildRenPos = absoluteChild.LayoutInfo.RenderPosition;
             Assert.AreEqual(new Vector2(300), absChildRenPos);
         }
@@ -52,7 +52,7 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             absoluteChild.Anchor = Vector2.Zero;
             absoluteChild.Origin = Vector2.Zero;
-            container.Update();
+            container.Update(0);
             var absChildRenSize = absoluteChild.LayoutInfo.RenderSize;
             Assert.AreEqual(new Vector2(200), absChildRenSize);
         }
@@ -62,7 +62,7 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             relativeChild.Anchor = Vector2.Zero;
             relativeChild.Origin = Vector2.Zero;
-            container.Update();
+            container.Update(0);
             var relChildRenPos = relativeChild.LayoutInfo.RenderPosition;
             Assert.AreEqual(new Vector2(1000), relChildRenPos);
         }
@@ -72,7 +72,7 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             relativeChild.Anchor = Vector2.Zero;
             relativeChild.Origin = Vector2.Zero;
-            container.Update();
+            container.Update(0);
             var relChildRenSize = relativeChild.LayoutInfo.RenderSize;
             Assert.AreEqual(new Vector2(200), relChildRenSize);
         }
@@ -82,7 +82,7 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             absoluteChild.Anchor = new Vector2(0.3f);
             absoluteChild.Origin = Vector2.Zero;
-            container.Update();
+            container.Update(0);
             var absChildRenPos = absoluteChild.LayoutInfo.RenderPosition;
             Assert.AreEqual(new Vector2(600), absChildRenPos);
         }
@@ -92,7 +92,7 @@ namespace HenHen.Framework.Tests.Graphics2d
         {
             absoluteChild.Anchor = new Vector2(0.5f);
             absoluteChild.Origin = new Vector2(0.5f);
-            container.Update();
+            container.Update(0);
             var absChildRenRect = absoluteChild.LayoutInfo.RenderRect;
             Assert.AreEqual(new Vector2(800), absoluteChild.LayoutInfo.RenderPosition);
             Assert.AreEqual(RectangleF.FromPositionAndSize(new(700), new(200), CoordinateSystem2d.YDown), absChildRenRect);

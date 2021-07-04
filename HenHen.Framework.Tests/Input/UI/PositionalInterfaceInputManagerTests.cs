@@ -44,7 +44,7 @@ namespace HenHen.Framework.Tests.Input.UI
                 Size = new(200)
             });
 
-            screenStack.Update();
+            screenStack.Update(0);
 
             fakeInputs = new();
             manager = new(fakeInputs, screenStack);

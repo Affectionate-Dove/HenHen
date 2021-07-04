@@ -61,15 +61,15 @@ namespace HenHen.Framework.Graphics2d
 
         protected RectangleF ComputeChildrenRenderRect() => new(LayoutInfo.RenderRect.Left + Padding.Left, LayoutInfo.RenderRect.Right - Padding.Right, LayoutInfo.RenderRect.Bottom - Padding.Bottom, LayoutInfo.RenderRect.Top + Padding.Top);
 
-        protected override void OnUpdate()
+        protected override void OnUpdate(float elapsed)
         {
-            base.OnUpdate();
+            base.OnUpdate(elapsed);
 
             if (!ContainerLayoutValid)
                 UpdateContainerLayout();
 
             foreach (var child in Children)
-                child.Update();
+                child.Update(elapsed);
         }
 
         protected override void OnLayoutUpdate()
