@@ -43,6 +43,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
 
         public WorldViewer2d(World world)
         {
+            Target = world.Size / 2;
             camera.FovY = world.Size.Y;
             AddChild(new Rectangle
             {
