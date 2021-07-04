@@ -92,9 +92,9 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 triangle2d += LayoutInfo.RenderRect.TopLeft;
 
                 // calls to drawing framework
-                var borderColor = GetMediumColor(medium.Type).ToRaylibColor();
+                var borderColor = GetMediumColor(medium.Type);
                 Raylib_cs.Raylib.DrawTriangleLines(triangle2d.A, triangle2d.B, triangle2d.C, borderColor);
-                var fillColor = new ColorInfo(borderColor.r, borderColor.g, borderColor.b, 10).ToRaylibColor();
+                var fillColor = new ColorInfo(borderColor.r, borderColor.g, borderColor.b, 10);
                 Raylib_cs.Raylib.DrawTriangle(triangle2d.A, triangle2d.B, triangle2d.C, fillColor);
             }
         }
