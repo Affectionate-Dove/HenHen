@@ -13,12 +13,8 @@ jobs:
   assign:
     runs-on: ubuntu-latest
     steps:
-    - name: Assign author
-      uses: toshimaru/auto-author-assign@v1.1.0
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Assign maintainer
-      uses: pozil/auto-assign-issue@v1.0.3
+    - name: Assign author and maintainers
+      uses: HoutarouOreki/auto-assign-prs@master
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         assignees: HoutarouOreki
