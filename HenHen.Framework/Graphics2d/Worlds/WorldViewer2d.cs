@@ -61,7 +61,6 @@ namespace HenHen.Framework.Graphics2d.Worlds
             DrawMediums();
             DrawGrid();
             DrawNodes();
-            Console.WriteLine(Target);
         }
 
         private static ColorInfo GetMediumColor(MediumType type) => type switch
