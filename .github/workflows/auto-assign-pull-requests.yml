@@ -17,4 +17,4 @@ jobs:
       uses: HoutarouOreki/auto-assign-prs@main
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        assignees: HoutarouOreki
+        reviewers: HoutarouOreki
