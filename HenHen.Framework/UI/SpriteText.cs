@@ -2,7 +2,6 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Extensions;
 using HenHen.Framework.Graphics2d;
 
 namespace HenHen.Framework.UI
@@ -34,7 +33,7 @@ namespace HenHen.Framework.UI
                 r = new(r.Left + halfDiff.X, r.Right, r.Bottom, r.Top + halfDiff.Y);
             }
 
-            Raylib_cs.Raylib.DrawTextRec(Font, Text, new Raylib_cs.Rectangle(r.Left, r.Top, r.Width, r.Height), FontSize, Spacing, size.X > Size.X, Color.ToRaylibColor());
+            Raylib_cs.Raylib.DrawTextRec(Font, Text, new Raylib_cs.Rectangle(r.Left, r.Top, r.Width, r.Height), FontSize, Spacing, size.X > Size.X, Color);
         }
     }
 }

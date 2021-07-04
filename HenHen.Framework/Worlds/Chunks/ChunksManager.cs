@@ -53,11 +53,7 @@ namespace HenHen.Framework.Worlds.Chunks
 
         public IEnumerable<Chunk> GetChunksForRectangle(RectangleF rectangle)
         {
-            var leftIndex = rectangle.Left / ChunkSize;
-            var rightIndex = rectangle.Right / ChunkSize;
-            var topIndex = rectangle.Top / ChunkSize;
-            var bottomIndex = rectangle.Bottom / ChunkSize;
-            rectangle = new RectangleF(leftIndex, rightIndex, bottomIndex, topIndex);
+            rectangle /= new Vector2(ChunkSize);
 
             var intersection = rectangle.GetIntersection(ChunksIndexesBoundingRect);
             if (!intersection.HasValue)
