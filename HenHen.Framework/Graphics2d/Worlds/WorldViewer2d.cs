@@ -43,6 +43,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
 
         public WorldViewer2d(World world)
         {
+            Target = world.Size / 2;
             camera.FovY = world.Size.Y;
             AddChild(new Rectangle
             {
@@ -60,6 +61,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
             DrawMediums();
             DrawGrid();
             DrawNodes();
+            Console.WriteLine(Target);
         }
 
         private static ColorInfo GetMediumColor(MediumType type) => type switch
