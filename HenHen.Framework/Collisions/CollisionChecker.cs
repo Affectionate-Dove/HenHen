@@ -36,8 +36,8 @@ namespace HenHen.Framework.Collisions
                     if (b.CollisionBody is null)
                         continue;
 
-                    var containingSphereA = GetSphereInAbsoluteCoordinates(a, a.CollisionBody.ContainingSphere);
-                    var containingSphereB = GetSphereInAbsoluteCoordinates(b, b.CollisionBody.ContainingSphere);
+                    var containingSphereA = a.CollisionBody.ContainingSphere + a.Position;
+                    var containingSphereB = b.CollisionBody.ContainingSphere + b.Position;
 
                     if (ElementaryCollisions.AreSpheresColliding(containingSphereA, containingSphereB))
                     {
@@ -62,7 +62,7 @@ namespace HenHen.Framework.Collisions
 
             foreach (var localSphere in node.CollisionBody.Spheres)
             {
-                var absSphere = GetSphereInAbsoluteCoordinates(node, localSphere);
+                var absSphere = localSphere + node.Position;
                 if (!IsCircleContainedInMediums(absSphere.ToTopDownCircle(), mediums))
                     return false;
             }
@@ -124,21 +124,15 @@ namespace HenHen.Framework.Collisions
         {
             foreach (var aLocalSphere in a.CollisionBody.Spheres)
             {
-                var aAbsSphere = GetSphereInAbsoluteCoordinates(a, aLocalSphere);
+                var aAbsSphere = aLocalSphere + a.Position;
                 foreach (var bLocalSphere in b.CollisionBody.Spheres)
                 {
-                    var bAbsSphere = GetSphereInAbsoluteCoordinates(b, bLocalSphere);
+                    var bAbsSphere = bLocalSphere + b.Position;
                     if (ElementaryCollisions.AreSpheresColliding(aAbsSphere, bAbsSphere))
                         return true;
                 }
             }
             return false;
         }
-
-        private static Sphere GetSphereInAbsoluteCoordinates(Node node, Sphere sphere) => new()
-        {
-            CenterPosition = sphere.CenterPosition + node.Position,
-            Radius = sphere.Radius
-        };
     }
 }
