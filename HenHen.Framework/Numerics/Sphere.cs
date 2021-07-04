@@ -21,22 +21,26 @@ namespace HenHen.Framework.Numerics
 
         public static Sphere operator +(Sphere sphere, Vector3 v) => new()
         {
-            CenterPosition = sphere.CenterPosition + v
+            CenterPosition = sphere.CenterPosition + v,
+            Radius = sphere.Radius
         };
 
         public static Sphere operator -(Sphere sphere, Vector3 v) => new()
         {
-            CenterPosition = sphere.CenterPosition - v
+            CenterPosition = sphere.CenterPosition - v,
+            Radius = sphere.Radius
         };
 
         public static Sphere operator *(Sphere sphere, Vector3 v) => new()
         {
-            CenterPosition = sphere.CenterPosition * v
+            CenterPosition = sphere.CenterPosition * v,
+            Radius = sphere.Radius
         };
 
         public static Sphere operator /(Sphere sphere, Vector3 v) => new()
         {
-            CenterPosition = sphere.CenterPosition / v
+            CenterPosition = sphere.CenterPosition / v,
+            Radius = sphere.Radius
         };
 
         public Circle ToTopDownCircle() => new()
