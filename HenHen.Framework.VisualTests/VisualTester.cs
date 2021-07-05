@@ -20,15 +20,11 @@ namespace HenHen.Framework.VisualTests
         private readonly ScreenStack scenesContainer;
         private readonly List<Type> sceneTypes;
         private readonly List<TestSceneButton> buttons;
-        private readonly VisualTesterInputActionHandler inputActionHandler;
         private readonly SceneInputActionHandler sceneInputActionHandler;
         private int sceneIndex;
 
         public VisualTester(Inputs inputs)
         {
-            inputActionHandler = new VisualTesterInputActionHandler(inputs);
-            inputActionHandler.Propagator.Listeners.Add(this);
-
             sceneInputActionHandler = new SceneInputActionHandler(inputs);
 
             RelativeSizeAxes = Axes.Both;
@@ -91,7 +87,6 @@ namespace HenHen.Framework.VisualTests
                 sceneIndex++;
                 ChangeScene();
             }
-            inputActionHandler.Update();
             sceneInputActionHandler.Update();
         }
 
@@ -124,9 +119,17 @@ namespace HenHen.Framework.VisualTests
                     RelativeSizeAxes = Axes.X,
                     Size = new System.Numerics.Vector2(1, 20)
                 };
+                button.FocusRequested += OnButtonFocusRequested;
                 scenesList.AddChild(button);
                 buttons.Add(button);
             }
+        }
+
+        private void OnButtonFocusRequested(Framework.Input.UI.IInterfaceComponent<VisualTesterControls> component)
+        {
+            var button = component as TestSceneButton;
+            sceneIndex = sceneTypes.IndexOf(button.Type);
+            ChangeScene();
         }
 
         private Container CreateLeftContainer()
@@ -169,28 +172,25 @@ namespace HenHen.Framework.VisualTests
             {
                 Console.WriteLine(button.Type.Name);
                 if (button.Type == sceneTypes[sceneIndex])
-                    button.Highlight();
+                    button.OnFocus();
                 else
-                    button.Unhighlight();
+                    button.OnFocusLost();
             }
         }
 
         private class TestSceneButton : Button<VisualTesterControls>
         {
-            private static readonly ColorInfo highlightColor = new(100, 100, 100);
-            private static readonly ColorInfo defaultColor = new(60, 60, 60);
-
             public Type Type { get; }
+
+            public override bool AcceptsPositionalInput => true;
 
             public TestSceneButton(Type type)
             {
                 Type = type;
                 Text = type.Name.Replace("TestScene", null);
+                FocusedColors = new(new(100, 100, 100), null, null);
+                DisabledColors = new(new(60, 60, 60), null, new(250, 250, 250));
             }
-
-            public void Highlight() => Color = highlightColor;
-
-            public void Unhighlight() => Color = defaultColor;
         }
     }
 }

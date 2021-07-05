@@ -167,7 +167,7 @@ namespace HenHen.Framework.UI
 
         public virtual void OnMousePress(MouseButton button)
         {
-            FocusRequested?.Invoke(this);
+            RequestFocus();
             State |= ButtonState.Pressed;
         }
 
@@ -175,37 +175,45 @@ namespace HenHen.Framework.UI
 
         public virtual void OnClick(MouseButton button)
         {
-            FocusRequested?.Invoke(this);
+            RequestFocus();
             Action?.Invoke();
+        }
+
+        protected static void TrySetColors(ref ButtonColorSet baseColors, ButtonColorSet colorSetToApply)
+        {
+            baseColors.fill ??= colorSetToApply.fill;
+            baseColors.border ??= colorSetToApply.border;
+            baseColors.text ??= colorSetToApply.text;
         }
 
         protected virtual void OnStateChanged()
         {
-            var resultingColorSet = new ButtonColorSet();
+            var colorSet = new ButtonColorSet();
+            GenerateColorSet(ref colorSet);
 
-            if (state.HasFlag(ButtonState.Pressed))
-                TrySetColors(PressedColors, ref resultingColorSet);
-            if (state.HasFlag(ButtonState.Focused))
-                TrySetColors(FocusedColors, ref resultingColorSet);
-            if (state.HasFlag(ButtonState.Hovered))
-                TrySetColors(HoveredColors, ref resultingColorSet);
-            if (state.HasFlag(ButtonState.Enabled))
-                TrySetColors(EnabledColors, ref resultingColorSet);
-
-            TrySetColors(DisabledColors, ref resultingColorSet);
-
-            Color = resultingColorSet.fill.GetValueOrDefault();
-            BorderColor = resultingColorSet.border.GetValueOrDefault();
-            spriteText.Color = resultingColorSet.text.GetValueOrDefault();
+            Color = colorSet.fill.GetValueOrDefault();
+            BorderColor = colorSet.border.GetValueOrDefault();
+            spriteText.Color = colorSet.text.GetValueOrDefault();
         }
 
-        protected void RequestFocus() => FocusRequested?.Invoke(this);
-
-        private static void TrySetColors(ButtonColorSet colorSet, ref ButtonColorSet destination)
+        protected virtual void GenerateColorSet(ref ButtonColorSet colorSet)
         {
-            destination.fill ??= colorSet.fill;
-            destination.border ??= colorSet.border;
-            destination.text ??= colorSet.text;
+            if (state.HasFlag(ButtonState.Pressed))
+                TrySetColors(ref colorSet, PressedColors);
+            if (state.HasFlag(ButtonState.Focused))
+                TrySetColors(ref colorSet, FocusedColors);
+            if (state.HasFlag(ButtonState.Hovered))
+                TrySetColors(ref colorSet, HoveredColors);
+            if (state.HasFlag(ButtonState.Enabled))
+                TrySetColors(ref colorSet, EnabledColors);
+
+            TrySetColors(ref colorSet, DisabledColors);
+        }
+
+        protected void RequestFocus()
+        {
+            if (!State.HasFlag(ButtonState.Focused))
+                FocusRequested?.Invoke(this);
         }
 
         [Flags]
