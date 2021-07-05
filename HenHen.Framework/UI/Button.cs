@@ -50,7 +50,7 @@ namespace HenHen.Framework.UI
                 if (value is not null)
                     State |= ButtonState.Enabled;
                 else
-                    State ^= ButtonState.Enabled;
+                    State &= ~ButtonState.Enabled;
             }
         }
 
