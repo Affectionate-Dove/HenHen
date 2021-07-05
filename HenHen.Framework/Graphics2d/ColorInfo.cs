@@ -20,5 +20,7 @@ namespace HenHen.Framework.Graphics2d
         }
 
         public static implicit operator Raylib_cs.Color(ColorInfo c) => new(c.r, c.g, c.b, c.a);
+
+        public static implicit operator ColorInfo(Raylib_cs.Color c) => new(c.r, c.g, c.b, c.a);
     }
 }

@@ -4,33 +4,42 @@
 
 using HenHen.Framework.Graphics2d;
 using HenHen.Framework.UI;
+using HenHen.Framework.VisualTests.Input;
 using System.Numerics;
 
 namespace HenHen.Framework.VisualTests.Examples
 {
     public class ExampleTestScene2 : VisualTestScene
     {
-        public ExampleTestScene2() => AddChild(new ExampleDrawable() { Offset = new Vector2(150, 50) });
+        private readonly ExampleDrawable drawable;
 
-        private class ExampleDrawable : Container
+        public ExampleTestScene2()
         {
-            public ExampleDrawable()
+            AddChild(drawable = new ExampleDrawable("Sample text 2")
             {
-                AddChild(new Rectangle
-                {
-                    RelativeSizeAxes = Axes.Both,
-                    Color = new ColorInfo(200, 60, 30)
-                });
-                AddChild(new SpriteText
-                {
-                    Text = "Sample Text 2",
-                    Anchor = new Vector2(0.5f),
-                    Origin = new Vector2(0.5f),
-                    RelativeSizeAxes = Axes.Both,
-                    AlignMiddle = true
-                });
-                Size = new Vector2(300);
-            }
+                Offset = new Vector2(150, 50),
+                Color = new(200, 60, 30)
+            });
+            AddChild(new SpriteText
+            {
+                Anchor = new(1),
+                Origin = new(1),
+                Text = "Press 1 to change the drawable's color.",
+                Size = new(200, 60)
+            });
+        }
+
+        public override bool OnActionPressed(SceneControls action)
+        {
+            if (action != SceneControls.One)
+                return base.OnActionPressed(action);
+
+            if (drawable.Color.Equals((ColorInfo)Raylib_cs.Color.DARKGREEN))
+                drawable.Color = new(200, 60, 30);
+            else
+                drawable.Color = Raylib_cs.Color.DARKGREEN;
+
+            return true;
         }
     }
 }
