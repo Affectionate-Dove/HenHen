@@ -10,7 +10,6 @@ using HenHen.Framework.VisualTests.Input;
 using HenHen.Framework.Worlds.Chunks;
 using HenHen.Framework.Worlds.Chunks.Simulation;
 using HenHen.Framework.Worlds.Nodes;
-using System;
 using System.Numerics;
 
 namespace HenHen.Framework.VisualTests.Worlds.Chunks
@@ -146,7 +145,6 @@ namespace HenHen.Framework.VisualTests.Worlds.Chunks
             {
                 base.OnUpdate(elapsed);
                 Offset = node.Position.ToTopDownPoint() * new Vector2(1, -1);
-                Console.WriteLine(node.Position);
             }
         }
 

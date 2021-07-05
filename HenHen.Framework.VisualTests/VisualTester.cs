@@ -170,7 +170,6 @@ namespace HenHen.Framework.VisualTests
         {
             foreach (var button in buttons)
             {
-                Console.WriteLine(button.Type.Name);
                 if (button.Type == sceneTypes[sceneIndex])
                     button.OnFocus();
                 else
