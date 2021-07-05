@@ -7,7 +7,6 @@ using HenHen.Framework.Input;
 using HenHen.Framework.Input.UI;
 using HenHen.Framework.Screens;
 using HenHen.Framework.UI;
-using System.Collections.Generic;
 using System.Numerics;
 
 namespace HenHen.Framework.VisualTests.Input.UI
@@ -106,49 +105,12 @@ namespace HenHen.Framework.VisualTests.Input.UI
         private class TestButton : Button<TestAction>, IPositionalInterfaceComponent
         {
             private readonly byte v;
-            private readonly ColorInfo focusedColor;
-            private readonly ColorInfo hoveredColor;
-            private readonly ColorInfo pressedColor;
-            private readonly ColorInfo defaultColor;
 
             private int counter;
-            private bool pressed;
-            private bool hovered;
-            private bool focused;
 
             public override bool AcceptsFocus => true;
 
             public override bool AcceptsPositionalInput => true;
-
-            private bool Focused
-            {
-                get => focused;
-                set
-                {
-                    focused = value;
-                    OnStateChange();
-                }
-            }
-
-            private bool Hovered
-            {
-                get => hovered;
-                set
-                {
-                    hovered = value;
-                    OnStateChange();
-                }
-            }
-
-            private bool Pressed
-            {
-                get => pressed;
-                set
-                {
-                    pressed = value;
-                    OnStateChange();
-                }
-            }
 
             public TestButton(int id, float brightness)
             {
@@ -156,92 +118,44 @@ namespace HenHen.Framework.VisualTests.Input.UI
                 RelativeSizeAxes = Axes.X;
                 Size = new(1, 20);
 
-                focusedColor = new ColorInfo(0, v, v);
+                FocusedColors = new(new(0, v, v), null, null);
                 var h = (byte)((brightness + 0.2) * 255);
-                hoveredColor = new ColorInfo(h, h, h);
+                HoveredColors = new(new(h, h, h), null, null);
                 var p = (byte)((brightness - 0.1) * 255);
-                pressedColor = new ColorInfo(p, p, p);
-                defaultColor = new ColorInfo(v, v, v);
+                PressedColors = new(new(p, p, p), null, null);
+                DisabledColors = new(new(v, v, v), null, Raylib_cs.Color.WHITE);
                 counter = id;
 
-                OnStateChange();
+                UpdateText();
             }
 
             public override bool AcceptsPositionalButton(MouseButton button) => button is MouseButton.Left or MouseButton.Right;
 
-            public override void OnHover() => Hovered = true;
-
-            public override void OnHoverLost() => Hovered = false;
-
-            public override void OnMousePress(MouseButton button) => Pressed = true;
-
-            public override void OnMouseRelease(MouseButton button) => Pressed = false;
-
             public override void OnClick(MouseButton button)
             {
                 counter += button == MouseButton.Left ? 1 : -1;
-                OnStateChange();
-                RequestFocus();
+                UpdateText();
+                base.OnClick(button);
             }
-
-            public override void OnFocus() => Focused = true;
-
-            public override void OnFocusLost() => Focused = false;
 
             public override bool OnActionPressed(TestAction action)
             {
                 if (action is TestAction.Up)
                 {
                     counter++;
-                    OnStateChange();
+                    UpdateText();
                     return true;
                 }
                 else if (action is TestAction.Down)
                 {
                     counter--;
-                    OnStateChange();
+                    UpdateText();
                     return true;
                 }
                 return base.OnActionPressed(action);
             }
 
-            private void OnStateChange()
-            {
-                if (Focused)
-                    Color = focusedColor;
-                else if (Pressed)
-                    Color = pressedColor;
-                else if (Hovered)
-                    Color = hoveredColor;
-                else
-                    Color = defaultColor;
-                Text = counter.ToString();
-            }
-        }
-
-        private class TestInputActionHandler : InputActionHandler<TestAction>
-        {
-            public TestInputActionHandler(Inputs inputs) : base(inputs)
-            {
-            }
-
-            protected override Dictionary<TestAction, List<KeyboardKey>> CreateDefaultKeybindings() => new()
-            {
-                { TestAction.Up, new() { KeyboardKey.KEY_UP } },
-                { TestAction.Down, new() { KeyboardKey.KEY_DOWN } },
-                { TestAction.Left, new() { KeyboardKey.KEY_LEFT } },
-                { TestAction.Right, new() { KeyboardKey.KEY_RIGHT } },
-                { TestAction.Next, new() { KeyboardKey.KEY_TAB } },
-            };
-        }
-
-        private enum TestAction
-        {
-            Up,
-            Left,
-            Down,
-            Right,
-            Next
+            private void UpdateText() => Text = counter.ToString();
         }
     }
 }
