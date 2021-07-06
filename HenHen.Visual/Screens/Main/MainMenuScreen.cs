@@ -13,12 +13,14 @@ namespace HenHen.Visual.Screens.Main
     {
         public MainMenuScreen()
         {
-            AddChild(new Rectangle
+            var logoSprite = new Sprite
             {
-                Size = new Vector2(160, 90),
+                Size = new Vector2(160, 160),
                 Origin = new Vector2(0.5f),
-                Anchor = new Vector2(0.5f)
-            });
+                Anchor = new Vector2(0.5f),
+            };
+            logoSprite.SetTexture("Images/logo.png");
+            base.AddChild(logoSprite);
             AddChild(new SpriteText
             {
                 Text = "HHhhhhhhh",
