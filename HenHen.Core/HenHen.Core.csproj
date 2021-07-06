@@ -10,4 +10,8 @@
     <ProjectReference Include="..\HenHen.Framework\HenHen.Framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="HenHen.Resources" Version="2021.7.6.5" />
+  </ItemGroup>
+
 </Project>
