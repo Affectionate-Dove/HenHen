@@ -10,6 +10,12 @@ namespace HenHen.Visual
 {
     public class HenHenGame : Game
     {
-        public HenHenGame() => ScreenStack.Push(new MainMenuScreen());
+        public HenHenGame()
+        {
+            LoadImages();
+            ScreenStack.Push(new MainMenuScreen());
+        }
+
+        private static void LoadImages() => TextureStore.Load("Images/logo.png");
     }
 }
