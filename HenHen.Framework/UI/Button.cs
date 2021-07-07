@@ -39,6 +39,8 @@ namespace HenHen.Framework.UI
             protected set => background.BorderColor = value;
         }
 
+        public float FontSize { get => spriteText.FontSize; set => spriteText.FontSize = value; }
+
         public string Text { get => spriteText.Text; set => spriteText.Text = value; }
 
         public Action Action
