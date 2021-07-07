@@ -18,8 +18,8 @@ namespace HenHen.Visual.Screens.Main
                 Size = new Vector2(160, 160),
                 Origin = new Vector2(0.5f),
                 Anchor = new Vector2(0.5f),
+                Texture = Framework.Game.TextureStore.Get("Images/logo.png")
             };
-            logoSprite.SetTexture("Images/logo.png");
             base.AddChild(logoSprite);
             AddChild(new SpriteText
             {
