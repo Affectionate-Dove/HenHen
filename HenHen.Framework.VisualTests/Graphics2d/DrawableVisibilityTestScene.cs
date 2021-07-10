@@ -24,12 +24,9 @@ namespace HenHen.Framework.VisualTests.Graphics2d
             if (action != SceneControls.One)
                 return base.OnActionPressed(action);
 
-            if (drawable.Visible == true)
-                drawable.Visible = false;
-            else
-                drawable.Visible = true;
+            drawable.Visible = !drawable.Visible;
 
-            return false;
+            return true;
         }
     }
 }

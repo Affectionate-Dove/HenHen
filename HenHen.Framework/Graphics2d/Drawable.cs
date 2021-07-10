@@ -18,6 +18,12 @@ namespace HenHen.Framework.Graphics2d
         private Vector2 anchor;
         private Vector2 origin;
         private bool masking;
+
+        /// <summary>
+        ///     Whether this drawable
+        ///     is rendered to the screen.
+        ///     True by default.
+        /// </summary>
         public bool Visible { get; set; } = true;
 
         public IContainer Parent
