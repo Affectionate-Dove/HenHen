@@ -19,6 +19,13 @@ namespace HenHen.Framework.Graphics2d
         private Vector2 origin;
         private bool masking;
 
+        /// <summary>
+        ///     Whether this drawable
+        ///     is rendered to the screen.
+        ///     True by default.
+        /// </summary>
+        public bool Visible { get; set; } = true;
+
         public IContainer Parent
         {
             get => parent;
@@ -152,6 +159,9 @@ namespace HenHen.Framework.Graphics2d
             if (_mask is null)
                 return;
 
+            if (!Visible)
+                return;
+
             var mask = _mask.Value;
             Raylib_cs.Raylib.BeginScissorMode((int)mask.Left, (int)mask.Top, (int)mask.Width, (int)mask.Height);
 
@@ -213,6 +223,9 @@ namespace HenHen.Framework.Graphics2d
 
             if (!Masking)
                 return maskArea;
+
+            if (!Visible)
+                return null;
 
             return maskArea?.GetIntersection(renderArea);
         }
