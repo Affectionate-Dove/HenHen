@@ -26,12 +26,7 @@ namespace HenHen.Framework.Tests.Worlds
             world.AddNode(node2);
             var medium = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = new Vector3(-10, 0, -10),
-                    B = new Vector3(0, 0, 10),
-                    C = new Vector3(10, 0, -10)
-                }
+                Triangle = new Triangle3(new Vector3(-10, 0, -10), new Vector3(0, 0, 10), new Vector3(10, 0, -10))
             };
             world.AddMedium(medium);
             world.Simulate(0.01);
