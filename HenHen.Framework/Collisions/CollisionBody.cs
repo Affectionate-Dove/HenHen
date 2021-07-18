@@ -29,17 +29,21 @@ namespace HenHen.Framework.Collisions
 
         private static Box CreateBoundingBox(IEnumerable<Sphere> spheres)
         {
-            var box = new Box();
+            float? left = null, right = null, bottom = null, top = null, back = null, front = null;
+
+            static float assign(float? oldValue, float newValue, Func<float, float, float> func) => oldValue.HasValue ? func(oldValue.Value, newValue) : newValue;
+
             foreach (var sphere in spheres)
             {
-                box.Left = Math.Min(box.Left, sphere.CenterPosition.X - sphere.Radius);
-                box.Right = Math.Max(box.Right, sphere.CenterPosition.X + sphere.Radius);
-                box.Bottom = Math.Min(box.Bottom, sphere.CenterPosition.Y - sphere.Radius);
-                box.Top = Math.Max(box.Top, sphere.CenterPosition.Y + sphere.Radius);
-                box.Back = Math.Min(box.Back, sphere.CenterPosition.Z - sphere.Radius);
-                box.Front = Math.Max(box.Front, sphere.CenterPosition.Z + sphere.Radius);
+                left = assign(left, sphere.CenterPosition.X - sphere.Radius, Math.Min);
+                right = assign(right, sphere.CenterPosition.X + sphere.Radius, Math.Max);
+                bottom = assign(bottom, sphere.CenterPosition.Y - sphere.Radius, Math.Min);
+                top = assign(top, sphere.CenterPosition.Y + sphere.Radius, Math.Max);
+                back = assign(back, sphere.CenterPosition.Z - sphere.Radius, Math.Min);
+                front = assign(front, sphere.CenterPosition.Z + sphere.Radius, Math.Max);
             }
-            return box;
+
+            return new(left.Value, right.Value, bottom.Value, top.Value, back.Value, front.Value);
         }
 
         private static float GetFarthestDistanceFromCenter(IEnumerable<Sphere> spheres)
