@@ -8,7 +8,7 @@ using System.Numerics;
 
 namespace HenHen.Framework.Tests.Numerics
 {
-    internal class Triangle3Tests
+    public class Triangle3Tests
     {
         private readonly Triangle3 triangle = new(new(0, 0, 4), new(0, 1.5f, 5), new(3, 0, 2));
 
