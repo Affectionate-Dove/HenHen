@@ -17,5 +17,13 @@ namespace HenHen.Framework.Tests.Numerics
 
         [Test]
         public void ReversedTest() => Assert.AreEqual(new Triangle3(new(3, 0, 2), new(0, 1.5f, 5), new(0, 0, 4)), triangle.Reversed());
+
+        [Test]
+        public void NormalTest()
+        {
+            var triangle = new Triangle3(Vector3.Zero, new(0, 1, 0), new(1, 0, 0));
+            Assert.AreEqual(new Vector3(0, 0, -1), triangle.Normal);
+            Assert.AreEqual(new Vector3(0, 0, 1), triangle.Reversed().Normal);
+        }
     }
 }

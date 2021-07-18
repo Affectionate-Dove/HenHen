@@ -30,9 +30,10 @@ namespace HenHen.Framework.Numerics
 
         /// <summary>
         ///     The direction that the face of this
-        ///     <see cref="Triangle3"/> is pointing in.
+        ///     <see cref="Triangle3"/> is pointing in,
+        ///     assuming vertices are ordered clockwise.
         /// </summary>
-        public Vector3 Normal => Vector3.Cross(A, B);
+        public Vector3 Normal => Vector3.Cross(A - C, B - C);
 
         public Triangle3(Vector3 a, Vector3 b, Vector3 c)
         {
