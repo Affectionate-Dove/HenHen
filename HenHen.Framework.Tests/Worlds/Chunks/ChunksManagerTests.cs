@@ -22,7 +22,7 @@ namespace HenHen.Framework.Tests.Worlds.Chunks
             (
                 new Medium
                 {
-                    Triangle = new Triangle3(new Vector3(0, 0, 0), new Vector3(2, 0, 0.5f), new Vector3(1, 0, 0.8f))
+                    Triangle = new Triangle3(new(0, 0, 0), new(2, 0, 0.5f), new(1, 0, 0.8f))
                 },
                 new HashSet<Vector2>
                 {
@@ -35,7 +35,7 @@ namespace HenHen.Framework.Tests.Worlds.Chunks
             (
                 new Medium
                 {
-                    Triangle = new Triangle3(new Vector3(0.5f, 0, 2.5f), new Vector3(2.9f, 0, 1.9f), new Vector3(1.2f, 0, 1.2f))
+                    Triangle = new Triangle3(new(0.5f, 0, 2.5f), new(2.9f, 0, 1.9f), new(1.2f, 0, 1.2f))
                 },
                 new HashSet<Vector2>
                 {

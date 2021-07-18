@@ -24,13 +24,13 @@ namespace HenHen.Framework.Tests.Collisions
         private static IEnumerable<(Vector2 point, Triangle2 triangle, bool expected)> PointTriangleTestCases => new[]
         {
             (new Vector2(),
-            new Triangle2(new Vector2(-1, -1), new Vector2(0, 1), new Vector2(1, -1) ),
+            new Triangle2(new Vector2(-1, -1), new Vector2(0, 1), new Vector2(1, -1)),
             true),
             (new Vector2(),
-            new Triangle2(new Vector2(-2, 1), new Vector2(2, 1), new Vector2(2, 0) ),
+            new Triangle2(new Vector2(-2, 1), new Vector2(2, 1), new Vector2(2, 0)),
             false),
             (new Vector2(1, 1),
-            new Triangle2(new Vector2(1, 1), new Vector2(0, 0), new Vector2(0.5f, 0) ),
+            new Triangle2(new Vector2(1, 1), new Vector2(0, 0), new Vector2(0.5f, 0)),
             true),
             (new Vector2(1, 1),
             new Triangle2(new Vector2(2, 2), new Vector2(), new Vector2(2, 0)),
@@ -39,10 +39,10 @@ namespace HenHen.Framework.Tests.Collisions
             new Triangle2(new Vector2(2, 2), new Vector2(), new Vector2(2, 0)),
             false),
             (new Vector2(1.00001f, 0.999f),
-            new Triangle2(new Vector2(2, 2), new Vector2(), new Vector2(2, 0) ),
+            new Triangle2(new Vector2(2, 2), new Vector2(), new Vector2(2, 0)),
             true),
             (new Vector2(0.999f, 0.9999f),
-            new Triangle2(new Vector2(2, 2), new Vector2(), new Vector2(2, 0) ),
+            new Triangle2(new Vector2(2, 2), new Vector2(), new Vector2(2, 0)),
             false)
         };
 
