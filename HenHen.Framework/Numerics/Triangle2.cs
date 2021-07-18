@@ -6,11 +6,11 @@ using System.Numerics;
 
 namespace HenHen.Framework.Numerics
 {
-    public struct Triangle2
+    public readonly struct Triangle2
     {
-        public Vector2 A;
-        public Vector2 B;
-        public Vector2 C;
+        public Vector2 A { get; }
+        public Vector2 B { get; }
+        public Vector2 C { get; }
 
         public Vector2 Centroid
         {
@@ -22,33 +22,20 @@ namespace HenHen.Framework.Numerics
             }
         }
 
-        public static Triangle2 operator +(Triangle2 triangle2, Vector2 v) => new()
+        public Triangle2(Vector2 a, Vector2 b, Vector2 c)
         {
-            A = triangle2.A + v,
-            B = triangle2.B + v,
-            C = triangle2.C + v
-        };
+            A = a;
+            B = b;
+            C = c;
+        }
 
-        public static Triangle2 operator -(Triangle2 triangle2, Vector2 v) => new()
-        {
-            A = triangle2.A - v,
-            B = triangle2.B - v,
-            C = triangle2.C - v
-        };
+        public static Triangle2 operator +(Triangle2 triangle2, Vector2 v) => new(triangle2.A + v, triangle2.B + v, triangle2.C + v);
 
-        public static Triangle2 operator *(Triangle2 triangle2, Vector2 v) => new()
-        {
-            A = triangle2.A * v,
-            B = triangle2.B * v,
-            C = triangle2.C * v
-        };
+        public static Triangle2 operator -(Triangle2 triangle2, Vector2 v) => new(triangle2.A - v, triangle2.B - v, triangle2.C - v);
 
-        public static Triangle2 operator /(Triangle2 triangle2, Vector2 v) => new()
-        {
-            A = triangle2.A / v,
-            B = triangle2.B / v,
-            C = triangle2.C / v
-        };
+        public static Triangle2 operator *(Triangle2 triangle2, Vector2 v) => new(triangle2.A * v, triangle2.B * v, triangle2.C * v);
+
+        public static Triangle2 operator /(Triangle2 triangle2, Vector2 v) => new(triangle2.A / v, triangle2.B / v, triangle2.C / v);
 
         public override string ToString() => $"{{{nameof(A)}={A},{nameof(B)}={B},{nameof(C)}={C}}}";
     }

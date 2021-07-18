@@ -74,42 +74,23 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
         {
             new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = new(-5, 0, 5),
-                    B = new(0, 0, -5),
-                    C = new(0, 0, 5)
-                },
+                Triangle = new Triangle3(new(-5, 0, 5), new(0, 0, -5), new(0, 0, 5)),
                 Type = MediumType.Water
             },
             new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = new(-5, 0, 5),
-                    B = new(-5, 0, -5),
-                    C = new(0, 0, -5)
-                },
+                Triangle = new Triangle3(new(-5, 0, 5), new(-5, 0, -5), new(0, 0, -5)
+),
                 Type = MediumType.Water
             },
             new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = new(0, 0, -5),
-                    B = new(2, 0, -5),
-                    C = new(2, 0, 5)
-                },
+                Triangle = new Triangle3(new(0, 0, -5), new(2, 0, -5), new(2, 0, 5)),
                 Type = MediumType.Ground
             },
             new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = new(0, 0, -5),
-                    B = new(2, 0, 5),
-                    C = new(0, 0, 5)
-                },
+                Triangle = new Triangle3(new(0, 0, -5), new(2, 0, 5), new(0, 0, 5)),
                 Type = MediumType.Ground
             },
         };

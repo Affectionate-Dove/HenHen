@@ -35,75 +35,35 @@ namespace HenHen.Framework.Tests.Collisions
             mediums = new Medium[8];
             mediums[0] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = new Vector3(1, 0, 0),
-                    B = new Vector3(4, 0, -2),
-                    C = new Vector3(1, 0, -2)
-                }
+                Triangle = new Triangle3(new(1, 0, 0), new(4, 0, -2), new(1, 0, -2))
             };
             mediums[1] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = mediums[0].Triangle.A,
-                    B = new Vector3(3, 0, 2),
-                    C = mediums[0].Triangle.B
-                }
+                Triangle = new Triangle3(mediums[0].Triangle.A, new(3, 0, 2), mediums[0].Triangle.B)
             };
             mediums[2] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = mediums[0].Triangle.C,
-                    B = new Vector3(-1, 0, -1),
-                    C = new Vector3(1, 0, 2)
-                }
+                Triangle = new Triangle3(mediums[0].Triangle.C, new(-1, 0, -1), new(1, 0, 2))
             };
             mediums[3] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = mediums[2].Triangle.B,
-                    B = new Vector3(-2, 0, 1),
-                    C = mediums[2].Triangle.C
-                }
+                Triangle = new Triangle3(mediums[2].Triangle.B, new(-2, 0, 1), mediums[2].Triangle.C)
             };
             mediums[4] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = mediums[0].Triangle.A,
-                    B = mediums[2].Triangle.C,
-                    C = mediums[1].Triangle.B
-                }
+                Triangle = new Triangle3(mediums[0].Triangle.A, mediums[2].Triangle.C, mediums[1].Triangle.B)
             };
             mediums[5] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = mediums[3].Triangle.B,
-                    B = new Vector3(-2, 0, 4),
-                    C = mediums[2].Triangle.C
-                }
+                Triangle = new Triangle3(mediums[3].Triangle.B, new(-2, 0, 4), mediums[2].Triangle.C)
             };
             mediums[6] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = mediums[5].Triangle.C,
-                    B = mediums[5].Triangle.B,
-                    C = new Vector3(1, 0, 8)
-                }
+                Triangle = new Triangle3(mediums[5].Triangle.C, mediums[5].Triangle.B, new(1, 0, 8))
             };
             mediums[7] = new Medium
             {
-                Triangle = new Triangle3
-                {
-                    A = new Vector3(1.0001f, 0, 2),
-                    B = mediums[6].Triangle.B,
-                    C = mediums[1].Triangle.B
-                }
+                Triangle = new Triangle3(new(1.0001f, 0, 2), mediums[6].Triangle.B, mediums[1].Triangle.B)
             };
         }
 
