@@ -13,10 +13,10 @@ namespace HenHen.Framework.VisualTests.Input
         {
         }
 
-        protected override Dictionary<VisualTesterControls, List<KeyboardKey>> CreateDefaultKeybindings() => new()
+        protected override Dictionary<VisualTesterControls, ISet<KeyboardKey>> CreateDefaultKeybindings() => new()
         {
-            { VisualTesterControls.PreviousScene, new List<KeyboardKey> { KeyboardKey.KEY_PAGE_UP } },
-            { VisualTesterControls.NextScene, new List<KeyboardKey> { KeyboardKey.KEY_PAGE_DOWN } }
+            { VisualTesterControls.PreviousScene, new HashSet<KeyboardKey> { KeyboardKey.KEY_PAGE_UP } },
+            { VisualTesterControls.NextScene, new HashSet<KeyboardKey> { KeyboardKey.KEY_PAGE_DOWN } }
         };
     }
 }

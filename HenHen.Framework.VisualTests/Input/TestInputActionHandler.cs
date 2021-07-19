@@ -13,14 +13,14 @@ namespace HenHen.Framework.VisualTests.Input
         {
         }
 
-        protected override Dictionary<TestAction, List<KeyboardKey>> CreateDefaultKeybindings() => new()
+        protected override Dictionary<TestAction, ISet<KeyboardKey>> CreateDefaultKeybindings() => new()
         {
-            { TestAction.Up, new() { KeyboardKey.KEY_UP } },
-            { TestAction.Down, new() { KeyboardKey.KEY_DOWN } },
-            { TestAction.Left, new() { KeyboardKey.KEY_LEFT } },
-            { TestAction.Right, new() { KeyboardKey.KEY_RIGHT } },
-            { TestAction.Next, new() { KeyboardKey.KEY_TAB } },
-            { TestAction.Confirm, new() { KeyboardKey.KEY_ENTER } }
+            { TestAction.Up, new HashSet<KeyboardKey> { KeyboardKey.KEY_UP } },
+            { TestAction.Down, new HashSet<KeyboardKey> { KeyboardKey.KEY_DOWN } },
+            { TestAction.Left, new HashSet<KeyboardKey> { KeyboardKey.KEY_LEFT } },
+            { TestAction.Right, new HashSet<KeyboardKey> { KeyboardKey.KEY_RIGHT } },
+            { TestAction.Next, new HashSet<KeyboardKey> { KeyboardKey.KEY_TAB } },
+            { TestAction.Confirm, new HashSet<KeyboardKey> { KeyboardKey.KEY_ENTER } }
         };
     }
 

@@ -28,7 +28,7 @@ namespace HenHen.Framework.Input
         /// keyboard keys that have to be pressed together
         /// to trigger that <see cref="TInputAction"/>.
         /// </summary>
-        private readonly Dictionary<TInputAction, List<KeyboardKey>> actionKeyBindings = new();
+        private readonly Dictionary<TInputAction, ISet<KeyboardKey>> actionKeyBindings = new();
 
         /// <summary>
         /// It may be expensive to check all keyboard keys
@@ -52,7 +52,7 @@ namespace HenHen.Framework.Input
         /// keyboard keys that have to be pressed together
         /// to trigger that <see cref="TInputAction"/>.
         /// </summary>
-        public IReadOnlyDictionary<TInputAction, List<KeyboardKey>> ActionKeyBindings => actionKeyBindings;
+        public IReadOnlyDictionary<TInputAction, ISet<KeyboardKey>> ActionKeyBindings => actionKeyBindings;
 
         /// <summary>
         /// A list of <see cref="TInputAction"/>s that were
@@ -72,7 +72,7 @@ namespace HenHen.Framework.Input
         /// triggering <see cref="OnActionRelease"/>
         /// for each of them.
         /// </remarks>
-        public void SetKeyBindings(IReadOnlyDictionary<TInputAction, List<KeyboardKey>> keyBindings)
+        public void SetKeyBindings(IReadOnlyDictionary<TInputAction, ISet<KeyboardKey>> keyBindings)
         {
             ReleaseAllActions();
             actionKeyBindings.Clear();
@@ -101,7 +101,7 @@ namespace HenHen.Framework.Input
             return true;
         }
 
-        protected abstract Dictionary<TInputAction, List<KeyboardKey>> CreateDefaultKeybindings();
+        protected abstract Dictionary<TInputAction, ISet<KeyboardKey>> CreateDefaultKeybindings();
 
         protected virtual InputPropagator<TInputAction> CreatePropagator() => new();
 
