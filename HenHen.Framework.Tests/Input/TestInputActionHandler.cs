@@ -13,10 +13,10 @@ namespace HenHen.Framework.Tests.Input
         {
         }
 
-        protected override Dictionary<TestAction, List<KeyboardKey>> CreateDefaultKeybindings() => new()
+        protected override Dictionary<TestAction, ISet<KeyboardKey>> CreateDefaultKeybindings() => new()
         {
-            { TestAction.Action1, new List<KeyboardKey> { KeyboardKey.KEY_A } },
-            { TestAction.Action2, new List<KeyboardKey> { KeyboardKey.KEY_LEFT_CONTROL, KeyboardKey.KEY_S } },
+            { TestAction.Action1, new HashSet<KeyboardKey> { KeyboardKey.KEY_A } },
+            { TestAction.Action2, new HashSet<KeyboardKey> { KeyboardKey.KEY_LEFT_CONTROL, KeyboardKey.KEY_S } },
         };
     }
 

@@ -13,11 +13,11 @@ namespace HenHen.Visual.Inputs
         {
         }
 
-        protected override Dictionary<MenuActions, List<KeyboardKey>> CreateDefaultKeybindings() => new()
+        protected override Dictionary<MenuActions, ISet<KeyboardKey>> CreateDefaultKeybindings() => new()
         {
-            { MenuActions.Next, new() { KeyboardKey.KEY_TAB } },
-            { MenuActions.Confirm, new() { KeyboardKey.KEY_ENTER } },
-            { MenuActions.Cancel, new() { KeyboardKey.KEY_ESCAPE } },
+            { MenuActions.Next, new HashSet<KeyboardKey> { KeyboardKey.KEY_TAB } },
+            { MenuActions.Confirm, new HashSet<KeyboardKey> { KeyboardKey.KEY_ENTER } },
+            { MenuActions.Cancel, new HashSet<KeyboardKey> { KeyboardKey.KEY_ESCAPE } },
         };
     }
 }
