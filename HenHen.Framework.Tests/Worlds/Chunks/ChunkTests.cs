@@ -71,12 +71,7 @@ namespace HenHen.Framework.Tests.Worlds.Chunks
 
         private static Medium CreateMedium() => new()
         {
-            Triangle = new Triangle3
-            {
-                A = new Vector3(258, 0, 128),
-                B = new Vector3(258, 0, 140),
-                C = new Vector3(280, 0, 128)
-            }
+            Triangle = new Triangle3(new(258, 0, 128), new(258, 0, 140), new(280, 0, 128))
         };
 
         private static TestCollisionNode CreateNode() => new(1, new Vector3(260, 0, 130), new[]
