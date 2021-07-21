@@ -6,19 +6,11 @@ using System.Collections.Generic;
 
 namespace HenHen.Framework.Graphics3d
 {
+    /// <summary>
+    ///     A 3D space that contains 3D objects (<seealso cref="Spatial"/>s).
+    /// </summary>
     public class Scene
     {
         public List<Spatial> Spatials { get; } = new();
-        public Camera Camera { get; } = new();
-
-        public void Render()
-        {
-            Raylib_cs.Raylib.BeginMode3D(Camera.RaylibCamera);
-            foreach (var spatial in Spatials)
-                spatial.Render();
-            Raylib_cs.Raylib.EndMode3D();
-        }
-
-        public void Update() => Camera.Update();
     }
 }
