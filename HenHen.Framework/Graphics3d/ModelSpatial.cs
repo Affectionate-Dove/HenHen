@@ -3,21 +3,23 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Graphics2d;
+using System.Numerics;
 
 namespace HenHen.Framework.Graphics3d
 {
     public class ModelSpatial : Spatial
     {
-        private Raylib_cs.Model model;
+        public Raylib_cs.Model Model { get; set; }
+
+        public Vector3 Scale { get; set; } = Vector3.One;
 
         public ColorInfo Color { get; set; } = new ColorInfo(255, 255, 255);
-
-        public void SetModel(string path) => model = Game.ModelStore.Get(path);
 
         protected override void OnRender()
         {
             base.OnRender();
-            Raylib_cs.Raylib.DrawModel(model, Position, 1, Color);
+            var (axis, angle) = Rotations3d.EulerToAxisAngle(Rotation);
+            Raylib_cs.Raylib.DrawModelEx(Model, Position, axis, angle, Scale, Color);
         }
     }
 }
