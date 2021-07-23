@@ -14,6 +14,8 @@ namespace HenHen.Framework.VisualTests
 
         public VisualTestsGame()
         {
+            LoadResources();
+
             var visualTesterScreen = new VisualTester(Inputs);
 
             inputActionHandler = new VisualTesterInputActionHandler(Inputs);
@@ -30,5 +32,7 @@ namespace HenHen.Framework.VisualTests
             positionalInterfaceInputManager.Update();
             base.OnUpdate();
         }
+
+        private static void LoadResources() => ModelStore.Load("Resources/Models/building_dock.obj");
     }
 }
