@@ -41,10 +41,19 @@ namespace HenHen.Framework.Graphics2d.Worlds
             set => gridDistance = Math.Max(0, value);
         }
 
+        /// <summary>
+        ///     Amount of visible vertical space.
+        /// </summary>
+        public float FieldOfView
+        {
+            get => camera.FovY;
+            set => camera.FovY = value;
+        }
+
         public WorldViewer2d(World world)
         {
             Target = world.Size / 2;
-            camera.FovY = world.Size.Y;
+            FieldOfView = world.Size.Y;
             AddChild(new Rectangle
             {
                 Color = new ColorInfo(0, 0, 0),

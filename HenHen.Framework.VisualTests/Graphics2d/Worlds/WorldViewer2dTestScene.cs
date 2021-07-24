@@ -65,6 +65,14 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
                     worldViewer2d.Target += new Vector2(1, 0);
                     return true;
 
+                case SceneControls.Nine:
+                    worldViewer2d.FieldOfView -= 1;
+                    return true;
+
+                case SceneControls.Zero:
+                    worldViewer2d.FieldOfView += 1;
+                    return true;
+
                 default:
                     return base.OnActionPressed(action);
             }
@@ -100,7 +108,8 @@ namespace HenHen.Framework.VisualTests.Graphics2d.Worlds
             var t =
                 "1 - decrease grid spacing by 0.5\n" +
                 "2 - increase grid spacing by 0.5\n" +
-                "↑/↓/←/→ - move view";
+                "↑/↓/←/→ - move view\n" +
+                "9/0 - increase/decrease zoom";
 
             return new()
             {
