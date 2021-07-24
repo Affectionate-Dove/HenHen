@@ -46,7 +46,5 @@ namespace HenHen.Framework.Graphics3d
 
             base.OnRender();
         }
-
-        //private static Vector3 ToVector3(Vector2 v2) => new(v2.X, 0, v2.Y);
     }
 }
