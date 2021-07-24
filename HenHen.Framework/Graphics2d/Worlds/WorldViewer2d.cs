@@ -4,6 +4,7 @@
 
 using HenHen.Framework.Extensions;
 using HenHen.Framework.Worlds;
+using HenHen.Framework.Worlds.Chunks;
 using HenHen.Framework.Worlds.Mediums;
 using System;
 using System.Numerics;
@@ -13,6 +14,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
     public class WorldViewer2d : Container
     {
         private readonly Camera2D camera = new();
+        private readonly Rectangle background;
         private float gridDistance = 2;
 
         public World World { get; }
@@ -41,11 +43,23 @@ namespace HenHen.Framework.Graphics2d.Worlds
             set => gridDistance = Math.Max(0, value);
         }
 
+        public ColorInfo BackgroundColor
+        {
+            get => background.Color;
+            set => background.Color = value;
+        }
+
+        public ColorInfo? GridColor { get; set; } = new Raylib_cs.Color(255, 255, 255, 50);
+
+        public ColorInfo? ChunkBorderColor { get; set; } = new Raylib_cs.Color(255, 255, 255, 100);
+
+        public Func<Chunk, ColorInfo> GetChunkFillColor { get; set; } = DefaultChunkFillColor;
+
         public WorldViewer2d(World world)
         {
             Target = world.Size / 2;
             camera.FovY = world.Size.Y;
-            AddChild(new Rectangle
+            AddChild(background = new Rectangle
             {
                 Color = new ColorInfo(0, 0, 0),
                 RelativeSizeAxes = Axes.Both
@@ -54,13 +68,18 @@ namespace HenHen.Framework.Graphics2d.Worlds
             Masking = true;
         }
 
+        public static ColorInfo DefaultChunkFillColor(Chunk chunk) => new Raylib_cs.Color(30, 30, 30, 255);
+
         protected override void OnRender()
         {
             base.OnRender();
-            DrawChunksFill();
-            DrawChunksBorders();
+            if (GetChunkFillColor is not null)
+                DrawChunksFill(GetChunkFillColor);
+            if (ChunkBorderColor.HasValue)
+                DrawChunksBorders(ChunkBorderColor.Value);
             DrawMediums();
-            DrawGrid();
+            if (GridColor.HasValue)
+                DrawGrid(GridColor.Value);
             DrawNodes();
         }
 
@@ -101,7 +120,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
             }
         }
 
-        private void DrawGrid()
+        private void DrawGrid(ColorInfo gridColor)
         {
             if (GridDistance == 0)
                 return;
@@ -118,7 +137,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 // Y on screen
                 var renderingY = (int)Math.Round(LayoutInfo.RenderRect.Top + localRenderingY);
 
-                Raylib_cs.Raylib.DrawLine((int)LayoutInfo.RenderRect.Left, renderingY, (int)LayoutInfo.RenderRect.Right, renderingY, new Raylib_cs.Color(255, 255, 255, 50));
+                Raylib_cs.Raylib.DrawLine((int)LayoutInfo.RenderRect.Left, renderingY, (int)LayoutInfo.RenderRect.Right, renderingY, gridColor);
             }
 
             var startX = MathF.Ceiling(visibleArea.Left / gridDistance);
@@ -131,7 +150,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 // X on screen
                 var renderingX = (int)Math.Round(LayoutInfo.RenderRect.Left + localRenderingX);
 
-                Raylib_cs.Raylib.DrawLine(renderingX, (int)LayoutInfo.RenderRect.Top, renderingX, (int)LayoutInfo.RenderRect.Bottom, new Raylib_cs.Color(255, 255, 255, 50));
+                Raylib_cs.Raylib.DrawLine(renderingX, (int)LayoutInfo.RenderRect.Top, renderingX, (int)LayoutInfo.RenderRect.Bottom, gridColor);
             }
         }
 
@@ -148,25 +167,25 @@ namespace HenHen.Framework.Graphics2d.Worlds
             }
         }
 
-        private void DrawChunksFill()
+        private void DrawChunksFill(Func<Chunk, ColorInfo> chunkFillColor)
         {
             var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
             foreach (var chunk in World.GetChunksAroundArea(visibleArea))
             {
                 var localRenderingArea = camera.AreaToRenderingSpace(chunk.Coordinates, LayoutInfo.RenderSize);
                 var screenRenderingArea = localRenderingArea + LayoutInfo.RenderRect.TopLeft;
-                Raylib_cs.Raylib.DrawRectangleV(screenRenderingArea.TopLeft, screenRenderingArea.Size, new Raylib_cs.Color(30, 30, 30, 255));
+                Raylib_cs.Raylib.DrawRectangleV(screenRenderingArea.TopLeft, screenRenderingArea.Size, chunkFillColor(chunk));
             }
         }
 
-        private void DrawChunksBorders()
+        private void DrawChunksBorders(ColorInfo chunkBorderColor)
         {
             var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
             foreach (var chunk in World.GetChunksAroundArea(visibleArea))
             {
                 var localRenderingArea = camera.AreaToRenderingSpace(chunk.Coordinates, LayoutInfo.RenderSize);
                 var screenRenderingArea = localRenderingArea + LayoutInfo.RenderRect.TopLeft;
-                Raylib_cs.Raylib.DrawRectangleLines((int)screenRenderingArea.Left, (int)screenRenderingArea.Top, (int)screenRenderingArea.Width + 1, (int)screenRenderingArea.Height + 1, new Raylib_cs.Color(255, 255, 255, 100));
+                Raylib_cs.Raylib.DrawRectangleLines((int)screenRenderingArea.Left, (int)screenRenderingArea.Top, (int)screenRenderingArea.Width + 1, (int)screenRenderingArea.Height + 1, chunkBorderColor);
             }
         }
     }
