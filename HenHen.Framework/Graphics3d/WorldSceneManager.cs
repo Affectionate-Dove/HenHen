@@ -23,7 +23,7 @@ namespace HenHen.Framework.Graphics3d
     ///     from <see cref="ViewPoint"/>, a <see cref="Spatial"/> is generated
     ///     using <see cref="NodeSpatialCreator"/> or <see cref="MediumSpatialCreator"/>
     ///     respectively, and on each <see cref="Update"/> call,
-    ///     a function returned by <see cref="NodeHandlerCreator"/> is called for both
+    ///     a function returned by <see cref="NodeHandlerCreator"/> is called for
     ///     the <see cref="Node"/> and the <see cref="Spatial"/>.
     /// </remarks>
     public class WorldSceneManager
