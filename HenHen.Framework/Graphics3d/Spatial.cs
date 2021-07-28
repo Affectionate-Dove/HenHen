@@ -13,11 +13,13 @@ namespace HenHen.Framework.Graphics3d
 
         public void Render() => OnRender();
 
+        public void Update(float elapsed) => OnUpdate(elapsed);
+
         protected virtual void OnRender()
         {
         }
 
-        protected virtual void OnUpdate()
+        protected virtual void OnUpdate(float elapsed)
         {
         }
     }

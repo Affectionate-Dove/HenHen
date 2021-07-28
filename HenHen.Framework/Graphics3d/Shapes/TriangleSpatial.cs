@@ -11,8 +11,28 @@ namespace HenHen.Framework.Graphics3d.Shapes
     {
         public Triangle3 Triangle { get; set; }
 
-        public ColorInfo Color { get; set; } = Raylib_cs.Color.RAYWHITE;
+        public ColorInfo? Color { get; set; } = Raylib_cs.Color.RAYWHITE;
+        public ColorInfo? WireColor { get; set; }
 
-        protected override void OnRender() => Raylib_cs.Raylib.DrawTriangle3D(Triangle.A, Triangle.B, Triangle.C, Color);
+        ColorInfo IHasColor.Color => Color ?? Raylib_cs.Color.BLANK;
+
+        protected override void OnRender()
+        {
+            if (Color.HasValue)
+                Raylib_cs.Raylib.DrawTriangle3D(Triangle.A, Triangle.B, Triangle.C, Color.Value);
+
+            if (WireColor.HasValue)
+            {
+                var normal = Triangle.Normal;
+
+                // in order for all lines to be more visible,
+                // move them above the triangle slightly
+                var linesTriangle = Triangle + (normal * 0.00005f);
+
+                Raylib_cs.Raylib.DrawLine3D(linesTriangle.A, linesTriangle.B, WireColor.Value);
+                Raylib_cs.Raylib.DrawLine3D(linesTriangle.B, linesTriangle.C, WireColor.Value);
+                Raylib_cs.Raylib.DrawLine3D(linesTriangle.A, linesTriangle.C, WireColor.Value);
+            }
+        }
     }
 }

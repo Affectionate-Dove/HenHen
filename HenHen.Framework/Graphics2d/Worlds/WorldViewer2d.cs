@@ -59,12 +59,21 @@ namespace HenHen.Framework.Graphics2d.Worlds
         public Func<Node, ColorInfo> GetNodeColor { get; set; } = DefaultGetNodeColor;
 
         public Func<Node, float> GetNodeSize { get; set; } = DefaultGetNodeSize;
+        
+        /// <summary>
+        ///     Amount of visible vertical space.
+        /// </summary>
+        public float FieldOfView
+        {
+            get => camera.FovY;
+            set => camera.FovY = value;
+        }
 
         public WorldViewer2d(World world)
         {
             Target = world.Size / 2;
-            camera.FovY = world.Size.Y;
-            AddChild(background = new Rectangle
+            FieldOfView = world.Size.Y;
+            AddChild(new Rectangle
             {
                 Color = new ColorInfo(0, 0, 0),
                 RelativeSizeAxes = Axes.Both
@@ -123,7 +132,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 triangle2d += LayoutInfo.RenderRect.TopLeft;
 
                 // calls to drawing framework
-                var borderColor = GetMediumColor(medium.Type);
+                var borderColor = medium.Color;
                 Raylib_cs.Raylib.DrawTriangleLines(triangle2d.A, triangle2d.B, triangle2d.C, borderColor);
                 var fillColor = new ColorInfo(borderColor.r, borderColor.g, borderColor.b, 10);
                 Raylib_cs.Raylib.DrawTriangle(triangle2d.A, triangle2d.B, triangle2d.C, fillColor);
