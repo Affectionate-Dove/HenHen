@@ -30,6 +30,10 @@ namespace HenHen.Framework.Worlds.Chunks
 
         private readonly HashSet<Node> nodesHashSet = new();
 
+        public event Action<Node> NodeAdded;
+
+        public event Action<Node> NodeRemoved;
+
         /// <summary>
         /// All <see cref="Medium"/>s that are at least
         /// partly contained inside this <see cref="Chunk"/>'s
@@ -81,6 +85,8 @@ namespace HenHen.Framework.Worlds.Chunks
             if (nodesHashSet.Add(node))
                 nodesList.Add(node);
             // only add node to list if it isn't already in this chunk
+
+            NodeAdded?.Invoke(node);
         }
 
         public void RemoveMedium(Medium medium)
@@ -95,6 +101,8 @@ namespace HenHen.Framework.Worlds.Chunks
                 throw new InvalidOperationException($"The {nameof(node)} wasn't in this chunk.");
             if (!nodesHashSet.Remove(node))
                 throw new InvalidOperationException($"The {nameof(node)} was in {nameof(nodesList)} but wasn't in {nameof(nodesHashSet)}.");
+
+            NodeRemoved?.Invoke(node);
         }
     }
 }
