@@ -5,7 +5,6 @@
 using HenHen.Framework.Extensions;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Chunks;
-using HenHen.Framework.Worlds.Mediums;
 using HenHen.Framework.Worlds.Nodes;
 using System;
 using System.Numerics;
@@ -59,7 +58,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         public Func<Node, ColorInfo> GetNodeColor { get; set; } = DefaultGetNodeColor;
 
         public Func<Node, float> GetNodeSize { get; set; } = DefaultGetNodeSize;
-        
+
         /// <summary>
         ///     Amount of visible vertical space.
         /// </summary>
@@ -73,7 +72,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
         {
             Target = world.Size / 2;
             FieldOfView = world.Size.Y;
-            AddChild(new Rectangle
+            AddChild(background = new Rectangle
             {
                 Color = new ColorInfo(0, 0, 0),
                 RelativeSizeAxes = Axes.Both
@@ -101,14 +100,6 @@ namespace HenHen.Framework.Graphics2d.Worlds
         }
 
         private static ColorInfo DefaultGetNodeColor(Node node) => Raylib_cs.Color.RAYWHITE;
-
-        private static ColorInfo GetMediumColor(MediumType type) => type switch
-        {
-            MediumType.Ground => new(0, 255, 0),
-            MediumType.Water => new(0, 100, 255),
-            MediumType.Air => new(255, 255, 255, 50),
-            _ => new(0, 0, 0, 50)
-        };
 
         private void DrawMediums()
         {
