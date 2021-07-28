@@ -5,6 +5,7 @@
 using HenHen.Framework.Input;
 using HenHen.Framework.IO.Stores;
 using HenHen.Framework.Screens;
+using HenHen.Framework.UI;
 using System.Numerics;
 using static Raylib_cs.Raylib;
 
@@ -28,6 +29,9 @@ namespace HenHen.Framework
             ScreenStack = new ScreenStack();
             textureStore = new TextureStore();
             modelStore = new ModelStore();
+
+            SpriteText.DefaultFont = LoadFont("Resources/Fonts/OpenSans-SemiBold.ttf");
+            SetTextureFilter(SpriteText.DefaultFont.texture, Raylib_cs.TextureFilter.TEXTURE_FILTER_TRILINEAR);
         }
 
         public void Loop(float elapsed)

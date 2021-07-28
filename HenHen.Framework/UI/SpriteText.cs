@@ -8,9 +8,11 @@ namespace HenHen.Framework.UI
 {
     public class SpriteText : Drawable, IHasColor
     {
+        public static Raylib_cs.Font DefaultFont { get; set; } = Raylib_cs.Raylib.GetFontDefault();
+
         public string Text { get; set; }
 
-        public Raylib_cs.Font Font { get; set; } = Raylib_cs.Raylib.GetFontDefault();
+        public Raylib_cs.Font Font { get; set; } = DefaultFont;
 
         public ColorInfo Color { get; set; } = new ColorInfo(255, 255, 255);
 
