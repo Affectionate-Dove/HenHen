@@ -4,7 +4,6 @@
 
 using HenHen.Framework.Extensions;
 using HenHen.Framework.Worlds;
-using HenHen.Framework.Worlds.Mediums;
 using System;
 using System.Numerics;
 
@@ -73,14 +72,6 @@ namespace HenHen.Framework.Graphics2d.Worlds
             DrawNodes();
         }
 
-        private static ColorInfo GetMediumColor(MediumType type) => type switch
-        {
-            MediumType.Ground => new(0, 255, 0),
-            MediumType.Water => new(0, 100, 255),
-            MediumType.Air => new(255, 255, 255, 50),
-            _ => new(0, 0, 0, 50)
-        };
-
         private void DrawMediums()
         {
             var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
@@ -103,7 +94,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 triangle2d += LayoutInfo.RenderRect.TopLeft;
 
                 // calls to drawing framework
-                var borderColor = GetMediumColor(medium.Type);
+                var borderColor = medium.Color;
                 Raylib_cs.Raylib.DrawTriangleLines(triangle2d.A, triangle2d.B, triangle2d.C, borderColor);
                 var fillColor = new ColorInfo(borderColor.r, borderColor.g, borderColor.b, 10);
                 Raylib_cs.Raylib.DrawTriangle(triangle2d.A, triangle2d.B, triangle2d.C, fillColor);
