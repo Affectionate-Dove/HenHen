@@ -51,9 +51,7 @@ namespace HenHen.Framework.Graphics3d
         {
             base.OnUpdate(elapsed);
             foreach (var spatial in Scene.Spatials)
-            {
                 spatial.Update(elapsed);
-            }
         }
     }
 }
