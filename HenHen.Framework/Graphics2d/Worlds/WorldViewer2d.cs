@@ -58,6 +58,8 @@ namespace HenHen.Framework.Graphics2d.Worlds
 
         public Func<Node, ColorInfo> GetNodeColor { get; set; } = DefaultGetNodeColor;
 
+        public Func<Node, float> GetNodeSize { get; set; } = DefaultGetNodeSize;
+
         public WorldViewer2d(World world)
         {
             Target = world.Size / 2;
@@ -73,6 +75,8 @@ namespace HenHen.Framework.Graphics2d.Worlds
 
         public static ColorInfo DefaultChunkFillColor(Chunk chunk) => new Raylib_cs.Color(30, 30, 30, 255);
 
+        public static float DefaultGetNodeSize(Node node) => 5;
+
         protected override void OnRender()
         {
             base.OnRender();
@@ -83,7 +87,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
             DrawMediums();
             if (GridColor.HasValue)
                 DrawGrid(GridColor.Value);
-            if (GetNodeColor is not null)
+            if (GetNodeColor is not null && GetNodeSize is not null)
                 DrawNodes();
         }
 
@@ -167,9 +171,14 @@ namespace HenHen.Framework.Graphics2d.Worlds
             {
                 var localRendering = camera.PositionToRenderingSpace(node.Position.ToTopDownPoint(), LayoutInfo.RenderSize);
 
-                var rendering = LayoutInfo.RenderRect.TopLeft + localRendering;
+                var renderingPos = LayoutInfo.RenderRect.TopLeft + localRendering;
 
-                Raylib_cs.Raylib.DrawRectangleV(rendering, new Vector2(5), GetNodeColor(node));
+                var size1d = GetNodeSize(node);
+                if (size1d < 0)
+                    throw new ArgumentOutOfRangeException(nameof(GetNodeSize), "Cannot be less than 0.");
+
+                var size = new Vector2(size1d);
+                Raylib_cs.Raylib.DrawRectangleV(renderingPos - (size * 0.5f), size, GetNodeColor(node));
             }
         }
 
