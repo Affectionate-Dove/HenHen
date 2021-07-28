@@ -46,5 +46,14 @@ namespace HenHen.Framework.Graphics3d
 
             base.OnRender();
         }
+
+        protected override void OnUpdate(float elapsed)
+        {
+            base.OnUpdate(elapsed);
+            foreach (var spatial in Scene.Spatials)
+            {
+                spatial.Update(elapsed);
+            }
+        }
     }
 }
