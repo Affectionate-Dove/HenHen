@@ -6,6 +6,7 @@ using HenHen.Framework.Extensions;
 using HenHen.Framework.Worlds;
 using HenHen.Framework.Worlds.Chunks;
 using HenHen.Framework.Worlds.Mediums;
+using HenHen.Framework.Worlds.Nodes;
 using System;
 using System.Numerics;
 
@@ -55,6 +56,8 @@ namespace HenHen.Framework.Graphics2d.Worlds
 
         public Func<Chunk, ColorInfo> GetChunkFillColor { get; set; } = DefaultChunkFillColor;
 
+        public Func<Node, ColorInfo> GetNodeColor { get; set; } = DefaultGetNodeColor;
+
         public WorldViewer2d(World world)
         {
             Target = world.Size / 2;
@@ -80,8 +83,11 @@ namespace HenHen.Framework.Graphics2d.Worlds
             DrawMediums();
             if (GridColor.HasValue)
                 DrawGrid(GridColor.Value);
-            DrawNodes();
+            if (GetNodeColor is not null)
+                DrawNodes();
         }
+
+        private static ColorInfo DefaultGetNodeColor(Node node) => Raylib_cs.Color.RAYWHITE;
 
         private static ColorInfo GetMediumColor(MediumType type) => type switch
         {
@@ -163,7 +169,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
 
                 var rendering = LayoutInfo.RenderRect.TopLeft + localRendering;
 
-                Raylib_cs.Raylib.DrawRectangleV(rendering, new Vector2(5), new Raylib_cs.Color(255, 255, 255, 255));
+                Raylib_cs.Raylib.DrawRectangleV(rendering, new Vector2(5), GetNodeColor(node));
             }
         }
 
