@@ -11,7 +11,6 @@ namespace HenHen.Framework.VisualTests
     {
         public string Name { get; }
 
-        // This is a positional argument
         public TestSceneNameAttribute(string name) => Name = name;
     }
 }
