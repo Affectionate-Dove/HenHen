@@ -59,17 +59,14 @@ namespace HenHen.Framework.Graphics3d
 
         public ChunksAreaObserver Observer { get; }
 
-        public Func<Node, Spatial> NodeSpatialCreator { get; set; }
-        public Func<Node, Spatial, Action<Node, Spatial>> NodeHandlerCreator { get; set; }
-        public Func<Medium, Spatial> MediumSpatialCreator { get; set; }
+        public Func<Node, Spatial> NodeSpatialCreator { get; set; } = DefaultNodeSpatialCreator;
+        public Func<Node, Spatial, Action<Node, Spatial>> NodeHandlerCreator { get; set; } = DefaultNodeHandlerCreator;
+        public Func<Medium, Spatial> MediumSpatialCreator { get; set; } = DefaultMediumSpatialCreator;
 
         public WorldSceneManager(World world)
         {
             World = world;
             Scene = new Scene();
-            NodeSpatialCreator = DefaultNodeSpatialCreator;
-            MediumSpatialCreator = DefaultMediumSpatialCreator;
-            NodeHandlerCreator = DefaultNodeHandlerCreator;
 
             Observer = new ChunksAreaObserver(world.ChunksManager);
             Observer.NodeEnteredChunksArea += OnNodeEntrance;
