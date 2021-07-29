@@ -186,7 +186,13 @@ namespace HenHen.Framework.VisualTests
             public TestSceneButton(Type type)
             {
                 Type = type;
-                Text = type.Name.Replace("TestScene", null);
+
+                var typeInfo = type.GetTypeInfo();
+                var testSceneName = typeInfo.GetCustomAttribute<TestSceneNameAttribute>()?.Name ??
+                    type.Name.Replace("TestScene", null);
+
+                Text = testSceneName;
+
                 FocusedColors = new(new(100, 100, 100), null, null);
                 DisabledColors = new(new(60, 60, 60), null, new(250, 250, 250));
             }
