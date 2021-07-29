@@ -7,6 +7,7 @@ using HenHen.Framework.VisualTests.Input;
 
 namespace HenHen.Framework.VisualTests.Graphics2d
 {
+    [TestSceneName("Drawable visibility")]
     public class DrawableVisibilityTestScene : VisualTestScene
     {
         private readonly ExampleDrawable drawable;
