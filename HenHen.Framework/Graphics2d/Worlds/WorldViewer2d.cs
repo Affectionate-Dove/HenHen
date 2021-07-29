@@ -49,11 +49,11 @@ namespace HenHen.Framework.Graphics2d.Worlds
             set => background.Color = value;
         }
 
-        public ColorInfo? GridColor { get; set; } = new Raylib_cs.Color(255, 255, 255, 50);
+        public Func<GridLineInfo, ColorInfo> GetGridLineColor { get; set; } = DefaultGetGridColor;
 
-        public ColorInfo? ChunkBorderColor { get; set; } = new Raylib_cs.Color(255, 255, 255, 100);
+        public Func<Chunk, ColorInfo> GetChunkBorderColor { get; set; } = DefaultGetChunkBorderColor;
 
-        public Func<Chunk, ColorInfo> GetChunkFillColor { get; set; } = DefaultChunkFillColor;
+        public Func<Chunk, ColorInfo> GetChunkFillColor { get; set; } = DefaultGetChunkFillColor;
 
         public Func<Node, ColorInfo> GetNodeColor { get; set; } = DefaultGetNodeColor;
 
@@ -81,25 +81,29 @@ namespace HenHen.Framework.Graphics2d.Worlds
             Masking = true;
         }
 
-        public static ColorInfo DefaultChunkFillColor(Chunk chunk) => new Raylib_cs.Color(30, 30, 30, 255);
+        public static ColorInfo DefaultGetChunkBorderColor(Chunk chunk) => new Raylib_cs.Color(255, 255, 255, 100);
+
+        public static ColorInfo DefaultGetChunkFillColor(Chunk chunk) => new Raylib_cs.Color(30, 30, 30, 255);
 
         public static float DefaultGetNodeSize(Node node) => 5;
+
+        public static ColorInfo DefaultGetGridColor(GridLineInfo gridLineInfo) => new Raylib_cs.Color(255, 255, 255, 50);
+
+        public static ColorInfo DefaultGetNodeColor(Node node) => Raylib_cs.Color.RAYWHITE;
 
         protected override void OnRender()
         {
             base.OnRender();
             if (GetChunkFillColor is not null)
                 DrawChunksFill(GetChunkFillColor);
-            if (ChunkBorderColor.HasValue)
-                DrawChunksBorders(ChunkBorderColor.Value);
+            if (GetChunkBorderColor is not null)
+                DrawChunksBorders();
             DrawMediums();
-            if (GridColor.HasValue)
-                DrawGrid(GridColor.Value);
+            if (GetGridLineColor is not null)
+                DrawGrid();
             if (GetNodeColor is not null && GetNodeSize is not null)
                 DrawNodes();
         }
-
-        private static ColorInfo DefaultGetNodeColor(Node node) => Raylib_cs.Color.RAYWHITE;
 
         private void DrawMediums()
         {
@@ -130,7 +134,7 @@ namespace HenHen.Framework.Graphics2d.Worlds
             }
         }
 
-        private void DrawGrid(ColorInfo gridColor)
+        private void DrawGrid()
         {
             if (GridDistance == 0)
                 return;
@@ -147,7 +151,9 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 // Y on screen
                 var renderingY = (int)Math.Round(LayoutInfo.RenderRect.Top + localRenderingY);
 
-                Raylib_cs.Raylib.DrawLine((int)LayoutInfo.RenderRect.Left, renderingY, (int)LayoutInfo.RenderRect.Right, renderingY, gridColor);
+                var lineColor = GetGridLineColor(new() { Coordinate = currentY * gridDistance, Vertical = false });
+
+                Raylib_cs.Raylib.DrawLine((int)LayoutInfo.RenderRect.Left, renderingY, (int)LayoutInfo.RenderRect.Right, renderingY, lineColor);
             }
 
             var startX = MathF.Ceiling(visibleArea.Left / gridDistance);
@@ -160,7 +166,9 @@ namespace HenHen.Framework.Graphics2d.Worlds
                 // X on screen
                 var renderingX = (int)Math.Round(LayoutInfo.RenderRect.Left + localRenderingX);
 
-                Raylib_cs.Raylib.DrawLine(renderingX, (int)LayoutInfo.RenderRect.Top, renderingX, (int)LayoutInfo.RenderRect.Bottom, gridColor);
+                var lineColor = GetGridLineColor(new() { Coordinate = currentX * gridDistance, Vertical = true });
+
+                Raylib_cs.Raylib.DrawLine(renderingX, (int)LayoutInfo.RenderRect.Top, renderingX, (int)LayoutInfo.RenderRect.Bottom, lineColor);
             }
         }
 
@@ -193,15 +201,30 @@ namespace HenHen.Framework.Graphics2d.Worlds
             }
         }
 
-        private void DrawChunksBorders(ColorInfo chunkBorderColor)
+        private void DrawChunksBorders()
         {
             var visibleArea = camera.GetVisibleArea(LayoutInfo.RenderSize);
             foreach (var chunk in World.GetChunksAroundArea(visibleArea))
             {
                 var localRenderingArea = camera.AreaToRenderingSpace(chunk.Coordinates, LayoutInfo.RenderSize);
                 var screenRenderingArea = localRenderingArea + LayoutInfo.RenderRect.TopLeft;
-                Raylib_cs.Raylib.DrawRectangleLines((int)screenRenderingArea.Left, (int)screenRenderingArea.Top, (int)screenRenderingArea.Width + 1, (int)screenRenderingArea.Height + 1, chunkBorderColor);
+                Raylib_cs.Raylib.DrawRectangleLines((int)screenRenderingArea.Left, (int)screenRenderingArea.Top, (int)screenRenderingArea.Width + 1, (int)screenRenderingArea.Height + 1, GetChunkBorderColor(chunk));
             }
+        }
+
+        public readonly struct GridLineInfo
+        {
+            /// <summary>
+            ///     Whether the line is vertical.
+            /// </summary>
+            public bool Vertical { get; init; }
+
+            /// <summary>
+            ///     Whether the line is horizontal.
+            /// </summary>
+            public bool Horizontal => !Vertical;
+
+            public float Coordinate { get; init; }
         }
     }
 }
