@@ -62,6 +62,10 @@ namespace HenHen.Framework.Graphics2d
             LayoutValid = ContainerLayoutValid = false;
         }
 
+        public virtual int RemoveAll(Predicate<Drawable> match) => Children.RemoveAll(match);
+
+        public virtual void Clear() => Children.Clear();
+
         protected RectangleF ComputeChildrenRenderRect() => new(LayoutInfo.RenderRect.Left + Padding.Left, LayoutInfo.RenderRect.Right - Padding.Right, LayoutInfo.RenderRect.Bottom - Padding.Bottom, LayoutInfo.RenderRect.Top + Padding.Top);
 
         protected override void OnUpdate(float elapsed)

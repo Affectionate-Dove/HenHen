@@ -65,6 +65,21 @@ namespace HenHen.Framework.Graphics2d
             LayoutValid = ContainerLayoutValid = false;
         }
 
+        public override int RemoveAll(System.Predicate<Drawable> match) => base.Children.RemoveAll(_childContainer =>
+        {
+            var childContainer = _childContainer as Container;
+            var child = childContainer.Children[0];
+            if (match(child))
+            {
+                childContainer.RemoveChild(child);
+                LayoutValid = ContainerLayoutValid = false;
+                return true;
+            }
+            return false;
+        });
+
+        public override void Clear() => RemoveAll(_ => true);
+
         protected override void OnLayoutUpdate()
         {
             base.OnLayoutUpdate();
