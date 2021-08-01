@@ -78,5 +78,20 @@ namespace HenHen.Framework.Tests.Graphics2d
             Assert.AreEqual(new RectangleF(0, 300, 90, 50), button2.LayoutInfo.RenderRect);
             Assert.AreEqual(new RectangleF(0, 300, 140, 100), button3.LayoutInfo.RenderRect);
         }
+
+        [Test]
+        public void RemoveAllTest()
+        {
+            fillFlowContainer.RemoveAll(d => d.Size.X > 100);
+            Assert.False(fillFlowContainer.Contains(child1));
+            Assert.True(fillFlowContainer.Contains(child2));
+        }
+
+        [Test]
+        public void ClearTest()
+        {
+            fillFlowContainer.Clear();
+            Assert.Zero(fillFlowContainer.Count);
+        }
     }
 }

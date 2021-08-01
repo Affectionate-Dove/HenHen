@@ -43,6 +43,8 @@ namespace HenHen.Framework.Graphics2d
 
         public new IEnumerable<Drawable> Children => base.Children.Select(c => (c as Container).Children[0]);
 
+        public int Count => base.Children.Count;
+
         public override void AddChild(Drawable child)
         {
             var container = new Container
@@ -79,6 +81,8 @@ namespace HenHen.Framework.Graphics2d
         });
 
         public override void Clear() => RemoveAll(_ => true);
+
+        public virtual bool Contains(Drawable drawable) => base.Children.Any(childContainer => (childContainer as Container).Children[0] == drawable);
 
         protected override void OnLayoutUpdate()
         {
