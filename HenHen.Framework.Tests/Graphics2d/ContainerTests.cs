@@ -40,5 +40,20 @@ namespace HenHen.Framework.Tests.Graphics2d
             Assert.AreEqual(RectangleF.FromPositionAndSize(new(150), new(230), CoordinateSystem2d.YDown), child1.LayoutInfo.RenderRect);
             Assert.AreEqual(RectangleF.FromPositionAndSize(new(250), new(50, 300), CoordinateSystem2d.YDown), child2.LayoutInfo.RenderRect);
         }
+
+        [Test]
+        public void RemoveAllTest()
+        {
+            container.RemoveAll(d => d.Size.X > 100);
+            Assert.False(container.Children.Contains(child1));
+            Assert.True(container.Children.Contains(child2));
+        }
+
+        [Test]
+        public void ClearTest()
+        {
+            container.Clear();
+            Assert.Zero(container.Children.Count);
+        }
     }
 }
