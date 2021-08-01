@@ -4,7 +4,6 @@
 
 using HenHen.Framework.Graphics2d;
 using HenHen.Framework.UI;
-using System.Linq;
 
 namespace HenHen.Framework.VisualTests.UI
 {
@@ -29,8 +28,7 @@ namespace HenHen.Framework.VisualTests.UI
 
         public void ChangeScene(VisualTestScene testScene)
         {
-            foreach (var child in flowContainer.Children.ToList())
-                flowContainer.RemoveChild(child);
+            flowContainer.Clear();
 
             if (testScene.Description is not null)
             {
