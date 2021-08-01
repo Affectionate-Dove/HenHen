@@ -4,7 +4,6 @@
 
 using HenHen.Framework.Graphics2d;
 using HenHen.Framework.UI;
-using System;
 using System.Linq;
 
 namespace HenHen.Framework.VisualTests.UI
@@ -12,12 +11,11 @@ namespace HenHen.Framework.VisualTests.UI
     public class TestSceneInfoOverlay : Container
     {
         private readonly FillFlowContainer flowContainer;
-        private readonly Rectangle background;
 
         public TestSceneInfoOverlay()
         {
             // background
-            AddChild(background = new Rectangle { RelativeSizeAxes = Axes.Both, Color = Raylib_cs.Color.DARKGRAY });
+            AddChild(new Rectangle { RelativeSizeAxes = Axes.Both, Color = Raylib_cs.Color.DARKGRAY });
 
             AddChild(flowContainer = new FillFlowContainer
             {
@@ -31,7 +29,7 @@ namespace HenHen.Framework.VisualTests.UI
 
         public void ChangeScene(VisualTestScene testScene)
         {
-            foreach (var child in flowContainer.Children.ToList()) // TODO
+            foreach (var child in flowContainer.Children.ToList())
                 flowContainer.RemoveChild(child);
 
             if (testScene.Description is not null)
@@ -46,12 +44,6 @@ namespace HenHen.Framework.VisualTests.UI
                 foreach (var (controls, description) in testScene.ControlsDescriptions)
                     flowContainer.AddChild(new SpriteText { Text = $"{string.Join(", ", controls)}: {description}" });
             }
-        }
-
-        protected override void OnLayoutUpdate()
-        {
-            base.OnLayoutUpdate();
-            Console.WriteLine($"({DateTime.Now}) Overlay size:{LayoutInfo.RenderSize}\nRectangle size: {background.LayoutInfo.RenderSize}");
         }
     }
 }
