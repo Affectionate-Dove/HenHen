@@ -67,10 +67,7 @@ namespace HenHen.Framework.Graphics2d
         protected override void OnUpdate(float elapsed)
         {
             if (Children.Any(child => !child.LayoutValid))
-            {
-                LayoutValid = false;
-                ContainerLayoutValid = false;
-            }
+                LayoutValid = ContainerLayoutValid = false;
 
             base.OnUpdate(elapsed);
 
@@ -88,7 +85,7 @@ namespace HenHen.Framework.Graphics2d
             foreach (var child in Children)
             {
                 if (AutoSizeAxes != Axes.None && !child.LayoutValid)
-                    LayoutValid = false;
+                    LayoutValid = ContainerLayoutValid = false;
                 child.UpdateLayout();
             }
         }

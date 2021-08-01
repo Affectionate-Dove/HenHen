@@ -52,8 +52,7 @@ namespace HenHen.Framework.Graphics2d
             };
             container.AddChild(child);
             base.AddChild(container);
-            LayoutValid = false;
-            ContainerLayoutValid = false;
+            LayoutValid = ContainerLayoutValid = false;
         }
 
         public override void RemoveChild(Drawable child)
@@ -63,8 +62,7 @@ namespace HenHen.Framework.Graphics2d
                 return;
             container.RemoveChild(child);
             base.RemoveChild(container);
-            LayoutValid = false;
-            ContainerLayoutValid = false;
+            LayoutValid = ContainerLayoutValid = false;
         }
 
         protected override void OnLayoutUpdate()
