@@ -7,6 +7,7 @@ using HenHen.Framework.Input;
 using HenHen.Framework.Screens;
 using HenHen.Framework.UI;
 using HenHen.Framework.VisualTests.Input;
+using HenHen.Framework.VisualTests.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace HenHen.Framework.VisualTests
         private readonly List<Type> sceneTypes;
         private readonly List<TestSceneButton> buttons;
         private readonly SceneInputActionHandler sceneInputActionHandler;
+        private readonly TestSceneInfoOverlay testSceneInfoOverlay;
         private int sceneIndex;
 
         public VisualTester(Inputs inputs)
@@ -57,9 +59,15 @@ namespace HenHen.Framework.VisualTests
             AddChild(rightContainer);
             rightContainer.AddChild(scenesContainer);
 
-            if (sceneTypes.Count > 0)
-                scenesContainer.Push(CreateVisualTestScene(sceneTypes[sceneIndex]));
-            UpdateButtonsColors();
+            AddChild(testSceneInfoOverlay = new TestSceneInfoOverlay
+            {
+                AutoSizeAxes = Axes.Y,
+                Size = new(300, 0),
+                Anchor = new(1, 0),
+                Origin = new(1, 0)
+            });
+
+            ChangeScene();
         }
 
         public bool OnActionPressed(VisualTesterControls action)
@@ -160,9 +168,15 @@ namespace HenHen.Framework.VisualTests
             else if (sceneIndex < 0)
                 sceneIndex = sceneTypes.Count - 1;
 
-            scenesContainer.Pop();
-            sceneInputActionHandler.Propagator.Listeners.Clear();
-            scenesContainer.Push(CreateVisualTestScene(sceneTypes[sceneIndex]));
+            if (scenesContainer.CurrentScreen is not null)
+            {
+                scenesContainer.Pop();
+                sceneInputActionHandler.Propagator.Listeners.Clear();
+            }
+
+            var scene = CreateVisualTestScene(sceneTypes[sceneIndex]);
+            scenesContainer.Push(scene);
+            testSceneInfoOverlay.ChangeScene(scene);
             UpdateButtonsColors();
         }
 

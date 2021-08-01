@@ -6,12 +6,17 @@ using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Input;
 using HenHen.Framework.Screens;
 using HenHen.Framework.VisualTests.Input;
+using System.Collections.Generic;
 
 namespace HenHen.Framework.VisualTests
 {
     public abstract class VisualTestScene : Screen, IInputListener<SceneControls>
     {
         public bool IsSceneDone { get; protected set; }
+
+        public virtual string Description { get; }
+
+        public virtual Dictionary<List<SceneControls>, string> ControlsDescriptions { get; }
 
         public VisualTestScene() => RelativeSizeAxes = Axes.Both;
 
