@@ -2,13 +2,28 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace HenHen.Framework.Graphics2d
 {
     public class FillFlowContainer : Container
     {
         private Direction direction;
+        private float spacing;
 
-        public float Spacing { get; set; }
+        public float Spacing
+        {
+            get => spacing;
+            set
+            {
+                if (spacing == value)
+                    return;
+
+                spacing = value;
+                LayoutValid = false;
+            }
+        }
 
         public Direction Direction
         {
@@ -16,14 +31,17 @@ namespace HenHen.Framework.Graphics2d
             set
             {
                 direction = value;
-                foreach (var child in Children)
+                foreach (var child in base.Children)
                 {
                     var container = child as Container;
                     container.AutoSizeAxes = AxisFromDirection();
                     container.RelativeSizeAxes = AxisPerpendicularToDirection();
                 }
+                LayoutValid = false;
             }
         }
+
+        public new IEnumerable<Drawable> Children => base.Children.Select(c => (c as Container).Children[0]);
 
         public override void AddChild(Drawable child)
         {
@@ -34,6 +52,7 @@ namespace HenHen.Framework.Graphics2d
             };
             container.AddChild(child);
             base.AddChild(container);
+            LayoutValid = ContainerLayoutValid = false;
         }
 
         public override void RemoveChild(Drawable child)
@@ -43,26 +62,27 @@ namespace HenHen.Framework.Graphics2d
                 return;
             container.RemoveChild(child);
             base.RemoveChild(container);
+            LayoutValid = ContainerLayoutValid = false;
         }
 
-        protected override void OnUpdate(float elapsed)
+        protected override void OnLayoutUpdate()
         {
-            base.OnUpdate(elapsed);
+            base.OnLayoutUpdate();
 
-            foreach (var child in Children)
+            foreach (var child in base.Children)
                 child.UpdateLayout();
 
             // TODO: call this after layout change or children layout change
             UpdateChildrenPositions();
 
-            foreach (var child in Children)
+            foreach (var child in base.Children)
                 child.UpdateLayout();
         }
 
         private void UpdateChildrenPositions()
         {
             var maxPos = 0f;
-            foreach (var child in Children)
+            foreach (var child in base.Children)
             {
                 if (Direction == Direction.Horizontal)
                 {
@@ -80,7 +100,7 @@ namespace HenHen.Framework.Graphics2d
 
         private Container FindChildContainer(Drawable child)
         {
-            foreach (var drawable in Children)
+            foreach (var drawable in base.Children)
             {
                 var container = drawable as Container;
                 if (container.Children[0] == child)

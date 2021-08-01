@@ -6,6 +6,7 @@ using HenHen.Framework.Graphics2d.Layouts;
 using HenHen.Framework.Numerics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace HenHen.Framework.Graphics2d
@@ -51,18 +52,23 @@ namespace HenHen.Framework.Graphics2d
         {
             Children.Add(child);
             child.Parent = this;
+            LayoutValid = ContainerLayoutValid = false;
         }
 
         public virtual void RemoveChild(Drawable child)
         {
             if (Children.Remove(child))
                 child.Parent = null;
+            LayoutValid = ContainerLayoutValid = false;
         }
 
         protected RectangleF ComputeChildrenRenderRect() => new(LayoutInfo.RenderRect.Left + Padding.Left, LayoutInfo.RenderRect.Right - Padding.Right, LayoutInfo.RenderRect.Bottom - Padding.Bottom, LayoutInfo.RenderRect.Top + Padding.Top);
 
         protected override void OnUpdate(float elapsed)
         {
+            if (Children.Any(child => !child.LayoutValid))
+                LayoutValid = ContainerLayoutValid = false;
+
             base.OnUpdate(elapsed);
 
             if (!ContainerLayoutValid)
@@ -79,7 +85,7 @@ namespace HenHen.Framework.Graphics2d
             foreach (var child in Children)
             {
                 if (AutoSizeAxes != Axes.None && !child.LayoutValid)
-                    LayoutValid = false;
+                    LayoutValid = ContainerLayoutValid = false;
                 child.UpdateLayout();
             }
         }
@@ -122,7 +128,8 @@ namespace HenHen.Framework.Graphics2d
             ContainerLayoutInfo = new ContainerLayoutInfo
             {
                 ChildrenRenderArea = childrenRenderRect,
-                MaskArea = maskArea
+                MaskArea = maskArea,
+                ExpandableSizeAxes = AutoSizeAxes
             };
             ContainerLayoutValid = true;
         }
