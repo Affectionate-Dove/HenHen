@@ -22,5 +22,11 @@ namespace HenHen.Framework.Graphics2d.Layouts
         ///     children can be on screen, in pixels.
         /// </summary>
         public RectangleF ChildrenRenderArea { get; init; }
+
+        /// <summary>
+        ///     In what directions can the size of this container expand.
+        /// </summary>
+        // TODO: consider replacing this with max size
+        public Axes ExpandableSizeAxes { get; init; }
     }
 }
