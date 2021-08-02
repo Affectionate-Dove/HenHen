@@ -46,7 +46,7 @@ namespace HenHen.Framework.VisualTests
                 {
                     Text = "No test scenes.",
                     RelativeSizeAxes = Axes.Both,
-                    AlignMiddle = true
+                    TextAlignment = new(0.5f)
                 });
                 return;
             }

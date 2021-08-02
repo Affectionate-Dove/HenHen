@@ -15,7 +15,7 @@ namespace HenHen.Framework.VisualTests.Input
 
         public SceneInputTestScene()
         {
-            AddChild(spriteText = new SpriteText { RelativeSizeAxes = Axes.Both, AlignMiddle = true });
+            AddChild(spriteText = new SpriteText { RelativeSizeAxes = Axes.Both, TextAlignment = new(0.5f) });
             UpdateText();
         }
 
