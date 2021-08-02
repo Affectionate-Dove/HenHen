@@ -21,7 +21,7 @@ namespace HenHen.Visual.Screens
                 RelativeSizeAxes = Axes.Both,
                 Anchor = new(0.5f),
                 Origin = new(0.5f),
-                AlignMiddle = true,
+                TextAlignment = new(0.5f),
                 Text = text,
                 FontSize = 30
             });
@@ -30,7 +30,7 @@ namespace HenHen.Visual.Screens
                 RelativeSizeAxes = Axes.Both,
                 Anchor = new(0.5f),
                 Origin = new(0.5f),
-                AlignMiddle = true,
+                TextAlignment = new(0.5f),
                 Text = "placeholder",
                 FontSize = 12,
                 Offset = new(0, 20)
@@ -41,7 +41,7 @@ namespace HenHen.Visual.Screens
                 Size = new(1, 20),
                 Anchor = new(0.5f, 1),
                 Origin = new(0.5f, 1),
-                AlignMiddle = true,
+                TextAlignment = new(0.5f),
                 Text = "Press any mouse button to go back",
                 FontSize = 12,
             });

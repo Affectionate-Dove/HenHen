@@ -25,7 +25,7 @@ namespace HenHen.Framework.VisualTests.Examples
                 Anchor = new(1),
                 Origin = new(1),
                 Text = "Press 1 to change the drawable's color.",
-                Size = new(200, 60)
+                TextAlignment = Vector2.One
             });
         }
 

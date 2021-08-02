@@ -27,7 +27,7 @@ namespace HenHen.Framework.VisualTests.Examples
                 Anchor = new Vector2(0.5f),
                 Origin = new Vector2(0.5f),
                 RelativeSizeAxes = Axes.Both,
-                AlignMiddle = true
+                TextAlignment = new(0.5f)
             });
             Size = new Vector2(300);
         }

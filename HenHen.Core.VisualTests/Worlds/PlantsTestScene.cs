@@ -89,7 +89,7 @@ namespace HenHen.Core.VisualTests.Worlds
                 Offset = new(0, 200),
                 Anchor = new(0.5f),
                 Origin = new(0.5f, 0),
-                AlignMiddle = true
+                TextAlignment = new(0.5f)
             });
         }
 
