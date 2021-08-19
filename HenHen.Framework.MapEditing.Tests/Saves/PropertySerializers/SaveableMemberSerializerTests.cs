@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace HenHen.Framework.MapEditing.Tests.Saves.PropertySerializers
 {
+    [TestOf(typeof(SaveableMemberSerializer))]
     public class SaveableMemberSerializerTests
     {
         private BadStringSerializer badStringSerializer;
