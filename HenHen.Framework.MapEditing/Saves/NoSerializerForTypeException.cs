@@ -4,10 +4,12 @@
 
 using HenHen.Framework.MapEditing.Saves.PropertySerializers;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HenHen.Framework.MapEditing.Saves
 {
     [Serializable]
+    [ExcludeFromCodeCoverage]
     public class NoSerializerForTypeException : Exception
     {
         public NoSerializerForTypeException(Type type) : base($"No {nameof(SaveableMemberSerializer)} specified for type {type.Name}.")
