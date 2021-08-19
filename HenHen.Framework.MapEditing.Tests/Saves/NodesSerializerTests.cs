@@ -24,14 +24,13 @@ namespace HenHen.Framework.MapEditing.Tests.Saves
         public void DeserializeTest()
         {
             var nodeSave = new NodeSave(data_string);
-            var node = nodesSerializer.Deserialize(nodeSave.AssemblyName, nodeSave.FullTypeName, nodeSave.MembersValues);
-            var testNode = node as TestNodeForSaving;
+            var node = nodesSerializer.Deserialize(nodeSave.AssemblyName, nodeSave.FullTypeName, nodeSave.MembersValues) as TestNodeForSaving;
 
-            Assert.NotNull(testNode);
-            Assert.AreEqual(typeof(TestNodeForSaving), testNode.GetType());
+            Assert.NotNull(node);
+            Assert.AreEqual(typeof(TestNodeForSaving), node.GetType());
 
-            Assert.AreEqual("da", testNode.TestStringProperty);
-            Assert.AreEqual("hy", testNode.TestStringField);
+            Assert.AreEqual("da", node.TestStringProperty);
+            Assert.AreEqual("hy", node.TestStringField);
         }
 
         [Test(Description = "When deserializing and a member mentioned in the data string doesn't exist in a class, an appropriate exception should be thrown.")]
