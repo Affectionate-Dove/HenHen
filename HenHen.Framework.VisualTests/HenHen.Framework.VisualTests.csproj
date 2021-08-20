@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HenHen.Framework.Tests\HenHen.Framework.Tests.csproj" />
     <ProjectReference Include="..\HenHen.Framework\HenHen.Framework.csproj" />
   </ItemGroup>
 
