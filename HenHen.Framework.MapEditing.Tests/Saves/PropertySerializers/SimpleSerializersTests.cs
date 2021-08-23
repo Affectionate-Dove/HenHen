@@ -21,7 +21,7 @@ namespace HenHen.Framework.MapEditing.Tests.Saves.PropertySerializers
         };
 
         [TestCaseSource(nameof(Tests))]
-        public void TestSerialization(SimpleSerializerTest t)
+        public void SerializationDeserializationTest(SimpleSerializerTest t)
         {
             foreach (var obj in t.Objects)
             {
