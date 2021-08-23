@@ -43,7 +43,7 @@ namespace HenHen.Framework.MapEditing.Tests.Saves
         [Test(Description = "When there is no " + nameof(SaveableMemberSerializer) + " for a given member's type, an appropriate exception should be thrown.")]
         public void NoMemberSerializerAvailableSerializationTest()
         {
-            var node = new NodeWithMemberWithNoSerializer();
+            var node = new NodeWithMemberWithNoSerializer { NonserializableMember = "a" };
             Assert.Throws<NoSerializerForTypeException>(() => nodesSerializer.Serialize(node));
         }
 

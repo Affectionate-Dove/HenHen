@@ -55,8 +55,11 @@ namespace HenHen.Framework.MapEditing.Saves
             var fieldsInfos = nodeType.GetFields(binding_attr);
             foreach (var fieldInfo in fieldsInfos.Where(pi => pi.GetCustomAttribute(typeof(SaveableAttribute)) != null))
             {
-                var memberTypeSerializer = GetMemberSerializer(fieldInfo.FieldType);
                 var fieldValue = fieldInfo.GetValue(node);
+                if (fieldValue is null)
+                    continue;
+
+                var memberTypeSerializer = GetMemberSerializer(fieldInfo.FieldType);
                 var serializedField = memberTypeSerializer.Serialize(fieldValue);
 
                 keyValues.Add(fieldInfo.Name, serializedField);
@@ -65,8 +68,11 @@ namespace HenHen.Framework.MapEditing.Saves
             var propertiesInfos = nodeType.GetProperties(binding_attr);
             foreach (var propertyInfo in propertiesInfos.Where(pi => pi.GetCustomAttribute(typeof(SaveableAttribute)) != null))
             {
-                var memberTypeSerializer = GetMemberSerializer(propertyInfo.PropertyType);
                 var propertyValue = propertyInfo.GetValue(node);
+                if (propertyValue is null)
+                    continue;
+
+                var memberTypeSerializer = GetMemberSerializer(propertyInfo.PropertyType);
                 var serializedProperty = memberTypeSerializer.Serialize(propertyValue);
 
                 keyValues.Add(propertyInfo.Name, serializedProperty);
