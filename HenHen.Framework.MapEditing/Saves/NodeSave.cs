@@ -3,22 +3,54 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Framework.Worlds.Nodes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HenHen.Framework.MapEditing.Saves
 {
     /// <summary>
-    ///     A state of a <see cref="Node"/>. Supports being created from
-    ///     or transformed into either the <see cref="Node"/>
-    ///     or data in the form of a <see cref="string"/>.
+    ///     A state of a <see cref="Node"/>.
     /// </summary>
     public record NodeSave
     {
-        public NodeSave(Node node) => throw new System.NotImplementedException();
+        public string AssemblyName { get; }
+        public string TypeName { get; }
+        public string FullTypeName { get; }
 
-        public NodeSave(string data) => throw new System.NotImplementedException();
+        /// <summary>
+        ///     Names of <see cref="Node"/>'s members and respective values.
+        /// </summary>
+        public Dictionary<string, string> MembersValues { get; }
 
-        public override string ToString() => throw new System.NotImplementedException();
+        public NodeSave(string assemblyName, string typeName, IEnumerable<KeyValuePair<string, string>> membersValues)
+        {
+            AssemblyName = assemblyName;
+            TypeName = typeName;
+            FullTypeName = $"{AssemblyName}.{TypeName}";
+            MembersValues = new(membersValues);
+        }
 
-        public Node ToNode() => throw new System.NotImplementedException();
+        public NodeSave(string data)
+        {
+            var splitData = data.Split('\t');
+
+            var assemblyAndTypeNames = splitData[0].Split('|');
+            AssemblyName = assemblyAndTypeNames[0];
+            TypeName = assemblyAndTypeNames[1];
+            FullTypeName = $"{AssemblyName}.{TypeName}";
+
+            MembersValues = splitData[1..].Select(StringAsKeyValue).ToDictionary(kv => kv.Key, kv => kv.Value);
+        }
+
+        /// <summary>
+        ///     Serializes this <see cref="NodeSave"/> to a text string.
+        /// </summary>
+        public string ToStringData() => $"{AssemblyName}|{TypeName}\t{string.Join('\t', MembersValues.Select(kv => $"{kv.Key}:{kv.Value}"))}";
+
+        private static KeyValuePair<string, string> StringAsKeyValue(string s)
+        {
+            var split = s.Split(':');
+            return new(split[0], split[1]);
+        }
     }
 }
