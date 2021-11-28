@@ -18,6 +18,8 @@ namespace HenHen.Framework.Graphics2d
         private Vector2 anchor;
         private Vector2 origin;
         private bool masking;
+        private FillMode fillMode = FillMode.Stretch;
+        private float fillModeProportions = 1;
 
         /// <summary>
         ///     Whether this drawable
@@ -139,6 +141,40 @@ namespace HenHen.Framework.Graphics2d
             }
         }
 
+        /// <remarks>
+        ///     <see cref="FillMode.Stretch"/> by default.
+        /// </remarks>
+        public FillMode FillMode
+        {
+            get => fillMode;
+            set
+            {
+                if (fillMode == value)
+                    return;
+
+                fillMode = value;
+                LayoutValid = false;
+            }
+        }
+
+        /// <summary>
+        ///     When <see cref="RelativeSizeAxes"/> are set to <see cref="Axes.Both"/>,
+        ///     and <see cref="FillMode"/> to anything other than <see cref="FillMode.Stretch"/>,
+        ///     the width to height proportions of this <see cref="Drawable"/>.
+        /// </summary>
+        public float FillModeProportions
+        {
+            get => fillModeProportions;
+            set
+            {
+                if (fillModeProportions == value)
+                    return;
+
+                fillModeProportions = value;
+                LayoutValid = false;
+            }
+        }
+
         public DrawableLayoutInfo LayoutInfo { get; private set; }
         public bool LayoutValid { get; protected set; }
 
@@ -198,6 +234,25 @@ namespace HenHen.Framework.Graphics2d
                 size.X *= Parent.ContainerLayoutInfo.ChildrenRenderArea.Size.X;
             if (RelativeSizeAxes.HasFlag(Axes.Y))
                 size.Y *= Parent.ContainerLayoutInfo.ChildrenRenderArea.Size.Y;
+
+            if (RelativeSizeAxes.HasFlag(Axes.Both) && FillMode != FillMode.Stretch)
+            {
+                var currentProportions = size.X / size.Y;
+                if (FillMode == FillMode.Fill)
+                {
+                    if (currentProportions < FillModeProportions)
+                        size.X = size.Y * FillModeProportions;
+                    else
+                        size.Y = size.X / FillModeProportions;
+                }
+                else if (FillMode == FillMode.Fit)
+                {
+                    if (currentProportions < FillModeProportions)
+                        size.Y = size.X / FillModeProportions;
+                    else
+                        size.X = size.Y * FillModeProportions;
+                }
+            }
 
             return size;
         }
@@ -263,5 +318,12 @@ namespace HenHen.Framework.Graphics2d
         Y = 2,
 
         Both = X | Y
+    }
+
+    public enum FillMode
+    {
+        Stretch,
+        Fill,
+        Fit
     }
 }
