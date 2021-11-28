@@ -6,6 +6,7 @@ using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
 using HenHen.Framework.UI;
 using HenHen.Visual.Inputs;
+using HenHen.Visual.Screens.Credits;
 using HenHen.Visual.Screens.FileSelect;
 using System;
 using System.Numerics;
@@ -63,7 +64,7 @@ namespace HenHen.Visual.Screens.Main
             };
 
             container.AddChild(CreateMainMenuButton("File select", () => Push(new FileSelectScreen())));
-            container.AddChild(CreateMainMenuButton("Credits"));
+            container.AddChild(CreateMainMenuButton("Credits", () => Push(new CreditsScreen())));
             container.AddChild(CreateMainMenuButton("Settings"));
             container.AddChild(CreateMainMenuButton("Exit", () => Environment.Exit(0)));
 
