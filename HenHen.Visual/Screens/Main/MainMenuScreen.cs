@@ -6,6 +6,7 @@ using HenHen.Framework.Graphics2d;
 using HenHen.Framework.Screens;
 using HenHen.Framework.UI;
 using HenHen.Visual.Inputs;
+using HenHen.Visual.Screens.FileSelect;
 using System;
 using System.Numerics;
 
@@ -35,6 +36,20 @@ namespace HenHen.Visual.Screens.Main
             AddChild(CreateButtonsContainer());
         }
 
+        private static Button<MenuActions> CreateMainMenuButton(string text, Action action)
+        {
+            var button = new Button<MenuActions>()
+            {
+                RelativeSizeAxes = Axes.X,
+                Size = new(1, 30),
+                Text = text,
+                Action = action,
+                FontSize = 20,
+            };
+            button.AcceptedActions.Add(MenuActions.Confirm);
+            return button;
+        }
+
         private Container CreateButtonsContainer()
         {
             var container = new FillFlowContainer
@@ -47,13 +62,10 @@ namespace HenHen.Visual.Screens.Main
                 Spacing = 20
             };
 
-            container.AddChild(CreateMainMenuButton("File select"));
+            container.AddChild(CreateMainMenuButton("File select", () => Push(new FileSelectScreen())));
             container.AddChild(CreateMainMenuButton("Credits"));
             container.AddChild(CreateMainMenuButton("Settings"));
-
-            var exitButton = CreateMainMenuButton("Exit");
-            exitButton.Action = () => Environment.Exit(0);
-            container.AddChild(exitButton);
+            container.AddChild(CreateMainMenuButton("Exit", () => Environment.Exit(0)));
 
             return container;
         }
