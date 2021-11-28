@@ -8,6 +8,10 @@ using HenHen.Visual.Inputs;
 
 namespace HenHen.Visual.Screens.FileSelect
 {
+    /// <summary>
+    ///     A button representing a given <see cref="Framework.Worlds.World"/>.
+    /// </summary>
+    // TODO: should display basic info about the world
     public class WorldButton : Button<MenuActions>
     {
         private readonly Rectangle square;

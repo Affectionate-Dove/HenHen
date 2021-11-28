@@ -9,6 +9,10 @@ using System;
 
 namespace HenHen.Visual.Screens
 {
+    /// <summary>
+    ///     A <see cref="Screen"/> with implemented
+    ///     exiting on <see cref="MenuActions.Cancel"/> action.
+    /// </summary>
     public class HenHenScreen : Screen, IInterfaceComponent<MenuActions>
     {
         public event Action<IInterfaceComponent<MenuActions>> FocusRequested { add { } remove { } }

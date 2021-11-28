@@ -8,7 +8,7 @@ using System;
 namespace HenHen.Visual.Screens.FileSelect
 {
     /// <summary>
-    ///     Manages world selection interface with buttons.
+    ///     Manages world selection interface with <see cref="WorldButton"/>s.
     /// </summary>
     public class WorldButtonsContainer : Container
     {

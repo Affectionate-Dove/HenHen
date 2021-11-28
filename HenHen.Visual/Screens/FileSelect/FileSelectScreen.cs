@@ -7,6 +7,10 @@ using HenHen.Framework.UI;
 
 namespace HenHen.Visual.Screens.FileSelect
 {
+    /// <summary>
+    ///     The user manages their save files
+    ///     on this screen.
+    /// </summary>
     public class FileSelectScreen : HenHenScreen
     {
         public FileSelectScreen()
