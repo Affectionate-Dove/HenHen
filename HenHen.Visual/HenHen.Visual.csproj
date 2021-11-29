@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HenHen.Resources" Version="2021.7.6.33" />
+    <PackageReference Include="HenHen.Resources" Version="2021.11.29.1" />
   </ItemGroup>
 
   <ItemGroup>

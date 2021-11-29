@@ -19,14 +19,13 @@ namespace HenHen.Visual.Screens.Main
         public MainMenuScreen()
         {
             AddChild(new Rectangle { RelativeSizeAxes = Axes.Both, Color = new(0, 10, 0) });
-            var logoSprite = new Sprite
+            AddChild(new Sprite
             {
-                Size = new Vector2(160, 160),
-                Origin = new Vector2(0.5f),
-                Anchor = new Vector2(0.75f),
-                Texture = Framework.Game.TextureStore.Get("Images/logo.png")
-            };
-            base.AddChild(logoSprite);
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fill,
+                FillModeProportions = 16 / 9f,
+                Texture = Framework.Game.TextureStore.Get("Images/Backgrounds/MainMenu1.png")
+            });
             AddChild(new SpriteText
             {
                 Text = "HHhhhhhhh",
@@ -43,10 +42,15 @@ namespace HenHen.Visual.Screens.Main
             var button = new Button<MenuActions>()
             {
                 RelativeSizeAxes = Axes.X,
-                Size = new(1, 30),
+                Size = new(1, 70),
                 Text = text,
                 Action = action,
-                FontSize = 20,
+                FontSize = 28,
+                EnabledColors = new(new(159, 87, 0), new(63, 45, 0), new(255, 255, 255)),
+                HoveredColors = new(new(204, 108, 0), null, null),
+                FocusedColors = new(null, new(255, 178, 0), null),
+                PressedColors = new(new(255, 163, 0), null, null),
+                BorderThickness = 4
             };
             button.AcceptedActions.Add(MenuActions.Confirm);
             return button;
@@ -56,12 +60,12 @@ namespace HenHen.Visual.Screens.Main
         {
             var container = new FillFlowContainer
             {
-                Size = new(300, 1),
+                Size = new(320, 1),
                 AutoSizeAxes = Axes.Y,
                 Anchor = new(0.25f, 0.5f),
                 Origin = new(0.5f),
                 Direction = Direction.Vertical,
-                Spacing = 20
+                Spacing = 45
             };
 
             container.AddChild(CreateMainMenuButton("File select", () => Push(new FileSelectScreen())));
@@ -70,20 +74,6 @@ namespace HenHen.Visual.Screens.Main
             container.AddChild(CreateMainMenuButton("Exit", () => Environment.Exit(0)));
 
             return container;
-        }
-
-        private Button<MenuActions> CreateMainMenuButton(string text)
-        {
-            var button = new Button<MenuActions>()
-            {
-                RelativeSizeAxes = Axes.X,
-                Size = new(1, 30),
-                Text = text,
-                Action = () => Push(new PlaceholderScreen(text)),
-                FontSize = 20,
-            };
-            button.AcceptedActions.Add(MenuActions.Confirm);
-            return button;
         }
     }
 }
