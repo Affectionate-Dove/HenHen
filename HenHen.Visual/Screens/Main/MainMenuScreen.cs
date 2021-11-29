@@ -29,10 +29,7 @@ namespace HenHen.Visual.Screens.Main
             AddChild(new SpriteText
             {
                 Text = "HHhhhhhhh",
-                Offset = new Vector2(100),
-                Size = new Vector2(200),
-                FontSize = 20,
-                Color = new ColorInfo(255, 0, 0)
+                Color = new ColorInfo(50, 200, 255)
             });
             AddChild(CreateButtonsContainer());
         }
