@@ -22,7 +22,7 @@ namespace HenHen.Visual.Screens.Main
             {
                 RelativeSizeAxes = Axes.Both,
                 FillMode = FillMode.Fill,
-                FillModeProportions = 16 / 9f,
+                AutoFillModeProportions = true,
                 Texture = Framework.Game.TextureStore.Get("Images/Backgrounds/MainMenu1.png")
             });
             AddChild(new SpriteText
