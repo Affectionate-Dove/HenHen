@@ -5,6 +5,7 @@
 using HenHen.Framework.MapEditing.Saves;
 using HenHen.Framework.Worlds.Mediums;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace HenHen.Framework.MapEditing.Tests.Saves
@@ -12,10 +13,7 @@ namespace HenHen.Framework.MapEditing.Tests.Saves
     [TestOf(typeof(WorldSave))]
     public class WorldSaveTests
     {
-        private ChunkSave[] chunks;
-
-        [SetUp]
-        public void SetUp()
+        public static IEnumerable<ChunkSave[]> Cases()
         {
             var nodesSerializer = new NodesSerializer();
             var node1 = new TestNodeForSaving { TestStringField = "node1" };
@@ -30,7 +28,7 @@ namespace HenHen.Framework.MapEditing.Tests.Saves
             var nodeSaves1 = new[] { nodeSave1, nodeSave2 };
             var nodeSaves2 = new[] { nodeSave3 };
             var nodeSaves3 = new[] { nodeSave4 };
-            var nodeSaves4 = System.Array.Empty<NodeSave>();
+            var nodeSaves4 = Array.Empty<NodeSave>();
 
             var mediumSave1 = new MediumSave(new(new(1, 0, 0), new(0, 0, 0), new(0, 0, 1)), MediumType.Ground);
             var mediumSave2 = new MediumSave(new(new(1, 3, 4), new(0, 2, 5), new(0, 1, 1)), MediumType.Air);
@@ -41,28 +39,30 @@ namespace HenHen.Framework.MapEditing.Tests.Saves
             var chunk2 = new ChunkSave(nodeSaves2, new List<MediumSave>(), (0, 1), chunkSizes);
             var chunk3 = new ChunkSave(nodeSaves3, new List<MediumSave>(), (1, 0), chunkSizes);
             var chunk4 = new ChunkSave(nodeSaves4, new List<MediumSave>(), (1, 1), chunkSizes);
-            chunks = new[] { chunk1, chunk2, chunk3, chunk4 };
+            yield return new[] { chunk1, chunk2, chunk3, chunk4 };
+
+            yield return Array.Empty<ChunkSave>();
         }
 
-        [Test]
-        public void FromPropertiesTest()
+        [TestCaseSource(nameof(Cases))]
+        public void FromPropertiesTest(ChunkSave[] chunkSaves)
         {
-            var worldSave = new WorldSave(chunks);
-            ValidateProperties(worldSave);
+            var worldSave = new WorldSave(chunkSaves);
+            ValidateProperties(worldSave, chunkSaves);
         }
 
-        [Test]
-        public void FromDataStringTest()
+        [TestCaseSource(nameof(Cases))]
+        public void FromDataStringTest(ChunkSave[] chunkSaves)
         {
-            var dataString = new WorldSave(chunks).ToDataString();
+            var dataString = new WorldSave(chunkSaves).ToDataString();
             var worldSave = new WorldSave(dataString);
-            ValidateProperties(worldSave);
+            ValidateProperties(worldSave, chunkSaves);
         }
 
-        private void ValidateProperties(WorldSave worldSave)
+        private static void ValidateProperties(WorldSave worldSave, ChunkSave[] chunkSaves)
         {
-            for (var i = 0; i < chunks.Length; i++)
-                Assert.AreEqual(chunks[i].ToDataString(), worldSave.ChunkSaves[i].ToDataString());
+            for (var i = 0; i < chunkSaves.Length; i++)
+                Assert.AreEqual(chunkSaves[i].ToDataString(), worldSave.ChunkSaves[i].ToDataString());
         }
     }
 }
