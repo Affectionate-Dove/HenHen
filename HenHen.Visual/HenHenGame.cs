@@ -38,6 +38,8 @@ namespace HenHen.Visual
         {
             TextureStore.Load("Images/logo.png");
             TextureStore.Load("Images/Backgrounds/MainMenu1.png");
+            var t = TextureStore.Get("Images/Backgrounds/MainMenu1.png");
+            Raylib_cs.Raylib.GenTextureMipmaps(ref t);
         }
     }
 }
