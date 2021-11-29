@@ -30,7 +30,7 @@ namespace HenHen.Framework.Graphics2d
         /// <summary>
         ///     Whether to automatically set
         ///     <see cref="Drawable.FillModeProportions"/>
-        ///     to <see cref="Texture"/>'s proportions
+        ///     to <see cref="Texture"/>'s proportions.
         /// </summary>
         /// <remarks>
         ///     If <see langword="true"/>, sets
