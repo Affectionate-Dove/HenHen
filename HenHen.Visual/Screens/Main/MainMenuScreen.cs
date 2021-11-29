@@ -10,7 +10,6 @@ using HenHen.Visual.Screens.Credits;
 using HenHen.Visual.Screens.FileSelect;
 using HenHen.Visual.Screens.Settings;
 using System;
-using System.Numerics;
 
 namespace HenHen.Visual.Screens.Main
 {
