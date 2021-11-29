@@ -34,6 +34,10 @@ namespace HenHen.Visual
             base.OnUpdate();
         }
 
-        private static void LoadImages() => TextureStore.Load("Images/logo.png");
+        private static void LoadImages()
+        {
+            TextureStore.Load("Images/logo.png");
+            TextureStore.Load("Images/Backgrounds/MainMenu1.png");
+        }
     }
 }

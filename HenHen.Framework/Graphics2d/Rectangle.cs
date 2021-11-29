@@ -21,7 +21,7 @@ namespace HenHen.Framework.Graphics2d
 
             // draw border
             if (BorderColor.a != 0 && BorderThickness > 0)
-                Raylib_cs.Raylib.DrawRectangleLinesEx(new(rectPos.Left, rectPos.Top, rectPos.Width, rectPos.Height), BorderThickness, BorderColor);
+                Raylib_cs.Raylib.DrawRectangleLinesEx(new(rectPos.Left, rectPos.Top - 1, rectPos.Width, rectPos.Height), BorderThickness, BorderColor);
         }
     }
 }
