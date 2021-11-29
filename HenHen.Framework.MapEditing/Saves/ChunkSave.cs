@@ -38,12 +38,12 @@ namespace HenHen.Framework.MapEditing.Saves
             Size = float.Parse(splitData[1]);
 
             var mediumSaves = new List<MediumSave>();
-            var serializedMediumSaves = splitData[2].Split(sub_separator);
+            var serializedMediumSaves = splitData[2].Split(sub_separator, System.StringSplitOptions.RemoveEmptyEntries);
             mediumSaves.AddRange(serializedMediumSaves.Select(s => new MediumSave(s)));
             MediumSaves = mediumSaves;
 
             var nodeSaves = new List<NodeSave>();
-            var serializedNodeSaves = splitData[3].Split(sub_separator);
+            var serializedNodeSaves = splitData[3].Split(sub_separator, System.StringSplitOptions.RemoveEmptyEntries);
             nodeSaves.AddRange(serializedNodeSaves.Select(s => new NodeSave(s)));
             NodeSaves = nodeSaves;
         }

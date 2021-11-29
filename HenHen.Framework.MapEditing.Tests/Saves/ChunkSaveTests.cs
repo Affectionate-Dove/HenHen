@@ -5,62 +5,76 @@
 using HenHen.Framework.MapEditing.Saves;
 using HenHen.Framework.Worlds.Mediums;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace HenHen.Framework.MapEditing.Tests.Saves
 {
     [TestOf(typeof(ChunkSave))]
     public class ChunkSaveTests
     {
-        private NodeSave nodeSave1;
-        private NodeSave nodeSave2;
-        private NodeSave[] nodeSaves;
-        private MediumSave[] mediumSaves;
-        private (int x, int y) index;
-        private int size;
-        private MediumSave mediumSave1;
-        private MediumSave mediumSave2;
-
-        [SetUp]
-        public void SetUp()
+        public static IEnumerable<Case> Cases()
         {
             var nodesSerializer = new NodesSerializer();
             var node1 = new TestNodeForSaving { TestStringField = "node1" };
             var node2 = new TestNodeForSaving { TestStringProperty = "node2" };
-            nodeSave1 = nodesSerializer.Serialize(node1);
-            nodeSave2 = nodesSerializer.Serialize(node2);
-            nodeSaves = new[] { nodeSave1, nodeSave2 };
-            mediumSave1 = new MediumSave(new(new(1, 0, 0), new(0, 0, 0), new(0, 0, 1)), MediumType.Ground);
-            mediumSave2 = new MediumSave(new(new(1, 3, 4), new(0, 2, 5), new(0, 1, 1)), MediumType.Air);
-            mediumSaves = new[] { mediumSave1, mediumSave2 };
-            index = (3, 2);
-            size = 10;
+            var nodeSave1 = nodesSerializer.Serialize(node1);
+            var nodeSave2 = nodesSerializer.Serialize(node2);
+            var nodeSaves = new[] { nodeSave1, nodeSave2 };
+            var mediumSave1 = new MediumSave(new(new(1, 0, 0), new(0, 0, 0), new(0, 0, 1)), MediumType.Ground);
+            var mediumSave2 = new MediumSave(new(new(1, 3, 4), new(0, 2, 5), new(0, 1, 1)), MediumType.Air);
+            var mediumSaves = new[] { mediumSave1, mediumSave2 };
+            yield return (new((3, 2), 10, nodeSaves, mediumSaves));
+            //test empty nodes or mediums
+            yield return (new((0, 0), 5, Array.Empty<NodeSave>(), Array.Empty<MediumSave>()));
         }
 
-        [Test]
-        public void FromPropertiesTest()
+        public static void FromPropertiesTest(Case c)
         {
-            var chunkSave = new ChunkSave(nodeSaves, mediumSaves, index, size);
-            ValidateProperties(chunkSave);
+            var chunkSave = new ChunkSave(c.NodeSaves, c.MediumSaves, c.Index, c.Size);
+            ValidateProperties(chunkSave, c);
         }
 
-        [Test]
-        public void FromDataStringTest()
+        public static void FromDataStringTest(Case c)
         {
-            var dataString = new ChunkSave(nodeSaves, mediumSaves, index, size).ToDataString();
+            var dataString = new ChunkSave(c.NodeSaves, c.MediumSaves, c.Index, c.Size).ToDataString();
             var chunkSave = new ChunkSave(dataString);
-            ValidateProperties(chunkSave);
+            ValidateProperties(chunkSave, c);
         }
 
-        private void ValidateProperties(ChunkSave chunkSave)
+        [TestCaseSource(nameof(Cases))]
+        public void Test(Case c)
         {
-            for (var i = 0; i < nodeSaves.Length; i++)
-                Assert.AreEqual(nodeSaves[i].ToStringData(), chunkSave.NodeSaves[i].ToStringData());
+            FromPropertiesTest(c);
+            FromDataStringTest(c);
+        }
 
-            for (var i = 0; i < mediumSaves.Length; i++)
-                Assert.AreEqual(mediumSaves[i], chunkSave.MediumSaves[i]);
+        private static void ValidateProperties(ChunkSave chunkSave, Case c)
+        {
+            for (var i = 0; i < c.NodeSaves.Length; i++)
+                Assert.AreEqual(c.NodeSaves[i].ToStringData(), chunkSave.NodeSaves[i].ToStringData());
 
-            Assert.AreEqual(index, chunkSave.Index);
-            Assert.AreEqual(size, chunkSave.Size);
+            for (var i = 0; i < c.MediumSaves.Length; i++)
+                Assert.AreEqual(c.MediumSaves[i], chunkSave.MediumSaves[i]);
+
+            Assert.AreEqual(c.Index, chunkSave.Index);
+            Assert.AreEqual(c.Size, chunkSave.Size);
+        }
+
+        public class Case
+        {
+            public (int x, int y) Index;
+            public int Size;
+            public NodeSave[] NodeSaves;
+            public MediumSave[] MediumSaves;
+
+            public Case((int x, int y) index, int size, NodeSave[] nodeSaves, MediumSave[] mediumSaves)
+            {
+                Index = index;
+                Size = size;
+                NodeSaves = nodeSaves;
+                MediumSaves = mediumSaves;
+            }
         }
     }
 }
