@@ -18,13 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Raylib-cs" Version="3.7.0.1">
-		  <!--uncomment when 3rd party APIs are abstracted away-->
-		  <!--<PrivateAssets>all</PrivateAssets>-->
-	  </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HenBstractions\HenBstractions.csproj" />
   </ItemGroup>
 
