@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HenHen.Framework\HenHen.Framework.csproj" />
+    <ProjectReference Include="..\HenFwork\HenFwork.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,14 +2,14 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Input;
+using HenFwork.Input;
 using System.Collections.Generic;
 
 namespace HenHen.Visual.Inputs
 {
     public class MenuActionsHandler : InputActionHandler<MenuActions>
     {
-        public MenuActionsHandler(Framework.Input.Inputs inputs) : base(inputs)
+        public MenuActionsHandler(HenFwork.Input.Inputs inputs) : base(inputs)
         {
         }
 

@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HenHen.Core\HenHen.Core.csproj" />
-    <ProjectReference Include="..\HenHen.Framework.VisualTests\HenHen.Framework.VisualTests.csproj" />
+    <ProjectReference Include="..\HenFwork.VisualTests\HenFwork.VisualTests.csproj" />
   </ItemGroup>
 
 </Project>

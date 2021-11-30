@@ -2,9 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Graphics2d;
-using HenHen.Framework.Screens;
-using HenHen.Framework.UI;
+using HenFwork.Graphics2d;
+using HenFwork.Screens;
+using HenFwork.UI;
 using HenHen.Visual.Inputs;
 using HenHen.Visual.Screens.Credits;
 using HenHen.Visual.Screens.FileSelect;
@@ -23,7 +23,7 @@ namespace HenHen.Visual.Screens.Main
                 RelativeSizeAxes = Axes.Both,
                 FillMode = FillMode.Fill,
                 AutoFillModeProportions = true,
-                Texture = Framework.Game.TextureStore.Get("Images/Backgrounds/MainMenu1.png")
+                Texture = HenFwork.Game.TextureStore.Get("Images/Backgrounds/MainMenu1.png")
             });
             AddChild(new SpriteText
             {
