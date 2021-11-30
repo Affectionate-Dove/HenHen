@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
 using HenFwork.Graphics3d.Shapes;
 using HenFwork.Worlds.Chunks;
 using System.Collections.Generic;
@@ -91,7 +92,7 @@ namespace HenFwork.Graphics3d
                 Chunk = chunk;
                 Box = HenBstractions.Numerics.Box.FromPositionAndSize(new(chunk.Coordinates.Center.X, 0, chunk.Coordinates.Center.Y), new(chunk.Coordinates.Size.X, 0, chunk.Coordinates.Size.Y), new(0.5f));
                 Color = null;
-                WireColor = Raylib_cs.Color.LIGHTGRAY;
+                WireColor = ColorInfo.LIGHTGRAY;
             }
         }
 
@@ -103,7 +104,7 @@ namespace HenFwork.Graphics3d
             {
                 this.observer = observer;
                 Color = null;
-                WireColor = Raylib_cs.Color.BLACK;
+                WireColor = ColorInfo.BLACK;
             }
 
             protected override void OnUpdate(float elapsed)
@@ -117,7 +118,7 @@ namespace HenFwork.Graphics3d
             {
                 base.OnRender();
                 var circlePos = new Vector3(observer.ObservedArea.Center.X, 0, observer.ObservedArea.Center.Y);
-                Raylib_cs.Raylib.DrawCylinder(circlePos, 0.3f, 0.3f, 1, 4, Raylib_cs.Color.BLACK);
+                Drawing.DrawCylinder(circlePos, 0.3f, 0.3f, 1, 4, ColorInfo.BLACK);
             }
         }
     }

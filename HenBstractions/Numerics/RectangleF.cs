@@ -73,7 +73,7 @@ namespace HenBstractions.Numerics
 
         public static RectangleF operator /(RectangleF rectangle, Vector2 v) => new(rectangle.Left / v.X, rectangle.Right / v.X, rectangle.Bottom / v.Y, rectangle.Top / v.Y);
 
-        public static RectangleF FromPositionAndSize(Vector2 position, Vector2 size, Vector2 origin, CoordinateSystem2d coordinateSystem) => FromPositionAndSize(position, size, coordinateSystem) - size * origin;
+        public static RectangleF FromPositionAndSize(Vector2 position, Vector2 size, Vector2 origin, CoordinateSystem2d coordinateSystem) => FromPositionAndSize(position, size, coordinateSystem) - (size * origin);
 
         public static RectangleF FromPositionAndSize(Vector2 position, Vector2 size, CoordinateSystem2d coordinateSystem)
         {
@@ -92,7 +92,7 @@ namespace HenBstractions.Numerics
             if (CoordinateSystem != other.CoordinateSystem)
                 throw new ArgumentException($"Coordinate system doesn't match. {nameof(other)}'s {nameof(CoordinateSystem)} is {other.CoordinateSystem}, while this {nameof(RectangleF)}'s is {CoordinateSystem}.", nameof(other));
 
-            if (Left > other.Right || Right < other.Left || CoordinateSystem == CoordinateSystem2d.YUp && (Bottom > other.Top || Top < other.Bottom) || CoordinateSystem == CoordinateSystem2d.YDown && (Bottom < other.Top || Top > other.Bottom))
+            if (Left > other.Right || Right < other.Left || (CoordinateSystem == CoordinateSystem2d.YUp && (Bottom > other.Top || Top < other.Bottom)) || (CoordinateSystem == CoordinateSystem2d.YDown && (Bottom < other.Top || Top > other.Bottom)))
                 return null;
 
             if (CoordinateSystem == CoordinateSystem2d.YUp)

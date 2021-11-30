@@ -2,12 +2,12 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Input;
+using HenBstractions.Graphics;
+using HenBstractions.Input;
 using HenFwork.IO.Stores;
 using HenFwork.Screens;
 using HenFwork.UI;
 using System.Numerics;
-using static Raylib_cs.Raylib;
 
 namespace HenFwork
 {
@@ -30,8 +30,7 @@ namespace HenFwork
             textureStore = new TextureStore();
             modelStore = new ModelStore();
 
-            SpriteText.DefaultFont = LoadFont("Resources/Fonts/OpenSans-SemiBold.ttf");
-            SetTextureFilter(SpriteText.DefaultFont.texture, Raylib_cs.TextureFilter.TEXTURE_FILTER_TRILINEAR);
+            SpriteText.DefaultFont = Fonts.LoadFont("Resources/Fonts/OpenSans-SemiBold.ttf");
         }
 
         public void Loop(float elapsed)
@@ -40,7 +39,7 @@ namespace HenFwork
             Draw();
         }
 
-        protected virtual Inputs CreateInputs() => new RaylibInputs();
+        protected virtual Inputs CreateInputs() => new RealInputs();
 
         protected virtual void OnUpdate()
         {
@@ -52,12 +51,12 @@ namespace HenFwork
 
         private void Draw()
         {
-            BeginDrawing();
-            ClearBackground(Raylib_cs.Color.BLACK);
+            Basic.BeginDrawing();
+            Basic.ClearBackground(new(0, 0, 0));
             ScreenStack.Render();
             OnRender();
-            EndScissorMode();
-            EndDrawing();
+            Basic.EndScissorMode();
+            Basic.EndDrawing();
         }
 
         private void Update(float elapsed)

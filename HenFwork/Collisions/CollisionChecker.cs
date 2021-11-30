@@ -2,8 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Extensions;
 using HenBstractions.Numerics;
-using HenFwork.Extensions;
 using HenFwork.Worlds.Mediums;
 using HenFwork.Worlds.Nodes;
 using System;

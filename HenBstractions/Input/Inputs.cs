@@ -4,7 +4,7 @@
 
 using System.Numerics;
 
-namespace HenFwork.Input
+namespace HenBstractions.Input
 {
     public abstract class Inputs
     {

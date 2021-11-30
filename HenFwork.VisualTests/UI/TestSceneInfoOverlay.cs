@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
 using HenFwork.Graphics2d;
 using HenFwork.UI;
 
@@ -14,7 +15,7 @@ namespace HenFwork.VisualTests.UI
         public TestSceneInfoOverlay()
         {
             // background
-            AddChild(new Rectangle { RelativeSizeAxes = Axes.Both, Color = Raylib_cs.Color.DARKGRAY });
+            AddChild(new Rectangle { RelativeSizeAxes = Axes.Both, Color = ColorInfo.DARKGRAY });
 
             AddChild(flowContainer = new FillFlowContainer
             {

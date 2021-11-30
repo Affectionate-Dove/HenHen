@@ -2,19 +2,19 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using Raylib_cs;
+using HenBstractions.Graphics;
 using System.Collections.Generic;
 
 namespace HenFwork.IO.Stores
 {
-    public class TextureStore : ResourceStore<Texture2D>
+    public class TextureStore : ResourceStore<Texture>
     {
-        private readonly Dictionary<string, Texture2D> textures = new();
+        private readonly Dictionary<string, Texture> textures = new();
 
-        protected override Texture2D GetInternal(string assetName) => textures[assetName];
+        protected override Texture GetInternal(string assetName) => textures[assetName];
 
-        protected override void LoadInternal(string assetName) => textures.Add(assetName, Raylib.LoadTexture(assetName));
+        protected override void LoadInternal(string assetName) => textures.Add(assetName, new ImageTexture(assetName));
 
-        protected override void UnloadInternal(string assetName) => Raylib.UnloadTexture(GetInternal(assetName));
+        protected override void UnloadInternal(string assetName) => textures.Remove(assetName);
     }
 }

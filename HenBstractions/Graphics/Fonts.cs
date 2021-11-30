@@ -2,12 +2,11 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenBstractions.Graphics;
-
-namespace HenFwork.Graphics2d
+namespace HenBstractions.Graphics
 {
-    public interface IHasColor
+    public static class Fonts
     {
-        public ColorInfo Color { get; }
+        // todo: this is useless, just create Font
+        public static Font LoadFont(string path) => new(path);
     }
 }

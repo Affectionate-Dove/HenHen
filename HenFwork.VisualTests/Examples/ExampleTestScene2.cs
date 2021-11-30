@@ -2,7 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Graphics2d;
+using HenBstractions.Graphics;
 using HenFwork.UI;
 using HenFwork.VisualTests.Input;
 using System.Numerics;
@@ -34,10 +34,10 @@ namespace HenFwork.VisualTests.Examples
             if (action != SceneControls.One)
                 return base.OnActionPressed(action);
 
-            if (drawable.Color.Equals((ColorInfo)Raylib_cs.Color.DARKGREEN))
+            if (drawable.Color.Equals((ColorInfo)ColorInfo.DARKGREEN))
                 drawable.Color = new(200, 60, 30);
             else
-                drawable.Color = Raylib_cs.Color.DARKGREEN;
+                drawable.Color = ColorInfo.DARKGREEN;
 
             return true;
         }

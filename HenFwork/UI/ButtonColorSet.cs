@@ -2,7 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Graphics2d;
+using HenBstractions.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -25,6 +25,10 @@ namespace HenFwork.UI
 
         public static implicit operator ButtonColorSet((ColorInfo? fill, ColorInfo? border, ColorInfo? text) value) => new(value.fill, value.border, value.text);
 
+        public static bool operator ==(ButtonColorSet left, ButtonColorSet right) => left.Equals(right);
+
+        public static bool operator !=(ButtonColorSet left, ButtonColorSet right) => !(left == right);
+
         public override bool Equals(object obj) => obj is ButtonColorSet other && EqualityComparer<ColorInfo?>.Default.Equals(fill, other.fill) && EqualityComparer<ColorInfo?>.Default.Equals(border, other.border) && EqualityComparer<ColorInfo?>.Default.Equals(text, other.text);
 
         public override int GetHashCode() => HashCode.Combine(fill, border, text);
@@ -35,9 +39,5 @@ namespace HenFwork.UI
             border = this.border;
             text = this.text;
         }
-
-        public static bool operator ==(ButtonColorSet left, ButtonColorSet right) => left.Equals(right);
-
-        public static bool operator !=(ButtonColorSet left, ButtonColorSet right) => !(left == right);
     }
 }

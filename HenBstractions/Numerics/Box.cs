@@ -45,7 +45,7 @@ namespace HenBstractions.Numerics
 
         public static Box operator /(Box box, Vector3 v) => new(box.Left / v.X, box.Right / v.X, box.Bottom / v.Y, box.Top / v.Y, box.Back / v.Z, box.Front / v.Z);
 
-        public static Box FromPositionAndSize(Vector3 position, Vector3 size, Vector3 origin) => FromPositionAndSize(position, size) - size * origin;
+        public static Box FromPositionAndSize(Vector3 position, Vector3 size, Vector3 origin) => FromPositionAndSize(position, size) - (size * origin);
 
         public static Box FromPositionAndSize(Vector3 position, Vector3 size) => new(position.X, position.X + size.X, position.Y, position.Y + size.Y, position.Z, position.Z + size.Z);
 

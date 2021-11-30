@@ -2,18 +2,20 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+
 namespace HenFwork
 {
     public static class Host
     {
         public static void Run(Game game)
         {
-            while (!Raylib_cs.Raylib.WindowShouldClose())
+            while (!Basic.WindowShouldClose())
             {
-                var elapsed = Raylib_cs.Raylib.GetFrameTime();
+                var elapsed = Basic.GetFrameTime();
                 game.Loop(elapsed);
             }
-            Raylib_cs.Raylib.CloseWindow();
+            Basic.CloseWindow();
         }
     }
 }

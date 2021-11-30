@@ -2,8 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+using HenBstractions.Input;
 using HenFwork.Graphics2d;
-using HenFwork.Input;
 using HenFwork.Input.UI;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,11 @@ namespace HenFwork.UI
         private readonly SpriteText spriteText;
         private ButtonState state;
         private Action action;
-        private ButtonColorSet disabledColors = new(new(50, 50, 50), null, Raylib_cs.Color.GRAY);
-        private ButtonColorSet enabledColors = new(new(80, 80, 80), null, Raylib_cs.Color.WHITE);
-        private ButtonColorSet hoveredColors = new(new(110, 110, 110), null, Raylib_cs.Color.WHITE);
-        private ButtonColorSet focusedColors = new(null, new(200, 200, 200), Raylib_cs.Color.WHITE);
-        private ButtonColorSet pressedColors = new(new(60, 60, 60), null, Raylib_cs.Color.WHITE);
+        private ButtonColorSet disabledColors = new(new(50, 50, 50), null, ColorInfo.GRAY);
+        private ButtonColorSet enabledColors = new(new(80, 80, 80), null, ColorInfo.WHITE);
+        private ButtonColorSet hoveredColors = new(new(110, 110, 110), null, ColorInfo.WHITE);
+        private ButtonColorSet focusedColors = new(null, new(200, 200, 200), ColorInfo.WHITE);
+        private ButtonColorSet pressedColors = new(new(60, 60, 60), null, ColorInfo.WHITE);
 
         public event Action<IInterfaceComponent<TInputAction>> FocusRequested;
 

@@ -2,8 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Extensions;
+using HenBstractions.Graphics;
 using HenBstractions.Numerics;
-using HenFwork.Extensions;
 using HenFwork.Graphics3d;
 using HenFwork.Graphics3d.Shapes;
 using HenFwork.VisualTests.Input;
@@ -39,9 +40,9 @@ namespace HenFwork.VisualTests.Graphics3d
             var boxX = Box.FromPositionAndSize(Vector3.UnitX * 3, Vector3.One, new(0.5f));
             var boxY = Box.FromPositionAndSize(Vector3.UnitY * 3, Vector3.One, new(0.5f));
             var boxZ = Box.FromPositionAndSize(Vector3.UnitZ * 3, Vector3.One, new(0.5f));
-            var cubeX = new BoxSpatial { Box = boxX, Color = Raylib_cs.Color.RED };
-            var cubeY = new BoxSpatial { Box = boxY, Color = Raylib_cs.Color.GREEN };
-            var cubeZ = new BoxSpatial { Box = boxZ, Color = Raylib_cs.Color.BLUE };
+            var cubeX = new BoxSpatial { Box = boxX, Color = ColorInfo.RED };
+            var cubeY = new BoxSpatial { Box = boxY, Color = ColorInfo.GREEN };
+            var cubeZ = new BoxSpatial { Box = boxZ, Color = ColorInfo.BLUE };
 
             var sword = new ModelSpatial
             {

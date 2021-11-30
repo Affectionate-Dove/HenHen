@@ -2,7 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Extensions;
+using HenBstractions.Extensions;
+using HenBstractions.Graphics;
+using HenBstractions.Numerics;
 using HenFwork.Worlds;
 using HenFwork.Worlds.Chunks;
 using HenFwork.Worlds.Mediums;
@@ -82,26 +84,26 @@ namespace HenFwork.Graphics2d.Worlds
 
         public static FillBorderColorsConfig? DefaultGetChunkRenderConfig(Chunk chunk) => new()
         {
-            BorderColor = new Raylib_cs.Color(255, 255, 255, 100),
-            FillColor = new Raylib_cs.Color(30, 30, 30, 255)
+            BorderColor = new ColorInfo(255, 255, 255, 100),
+            FillColor = new ColorInfo(30, 30, 30, 255)
         };
 
         public static GridLineRenderConfig? DefaultGetGridLineRenderConfig(GridLineInfo gridLineInfo) => new()
         {
-            Color = new Raylib_cs.Color(255, 255, 255, 50),
+            Color = new ColorInfo(255, 255, 255, 50),
             Thickness = 1
         };
 
         public static NodeRenderConfig? DefaultGetNodeRenderConfig(Node node) => new()
         {
-            Color = Raylib_cs.Color.RAYWHITE,
+            Color = ColorInfo.RAYWHITE,
             Size = 5
         };
 
         public static FillBorderColorsConfig? DefaultGetMediumRenderConfig(Medium medium) => new()
         {
             BorderColor = medium.Color,
-            FillColor = Raylib_cs.Raylib.ColorAlpha(medium.Color, 0.04f)
+            FillColor = medium.Color.WithAlpha(0.04f)
         };
 
         protected override void OnRender()
@@ -147,10 +149,10 @@ namespace HenFwork.Graphics2d.Worlds
                 triangle2d += LayoutInfo.RenderRect.TopLeft;
 
                 if (renderConfig.Value.BorderColor.HasValue)
-                    Raylib_cs.Raylib.DrawTriangleLines(triangle2d.A, triangle2d.B, triangle2d.C, renderConfig.Value.BorderColor.Value);
+                    Drawing.DrawTriangleLines(triangle2d, renderConfig.Value.BorderColor.Value);
 
                 if (renderConfig.Value.FillColor.HasValue)
-                    Raylib_cs.Raylib.DrawTriangle(triangle2d.A, triangle2d.B, triangle2d.C, renderConfig.Value.FillColor.Value);
+                    Drawing.DrawTriangle(triangle2d, renderConfig.Value.FillColor.Value);
             }
         }
 
@@ -175,7 +177,7 @@ namespace HenFwork.Graphics2d.Worlds
                 // Y on screen
                 var renderingY = (int)Math.Round(LayoutInfo.RenderRect.Top + localRenderingY);
 
-                Raylib_cs.Raylib.DrawLineEx(new(LayoutInfo.RenderRect.Left, renderingY), new(LayoutInfo.RenderRect.Right, renderingY), lineRenderConfig.Value.Thickness, lineRenderConfig.Value.Color);
+                Drawing.DrawLine(new(LayoutInfo.RenderRect.Left, renderingY), new(LayoutInfo.RenderRect.Right, renderingY), lineRenderConfig.Value.Thickness, lineRenderConfig.Value.Color);
             }
 
             var startX = MathF.Ceiling(visibleArea.Left / gridDistance);
@@ -192,7 +194,7 @@ namespace HenFwork.Graphics2d.Worlds
                 // X on screen
                 var renderingX = (int)Math.Round(LayoutInfo.RenderRect.Left + localRenderingX);
 
-                Raylib_cs.Raylib.DrawLineEx(new(renderingX, LayoutInfo.RenderRect.Bottom), new(renderingX, LayoutInfo.RenderRect.Top), lineRenderConfig.Value.Thickness, lineRenderConfig.Value.Color);
+                Drawing.DrawLine(new(renderingX, LayoutInfo.RenderRect.Bottom), new(renderingX, LayoutInfo.RenderRect.Top), lineRenderConfig.Value.Thickness, lineRenderConfig.Value.Color);
             }
         }
 
@@ -210,7 +212,8 @@ namespace HenFwork.Graphics2d.Worlds
                 var renderingPos = LayoutInfo.RenderRect.TopLeft + localRendering;
 
                 var size = new Vector2(renderConfig.Value.Size);
-                Raylib_cs.Raylib.DrawRectangleV(renderingPos - (size * 0.5f), size, renderConfig.Value.Color);
+
+                Drawing.DrawRectangle(RectangleF.FromPositionAndSize(renderingPos - (size * 0.5f), size, CoordinateSystem2d.YDown), renderConfig.Value.Color);
             }
         }
 
@@ -227,10 +230,10 @@ namespace HenFwork.Graphics2d.Worlds
                 var screenRenderingArea = localRenderingArea + LayoutInfo.RenderRect.TopLeft;
 
                 if (renderConfig.Value.FillColor.HasValue)
-                    Raylib_cs.Raylib.DrawRectangleV(screenRenderingArea.TopLeft, screenRenderingArea.Size, renderConfig.Value.FillColor.Value);
+                    Drawing.DrawRectangle(RectangleF.FromPositionAndSize(screenRenderingArea.TopLeft, screenRenderingArea.Size, CoordinateSystem2d.YDown), renderConfig.Value.FillColor.Value);
 
                 if (renderConfig.Value.BorderColor.HasValue)
-                    Raylib_cs.Raylib.DrawRectangleLines((int)screenRenderingArea.Left, (int)screenRenderingArea.Top, (int)screenRenderingArea.Width + 1, (int)screenRenderingArea.Height + 1, renderConfig.Value.BorderColor.Value);
+                    Drawing.DrawRectangleLines(new RectangleF(screenRenderingArea.Left, screenRenderingArea.Width + 1, (int)screenRenderingArea.Top, (int)screenRenderingArea.Height + 1), 1, renderConfig.Value.BorderColor.Value);
             }
         }
 

@@ -8,8 +8,8 @@ namespace HenBstractions.Numerics
 {
     public struct Circle
     {
-        public Vector2 CenterPosition;
-        public float Radius;
+        public Vector2 CenterPosition { get; set; }
+        public float Radius { get; set; }
 
         public float Diameter
         {
@@ -18,7 +18,14 @@ namespace HenBstractions.Numerics
         }
 
         public float Circumference => 2 * System.MathF.PI * Radius;
+
         public float Area => System.MathF.PI * (Radius * Radius);
+
+        public Circle(Vector2 centerPosition, float radius)
+        {
+            CenterPosition = centerPosition;
+            Radius = radius;
+        }
 
         public static Circle operator +(Circle circle, Vector2 v) => new()
         {

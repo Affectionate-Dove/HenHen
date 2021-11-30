@@ -24,7 +24,7 @@ namespace HenBstractions.Numerics
             {
                 var centerOfEdgeBC = (B + C) * 0.5f;
                 var median = centerOfEdgeBC - A;
-                return A + median * 2 / 3f;
+                return A + (median * 2 / 3f);
             }
         }
 

@@ -2,8 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+using HenBstractions.Input;
 using HenFwork.Graphics2d;
-using HenFwork.Input;
 using HenFwork.Input.UI;
 using HenFwork.Screens;
 using HenFwork.UI;
@@ -19,7 +20,7 @@ namespace HenFwork.VisualTests.Input.UI
 
         public InterfaceInputManagerTestScene()
         {
-            inputActionHandler = new TestInputActionHandler(new RaylibInputs());
+            inputActionHandler = new TestInputActionHandler(new RealInputs());
             var screenStack = new ScreenStack
             {
                 Size = new Vector2(500, 400),
@@ -45,7 +46,7 @@ namespace HenFwork.VisualTests.Input.UI
             interfaceInputManager = new InterfaceInputManager<TestAction>(screenStack, TestAction.Next);
             inputActionHandler.Propagator.Listeners.Add(interfaceInputManager);
 
-            positionalInterfaceInputManager = new PositionalInterfaceInputManager(new RaylibInputs(), screenStack);
+            positionalInterfaceInputManager = new PositionalInterfaceInputManager(new RealInputs(), screenStack);
             interfaceInputManager.UpdateFocusRequestedSubscriptions();
         }
 
@@ -123,7 +124,7 @@ namespace HenFwork.VisualTests.Input.UI
                 HoveredColors = new(new(h, h, h), null, null);
                 var p = (byte)((brightness - 0.1) * 255);
                 PressedColors = new(new(p, p, p), null, null);
-                DisabledColors = new(new(v, v, v), null, Raylib_cs.Color.WHITE);
+                DisabledColors = new(new(v, v, v), null, ColorInfo.WHITE);
                 counter = id;
 
                 UpdateText();

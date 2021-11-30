@@ -2,7 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Input;
+using HenBstractions.Input;
 using HenFwork.Input.UI;
 using HenFwork.Screens;
 using HenFwork.UI;
@@ -51,7 +51,7 @@ namespace HenFwork.VisualTests.UI
             enabledButton2.Offset = new(10, 90);
             AddChild(enabledButton2);
 
-            actionHandler = new TestInputActionHandler(new RaylibInputs());
+            actionHandler = new TestInputActionHandler(new RealInputs());
         }
 
         protected override void OnUpdate(float elapsed)
@@ -60,7 +60,7 @@ namespace HenFwork.VisualTests.UI
             {
                 var interfaceManager = new InterfaceInputManager<TestAction>(Parent as ScreenStack, TestAction.Next);
                 actionHandler.Propagator.Listeners.Add(interfaceManager);
-                positionalInterfaceManager = new PositionalInterfaceInputManager(new RaylibInputs(), Parent as ScreenStack);
+                positionalInterfaceManager = new PositionalInterfaceInputManager(new RealInputs(), Parent as ScreenStack);
                 interfaceManager.UpdateFocusRequestedSubscriptions();
             }
             base.OnUpdate(elapsed);

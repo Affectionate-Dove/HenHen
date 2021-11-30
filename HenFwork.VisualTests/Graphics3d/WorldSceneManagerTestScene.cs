@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
 using HenBstractions.Numerics;
 using HenFwork.Graphics2d;
 using HenFwork.Graphics3d;
@@ -26,10 +27,10 @@ namespace HenFwork.VisualTests.Graphics3d
         public WorldSceneManagerTestScene()
         {
             world = new World(new(50), 1);
-            world.AddNode(new TestNode(5, -2, Raylib_cs.Color.BLUE));
+            world.AddNode(new TestNode(5, -2, ColorInfo.BLUE));
             const float medium_height = -0.5f;
-            world.AddNode(new TestNode(15, 0, Raylib_cs.Color.GREEN));
-            world.AddNode(new TestNode(24.5f, 2, Raylib_cs.Color.RED));
+            world.AddNode(new TestNode(15, 0, ColorInfo.GREEN));
+            world.AddNode(new TestNode(24.5f, 2, ColorInfo.RED));
             world.AddMedium(new Medium
             {
                 Triangle = new(new(10, medium_height, 10), new(25, medium_height, 25), new(40, medium_height, 10)),
