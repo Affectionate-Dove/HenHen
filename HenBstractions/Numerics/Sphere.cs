@@ -4,7 +4,7 @@
 
 using System.Numerics;
 
-namespace HenFwork.Numerics
+namespace HenBstractions.Numerics
 {
     public struct Sphere
     {

@@ -89,7 +89,7 @@ namespace HenFwork.Graphics3d
             public ChunkIndicator(Chunk chunk)
             {
                 Chunk = chunk;
-                Box = Numerics.Box.FromPositionAndSize(new(chunk.Coordinates.Center.X, 0, chunk.Coordinates.Center.Y), new(chunk.Coordinates.Size.X, 0, chunk.Coordinates.Size.Y), new(0.5f));
+                Box = HenBstractions.Numerics.Box.FromPositionAndSize(new(chunk.Coordinates.Center.X, 0, chunk.Coordinates.Center.Y), new(chunk.Coordinates.Size.X, 0, chunk.Coordinates.Size.Y), new(0.5f));
                 Color = null;
                 WireColor = Raylib_cs.Color.LIGHTGRAY;
             }

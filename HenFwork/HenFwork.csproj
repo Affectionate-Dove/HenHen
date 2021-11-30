@@ -24,4 +24,8 @@
 	  </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HenBstractions\HenBstractions.csproj" />
+  </ItemGroup>
+
 </Project>
