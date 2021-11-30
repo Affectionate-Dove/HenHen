@@ -3,7 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Core.Random;
-using HenHen.Framework.Random;
+using HenFwork.Random;
 using System.Collections.Generic;
 
 namespace HenHen.Core.Worlds.Plants

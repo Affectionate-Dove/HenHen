@@ -2,11 +2,11 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Graphics2d;
-using HenHen.Framework.Input;
-using HenHen.Framework.Input.UI;
-using HenHen.Framework.Screens;
-using HenHen.Framework.UI;
+using HenFwork.Graphics2d;
+using HenFwork.Input;
+using HenFwork.Input.UI;
+using HenFwork.Screens;
+using HenFwork.UI;
 
 namespace HenHen.Visual.Screens
 {

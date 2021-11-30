@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HenHen.Core\HenHen.Core.csproj" />
-    <ProjectReference Include="..\HenHen.Framework\HenHen.Framework.csproj" />
+    <ProjectReference Include="..\HenFwork\HenFwork.csproj" />
   </ItemGroup>
 
 </Project>

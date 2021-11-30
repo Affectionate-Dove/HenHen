@@ -3,7 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenHen.Core.Worlds;
-using HenHen.Framework.Random;
+using HenFwork.Random;
 
 namespace HenHen.Core.Random
 {
