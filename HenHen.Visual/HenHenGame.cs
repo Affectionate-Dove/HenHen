@@ -36,8 +36,7 @@ namespace HenHen.Visual
         private static void LoadImages()
         {
             TextureStore.Load("Images/logo.png");
-            TextureStore.Load("Images/Backgrounds/MainMenu1.png");
-            TextureStore.Get("Images/Backgrounds/MainMenu1.png").GenerateMipmaps();
+            TextureStore.Load("Images/Backgrounds/MainMenu1.png").GenerateMipmaps();
         }
     }
 }

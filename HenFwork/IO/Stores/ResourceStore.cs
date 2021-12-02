@@ -10,13 +10,20 @@ namespace HenFwork.IO.Stores
     {
         private readonly List<string> loadedAssetsNames = new();
 
-        public void Load(string assetName)
+        /// <summary>
+        ///     Loads the asset into the store
+        ///     for later retrieval with <see cref="Get(string)"/>,
+        ///     and also returns it.
+        /// </summary>
+        /// <returns>The loaded asset.</returns>
+        public T Load(string assetName)
         {
             if (IsLoaded(assetName))
                 throw new System.Exception();
 
             loadedAssetsNames.Add(assetName);
             LoadInternal(assetName);
+            return Get(assetName);
         }
 
         public void Unload(string assetName)

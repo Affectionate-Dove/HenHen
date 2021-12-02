@@ -10,6 +10,24 @@ namespace HenBstractions.Graphics
 {
     public static class Drawing
     {
+        public static void BeginDrawing() => Raylib.BeginDrawing();
+
+        public static void BeginMode3D(Camera camera) => Raylib.BeginMode3D(camera.RaylibCamera);
+
+        public static void EndMode3D() => Raylib.EndMode3D();
+
+        public static void EndDrawing() => Raylib.EndDrawing();
+
+        public static void ClearBackground(ColorInfo color) => Raylib.ClearBackground(color);
+
+        public static void BeginTextureMode(RenderTexture renderTexture) => Raylib.BeginTextureMode(renderTexture.RenderTexture2D);
+
+        public static void EndTextureMode() => Raylib.EndTextureMode();
+
+        public static void EndScissorMode() => Raylib.EndScissorMode();
+
+        public static void BeginScissorMode(RectangleF mask) => Raylib.BeginScissorMode((int)mask.Left, (int)mask.Top, (int)mask.Width, (int)mask.Height);
+
         public static void DrawCircle(Circle circle, ColorInfo color) => Raylib.DrawCircleV(circle.CenterPosition, circle.Radius, color);
 
         public static void DrawRectangle(RectangleF rectangle, ColorInfo color) => Raylib.DrawRectangleV(rectangle.TopLeft, rectangle.Size, color);

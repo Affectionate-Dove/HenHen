@@ -200,7 +200,7 @@ namespace HenFwork.Graphics2d
                 return;
 
             var mask = _mask.Value;
-            Basic.BeginScissorMode(mask);
+            Drawing.BeginScissorMode(mask);
 
             OnRender();
         }

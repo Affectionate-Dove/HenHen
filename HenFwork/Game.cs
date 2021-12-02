@@ -30,7 +30,7 @@ namespace HenFwork
             textureStore = new TextureStore();
             modelStore = new ModelStore();
 
-            SpriteText.DefaultFont = Fonts.LoadFont("Resources/Fonts/OpenSans-SemiBold.ttf");
+            SpriteText.DefaultFont = new Font("Resources/Fonts/OpenSans-SemiBold.ttf");
         }
 
         public void Loop(float elapsed)
@@ -51,12 +51,12 @@ namespace HenFwork
 
         private void Draw()
         {
-            Basic.BeginDrawing();
-            Basic.ClearBackground(new(0, 0, 0));
+            Drawing.BeginDrawing();
+            Drawing.ClearBackground(new(0, 0, 0));
             ScreenStack.Render();
             OnRender();
-            Basic.EndScissorMode();
-            Basic.EndDrawing();
+            Drawing.EndScissorMode();
+            Drawing.EndDrawing();
         }
 
         private void Update(float elapsed)

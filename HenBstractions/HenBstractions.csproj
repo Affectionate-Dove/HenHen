@@ -7,7 +7,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Raylib-cs" Version="3.7.0.1">
-			<!--Uncomment when done porting 3rd party API calls into 1st party-->
+			<!--Makes the Raylib-cs assembly invisibile to dependents-->
 			<PrivateAssets>compile</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>

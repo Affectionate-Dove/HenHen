@@ -11,6 +11,8 @@ namespace HenBstractions.Graphics
         private Raylib_cs.Texture2D texture2D;
         public Vector2 Size => new(Texture2D.width, Texture2D.height);
 
+        public bool MipmapsLoaded => texture2D.mipmaps > 1;
+
         internal Raylib_cs.Texture2D Texture2D { get => texture2D; private protected set => texture2D = value; }
 
         public void GenerateMipmaps() => Raylib_cs.Raylib.GenTextureMipmaps(ref texture2D);

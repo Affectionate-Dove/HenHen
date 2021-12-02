@@ -28,18 +28,18 @@ namespace HenFwork.Graphics3d
 
         protected override void OnRender()
         {
-            Basic.BeginTextureMode(renderTexture);
-            Basic.ClearBackground(ColorInfo.BROWN);
+            Drawing.BeginTextureMode(renderTexture);
+            Drawing.ClearBackground(ColorInfo.BROWN);
 
             Camera.Update();
-            Basic.BeginMode3D(Camera);
+            Drawing.BeginMode3D(Camera);
 
             foreach (var spatial in Scene.Spatials)
                 spatial.Render();
 
-            Basic.EndMode3D();
+            Drawing.EndMode3D();
 
-            Basic.EndTextureMode();
+            Drawing.EndTextureMode();
             Drawing.DrawTexture(renderTexture, LayoutInfo.RenderPosition);
 
             base.OnRender();

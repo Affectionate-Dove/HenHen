@@ -11,7 +11,13 @@ namespace HenBstractions.Graphics
         public static Font DefaultFont { get; } = new() { InternalFont = Raylib_cs.Raylib.GetFontDefault() };
         internal Raylib_cs.Font InternalFont { get; private init; }
 
-        public Font(string path) => InternalFont = Raylib_cs.Raylib.LoadFont(path);
+        public Font(string path)
+        {
+            InternalFont = Raylib_cs.Raylib.LoadFont(path);
+
+            // todo: another constructor with filters to choose?
+            Raylib_cs.Raylib.SetTextureFilter(InternalFont.texture, Raylib_cs.TextureFilter.TEXTURE_FILTER_BILINEAR);
+        }
 
         private Font()
         { }
