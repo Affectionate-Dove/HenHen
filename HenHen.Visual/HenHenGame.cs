@@ -2,9 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework;
-using HenHen.Framework.Input.UI;
-using HenHen.Framework.Screens;
+using HenFwork;
+using HenFwork.Input.UI;
+using HenFwork.Screens;
 using HenHen.Visual.Inputs;
 using HenHen.Visual.Screens.Main;
 
@@ -18,7 +18,6 @@ namespace HenHen.Visual
 
         public HenHenGame()
         {
-            Raylib_cs.Raylib.SetExitKey(Raylib_cs.KeyboardKey.KEY_NULL);
             LoadImages();
             menuActionsHandler = new(Inputs);
             interfaceInputManager = new(ScreenStack, MenuActions.Next);
@@ -37,9 +36,7 @@ namespace HenHen.Visual
         private static void LoadImages()
         {
             TextureStore.Load("Images/logo.png");
-            TextureStore.Load("Images/Backgrounds/MainMenu1.png");
-            var t = TextureStore.Get("Images/Backgrounds/MainMenu1.png");
-            Raylib_cs.Raylib.GenTextureMipmaps(ref t);
+            TextureStore.Load("Images/Backgrounds/MainMenu1.png").GenerateMipmaps();
         }
     }
 }

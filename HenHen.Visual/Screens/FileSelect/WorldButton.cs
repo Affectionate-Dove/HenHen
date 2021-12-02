@@ -2,8 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenHen.Framework.Graphics2d;
-using HenHen.Framework.UI;
+using HenBstractions.Graphics;
+using HenFwork.Graphics2d;
+using HenFwork.UI;
 using HenHen.Visual.Inputs;
 
 namespace HenHen.Visual.Screens.FileSelect
