@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HenHen.Core\HenHen.Core.csproj" />
-    <ProjectReference Include="..\HenFwork\HenFwork.csproj" />
   </ItemGroup>
 
 </Project>
