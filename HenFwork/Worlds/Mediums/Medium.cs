@@ -2,8 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+using HenBstractions.Numerics;
 using HenFwork.Graphics2d;
-using HenFwork.Numerics;
 
 namespace HenFwork.Worlds.Mediums
 {

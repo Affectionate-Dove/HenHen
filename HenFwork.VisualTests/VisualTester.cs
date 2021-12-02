@@ -2,6 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+using HenBstractions.Input;
 using HenFwork.Graphics2d;
 using HenFwork.Input;
 using HenFwork.Screens;

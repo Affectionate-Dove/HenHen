@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
 using HenFwork.Graphics2d;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace HenFwork.UI
         private string text;
         private List<string> displayedText;
 
-        public static Raylib_cs.Font DefaultFont { get; set; } = Raylib_cs.Raylib.GetFontDefault();
+        public static Font DefaultFont { get; set; } = Font.DefaultFont;
 
         public string Text
         {
@@ -30,7 +31,7 @@ namespace HenFwork.UI
             }
         }
 
-        public Raylib_cs.Font Font { get; set; } = DefaultFont;
+        public Font Font { get; set; } = DefaultFont;
 
         public ColorInfo Color { get; set; } = new ColorInfo(255, 255, 255);
 
@@ -69,7 +70,7 @@ namespace HenFwork.UI
                 var left = r.Left + (r.Width * TextAlignment.X) - (lineSize.X * TextAlignment.X);
                 var top = fullTextTop + (i * FontSize) + ((i - 1) * LineSpacing);
 
-                Raylib_cs.Raylib.DrawTextEx(Font, displayedText[i], new Vector2(left, top), FontSize, LetterSpacing, Color);
+                Drawing.DrawText(Font, displayedText[i], new Vector2(left, top), FontSize, LetterSpacing, Color);
             }
         }
 
@@ -141,7 +142,7 @@ namespace HenFwork.UI
             return lines;
         }
 
-        private float MeasureTextWidth(string text) => Raylib_cs.Raylib.MeasureTextEx(Font, text, FontSize, LetterSpacing).X + 1;
+        private float MeasureTextWidth(string text) => Drawing.MeasureText(Font, text, FontSize, LetterSpacing).X + 1;
 
         private Vector2 MeasureTextSize(List<string> lines)
         {

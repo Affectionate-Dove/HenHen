@@ -2,13 +2,14 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
 using HenFwork.Graphics2d;
 
 namespace HenFwork.Graphics3d
 {
     public class SceneViewer : Drawable
     {
-        private Raylib_cs.RenderTexture2D? renderTexture;
+        private RenderTexture renderTexture;
         public Scene Scene { get; }
         public Camera Camera { get; }
 
@@ -22,27 +23,24 @@ namespace HenFwork.Graphics3d
         {
             base.OnLayoutUpdate();
 
-            if (renderTexture is not null)
-                Raylib_cs.Raylib.UnloadRenderTexture(renderTexture.Value);
-
-            renderTexture = Raylib_cs.Raylib.LoadRenderTexture((int)LayoutInfo.RenderSize.X, (int)LayoutInfo.RenderSize.Y);
+            renderTexture = new(LayoutInfo.RenderSize);
         }
 
         protected override void OnRender()
         {
-            Raylib_cs.Raylib.BeginTextureMode(renderTexture.Value);
-            Raylib_cs.Raylib.ClearBackground(Raylib_cs.Color.BROWN);
+            Drawing.BeginTextureMode(renderTexture);
+            Drawing.ClearBackground(ColorInfo.BROWN);
 
             Camera.Update();
-            Raylib_cs.Raylib.BeginMode3D(Camera.RaylibCamera);
+            Drawing.BeginMode3D(Camera);
 
             foreach (var spatial in Scene.Spatials)
                 spatial.Render();
 
-            Raylib_cs.Raylib.EndMode3D();
+            Drawing.EndMode3D();
 
-            Raylib_cs.Raylib.EndTextureMode();
-            Raylib_cs.Raylib.DrawTexture(renderTexture.Value.texture, (int)LayoutInfo.RenderPosition.X, (int)LayoutInfo.RenderPosition.Y, Raylib_cs.Color.WHITE);
+            Drawing.EndTextureMode();
+            Drawing.DrawTexture(renderTexture, LayoutInfo.RenderPosition);
 
             base.OnRender();
         }

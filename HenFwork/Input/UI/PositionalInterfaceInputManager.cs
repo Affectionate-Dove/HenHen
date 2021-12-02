@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Input;
 using HenFwork.Collisions;
 using HenFwork.Graphics2d;
 using HenFwork.Screens;
@@ -42,7 +43,7 @@ namespace HenFwork.Input.UI
         public void Update()
         {
             foreach (var buttonInfo in buttonsInfos)
-                buttonInfo.Pressed = Inputs.IsMouseButtonDown(buttonInfo.MouseButton);
+                buttonInfo.Pressed = this.Inputs.IsMouseButtonDown((MouseButton)buttonInfo.MouseButton);
 
             if (ScreenStack.CurrentScreen is not null)
                 HandleDrawable(ScreenStack.CurrentScreen);
@@ -60,7 +61,7 @@ namespace HenFwork.Input.UI
 
         private void HandleDrawable(Drawable drawable)
         {
-            if (!ElementaryCollisions.IsPointInRectangle(Inputs.MousePosition, drawable.LayoutInfo.RenderRect))
+            if (!ElementaryCollisions.IsPointInRectangle(this.Inputs.MousePosition, drawable.LayoutInfo.RenderRect))
                 return;
 
             if (drawable is IContainer<Drawable> container)
@@ -105,7 +106,7 @@ namespace HenFwork.Input.UI
         /// </returns>
         private bool TryDoHoverLostTasks(IPositionalInterfaceComponent component)
         {
-            if (ElementaryCollisions.IsPointInRectangle(Inputs.MousePosition, component.LayoutInfo.RenderRect))
+            if (ElementaryCollisions.IsPointInRectangle(this.Inputs.MousePosition, component.LayoutInfo.RenderRect))
                 return false;
 
             component.OnHoverLost();

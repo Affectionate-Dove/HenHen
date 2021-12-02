@@ -2,7 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Numerics;
+using HenBstractions.Graphics;
+using HenBstractions.Numerics;
 using System;
 using System.Numerics;
 
@@ -199,7 +200,7 @@ namespace HenFwork.Graphics2d
                 return;
 
             var mask = _mask.Value;
-            Raylib_cs.Raylib.BeginScissorMode((int)mask.Left, (int)mask.Top, (int)mask.Width, (int)mask.Height);
+            Drawing.BeginScissorMode(mask);
 
             OnRender();
         }

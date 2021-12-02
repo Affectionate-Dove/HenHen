@@ -2,6 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Input;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -95,7 +96,7 @@ namespace HenFwork.Input
         {
             foreach (var key in ActionKeyBindings[action])
             {
-                if (!Inputs.IsKeyDown(key))
+                if (!this.Inputs.IsKeyDown((KeyboardKey)key))
                     return false;
             }
             return true;
@@ -123,7 +124,7 @@ namespace HenFwork.Input
         {
             foreach (var monitoredKeyInfo in keysToMonitor)
             {
-                var isPressed = Inputs.IsKeyDown(monitoredKeyInfo.Key);
+                var isPressed = this.Inputs.IsKeyDown((KeyboardKey)monitoredKeyInfo.Key);
                 var justPressed = isPressed && !monitoredKeyInfo.Pressed;
                 monitoredKeyInfo.Pressed = isPressed;
 

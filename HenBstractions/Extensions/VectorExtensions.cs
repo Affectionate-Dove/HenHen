@@ -5,7 +5,7 @@
 using System;
 using System.Numerics;
 
-namespace HenFwork.Extensions
+namespace HenBstractions.Extensions
 {
     public static class VectorExtensions
     {

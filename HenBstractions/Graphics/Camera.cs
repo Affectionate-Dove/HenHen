@@ -2,10 +2,10 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Extensions;
+using HenBstractions.Extensions;
 using System.Numerics;
 
-namespace HenFwork.Graphics3d
+namespace HenBstractions.Graphics
 {
     public class Camera
     {
@@ -72,7 +72,7 @@ namespace HenFwork.Graphics3d
                 return LookingAt.Value;
 
             var point = Position;
-            var direction = new Vector3(0, 0, 1).GetRotated(Rotation.Value);
+            var direction = new Vector3(0, 0, 1).GetRotated(Rotation!.Value);
             return point += direction;
         }
     }

@@ -2,14 +2,14 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Graphics2d;
+using HenBstractions.Graphics;
 using System.Numerics;
 
 namespace HenFwork.Graphics3d
 {
     public class ModelSpatial : Spatial
     {
-        public Raylib_cs.Model Model { get; set; }
+        public Model Model { get; set; }
 
         public Vector3 Scale { get; set; } = Vector3.One;
 
@@ -19,7 +19,7 @@ namespace HenFwork.Graphics3d
         {
             base.OnRender();
             var (axis, angle) = Rotations3d.EulerToAxisAngle(Rotation);
-            Raylib_cs.Raylib.DrawModelEx(Model, Position, axis, angle, Scale, Color);
+            Drawing.DrawModel(Model, Position, axis, angle, Scale, Color);
         }
     }
 }

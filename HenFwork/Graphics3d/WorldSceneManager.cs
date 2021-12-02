@@ -2,8 +2,9 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+using HenBstractions.Numerics;
 using HenFwork.Graphics3d.Shapes;
-using HenFwork.Numerics;
 using HenFwork.Worlds;
 using HenFwork.Worlds.Chunks;
 using HenFwork.Worlds.Mediums;
@@ -82,7 +83,7 @@ namespace HenFwork.Graphics3d
         public static Spatial DefaultNodeSpatialCreator(Node node) => new BoxSpatial
         {
             Box = Box.FromPositionAndSize(Vector3.Zero, Vector3.One, new(0.5f)),
-            Color = Raylib_cs.Color.RED,
+            Color = ColorInfo.RED,
             Position = node.Position
         };
 

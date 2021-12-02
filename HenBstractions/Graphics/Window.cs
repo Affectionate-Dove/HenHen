@@ -4,7 +4,7 @@
 
 using System.Numerics;
 
-namespace HenFwork
+namespace HenBstractions.Graphics
 {
     public class Window
     {
@@ -48,7 +48,7 @@ namespace HenFwork
 
         public Window(Vector2 size, string title)
         {
-            InitWindow(size, title);
+            InitWindow(size, this.title = title);
             TargetFPS = 60;
         }
 
@@ -58,6 +58,7 @@ namespace HenFwork
             var y = (int)size.Y;
             this.size = new Vector2(x, y);
             Raylib_cs.Raylib.InitWindow(x, y, title);
+            Raylib_cs.Raylib.SetExitKey(Raylib_cs.KeyboardKey.KEY_NULL);
         }
     }
 }

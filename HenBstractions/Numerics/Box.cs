@@ -4,7 +4,7 @@
 
 using System.Numerics;
 
-namespace HenFwork.Numerics
+namespace HenBstractions.Numerics
 {
     /// <summary>
     ///     A rectangular cuboid in 3D space.

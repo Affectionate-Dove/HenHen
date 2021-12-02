@@ -2,7 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Numerics;
+using HenBstractions.Numerics;
 using System.Numerics;
 
 namespace HenFwork.Graphics2d
@@ -70,7 +70,7 @@ namespace HenFwork.Graphics2d
         ///     </list>
         /// </remarks>
         public Vector2 Origin { get; init; }
-      
+
         /// <summary>
         ///     The boundaries inside a parent container, in pixels.
         /// </summary>

@@ -2,6 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+using HenBstractions.Numerics;
 using System.Numerics;
 
 namespace HenFwork.Graphics2d
@@ -11,10 +13,10 @@ namespace HenFwork.Graphics2d
     /// </summary>
     public class Sprite : Drawable
     {
-        private Raylib_cs.Texture2D texture;
+        private Texture texture;
         private bool autoFillModeProportions;
 
-        public Raylib_cs.Texture2D Texture
+        public Texture Texture
         {
             get => texture;
             set
@@ -51,10 +53,9 @@ namespace HenFwork.Graphics2d
         protected override void OnRender()
         {
             base.OnRender();
-            var rect = LayoutInfo.RenderRect;
-            var sourceRec = new Raylib_cs.Rectangle(0, 0, Texture.width, Texture.height);
-            var destRec = new Raylib_cs.Rectangle(rect.Left, rect.Top, rect.Width, rect.Height);
-            Raylib_cs.Raylib.DrawTexturePro(Texture, sourceRec, destRec, Vector2.Zero, 0, Color);
+            var sourceRec = RectangleF.FromPositionAndSize(Vector2.Zero, Texture.Size, CoordinateSystem2d.YDown);
+            var destRec = LayoutInfo.RenderRect;
+            Drawing.DrawTexture(Texture, sourceRec, destRec, Vector2.Zero, 0, Color);
         }
 
         /// <summary>
@@ -63,8 +64,8 @@ namespace HenFwork.Graphics2d
         /// </summary>
         private void SetFillProportionsToTextureProportions()
         {
-            if (Texture.height is not 0)
-                FillModeProportions = Texture.width / (float)Texture.height;
+            if (Texture?.Size.Y is not (0 or null))
+                FillModeProportions = Texture.Size.X / Texture.Size.Y;
         }
     }
 }

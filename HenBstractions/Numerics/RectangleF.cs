@@ -5,7 +5,7 @@
 using System;
 using System.Numerics;
 
-namespace HenFwork.Numerics
+namespace HenBstractions.Numerics
 {
     /// <summary>
     ///     Represents a rectangle shape.

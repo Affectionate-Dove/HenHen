@@ -18,7 +18,6 @@ namespace HenHen.Visual
 
         public HenHenGame()
         {
-            Raylib_cs.Raylib.SetExitKey(Raylib_cs.KeyboardKey.KEY_NULL);
             LoadImages();
             menuActionsHandler = new(Inputs);
             interfaceInputManager = new(ScreenStack, MenuActions.Next);
@@ -37,9 +36,7 @@ namespace HenHen.Visual
         private static void LoadImages()
         {
             TextureStore.Load("Images/logo.png");
-            TextureStore.Load("Images/Backgrounds/MainMenu1.png");
-            var t = TextureStore.Get("Images/Backgrounds/MainMenu1.png");
-            Raylib_cs.Raylib.GenTextureMipmaps(ref t);
+            TextureStore.Load("Images/Backgrounds/MainMenu1.png").GenerateMipmaps();
         }
     }
 }

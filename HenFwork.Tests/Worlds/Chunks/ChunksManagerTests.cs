@@ -2,7 +2,7 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
-using HenFwork.Numerics;
+using HenBstractions.Numerics;
 using HenFwork.Tests.Collisions;
 using HenFwork.Worlds.Chunks;
 using HenFwork.Worlds.Mediums;

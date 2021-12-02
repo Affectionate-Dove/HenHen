@@ -2,6 +2,8 @@
 // Licensed under the Affectionate Dove Limited Code Viewing License.
 // See the LICENSE file in the repository root for full license text.
 
+using HenBstractions.Graphics;
+
 namespace HenFwork.Graphics2d
 {
     public class Rectangle : Drawable, IHasColor
@@ -17,11 +19,11 @@ namespace HenFwork.Graphics2d
 
             // draw fill
             if (Color.a != 0)
-                Raylib_cs.Raylib.DrawRectangle((int)rectPos.Left, (int)rectPos.Top, (int)rectPos.Width, (int)rectPos.Height, Color);
+                Drawing.DrawRectangle(rectPos, Color);
 
             // draw border
             if (BorderColor.a != 0 && BorderThickness > 0)
-                Raylib_cs.Raylib.DrawRectangleLinesEx(new(rectPos.Left, rectPos.Top - 1, rectPos.Width, rectPos.Height), BorderThickness, BorderColor);
+                Drawing.DrawRectangleLines(rectPos, BorderThickness, BorderColor);
         }
     }
 }
