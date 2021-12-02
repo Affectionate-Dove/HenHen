@@ -4,24 +4,29 @@
 
 using HenFwork.Worlds;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HenFwork.MapEditing.Saves
 {
     /// <summary>
-    ///     A state of a <see cref="World"/>. Supports being
-    ///     created from or transformed into either the <see cref="World"/>
-    ///     or data in the form of a <see cref="string"/>.
+    ///     A state of a <see cref="World"/>.
     /// </summary>
     public record WorldSave
     {
-        public IReadOnlyList<NodeSave> NodeSaves { get; }
+        private const char chunk_separator = '\n';
 
-        public WorldSave(World world) => throw new System.NotImplementedException();
+        public IReadOnlyList<ChunkSave> ChunkSaves { get; }
 
-        public WorldSave(string data) => throw new System.NotImplementedException();
+        public WorldSave(IReadOnlyList<ChunkSave> chunkSaves) => ChunkSaves = chunkSaves;
 
-        public override string ToString() => throw new System.NotImplementedException();
+        public WorldSave(string data)
+        {
+            var chunkSaves = new List<ChunkSave>();
+            ChunkSaves = chunkSaves;
+            foreach (var line in data.Split(chunk_separator, System.StringSplitOptions.RemoveEmptyEntries))
+                chunkSaves.Add(new ChunkSave(line));
+        }
 
-        public World ToWorld() => throw new System.NotImplementedException();
+        public string ToDataString() => string.Join(chunk_separator, ChunkSaves.Select(cs => cs.ToDataString()));
     }
 }
