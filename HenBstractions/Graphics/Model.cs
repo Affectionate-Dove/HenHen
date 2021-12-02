@@ -11,7 +11,5 @@ namespace HenBstractions.Graphics
         internal Raylib_cs.Model InternalModel { get; }
 
         public Model(string path) => InternalModel = Raylib_cs.Raylib.LoadModel(path);
-
-        internal Model(Raylib_cs.Model internalModel) => InternalModel = internalModel;
     }
 }
