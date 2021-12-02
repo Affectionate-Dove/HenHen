@@ -54,11 +54,11 @@ namespace HenBstractions.Graphics
 
         protected void InitWindow(Vector2 size, string title)
         {
-            Raylib_cs.Raylib.SetExitKey(Raylib_cs.KeyboardKey.KEY_NULL);
             var x = (int)size.X;
             var y = (int)size.Y;
             this.size = new Vector2(x, y);
             Raylib_cs.Raylib.InitWindow(x, y, title);
+            Raylib_cs.Raylib.SetExitKey(Raylib_cs.KeyboardKey.KEY_NULL);
         }
     }
 }
