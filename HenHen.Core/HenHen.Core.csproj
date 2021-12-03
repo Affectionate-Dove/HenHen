@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HenFwork\HenFwork.csproj" />
+    <PackageReference Include="HenFwork" Version="2021.12.2.9" />
   </ItemGroup>
 
 </Project>

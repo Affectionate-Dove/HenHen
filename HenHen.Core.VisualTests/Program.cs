@@ -3,7 +3,7 @@
 // See the LICENSE file in the repository root for full license text.
 
 using HenFwork;
-using HenFwork.VisualTests;
+using HenFwork.Testing;
 
 namespace HenHen.Core.VisualTests
 {
