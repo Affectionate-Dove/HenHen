@@ -9,7 +9,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   assign:
-    permissions: read-all
+    permissions: read-all|write-all
     runs-on: ubuntu-latest
     steps:
     - name: Assign author and maintainers
